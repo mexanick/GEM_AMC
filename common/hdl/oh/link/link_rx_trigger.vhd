@@ -102,18 +102,18 @@ begin
                             if (fifo_we = '1') then
                                 missed_comma_err <= '0'; -- deassert it only if it's the first clock we're in the COMMA state
                             end if;
-                            fifo_din(55 downto 48) <= rx_data_i(15 downto 8);
+                            fifo_din(7 downto 0) <= rx_data_i(15 downto 8);
                         elsif (reset_done = '1') then
                             missed_comma_err <= '1';
                         end if;
                     when DATA_0 =>
-                        fifo_din(47 downto 32) <= rx_data_i(15 downto 0);
+                        fifo_din(23 downto 8) <= rx_data_i(15 downto 0);
                     when DATA_1 =>
-                        fifo_din(31 downto 16) <= rx_data_i(15 downto 0);
+                        fifo_din(39 downto 24) <= rx_data_i(15 downto 0);
                     when DATA_2 =>
                         fifo_we <= '1';
                         fifo_re <= '1';
-                        fifo_din(15 downto 0) <= rx_data_i(15 downto 0);
+                        fifo_din(55 downto 40) <= rx_data_i(15 downto 0);
                         fifo_din(56) <= missed_comma_err;
                         fifo_din(57) <= fifo_almost_full;
                         fifo_din(58) <= '0'; -- will be used for sync character
@@ -146,13 +146,13 @@ begin
     link_status_o.overflow      <= fifo_dout(57);
     link_status_o.sync_word     <= fifo_dout(58);
     
-    sbit_cluster0_o.size     <= fifo_dout(55 downto 53);
-    sbit_cluster0_o.address  <= fifo_dout(52 downto 42);
-    sbit_cluster1_o.size     <= fifo_dout(41 downto 39);
-    sbit_cluster1_o.address  <= fifo_dout(38 downto 28);
-    sbit_cluster2_o.size     <= fifo_dout(27 downto 25);
-    sbit_cluster2_o.address  <= fifo_dout(24 downto 14);
-    sbit_cluster3_o.size     <= fifo_dout(13 downto 11);
-    sbit_cluster3_o.address  <= fifo_dout(10 downto 0);
+    sbit_cluster0_o.size     <= fifo_dout(13 downto 11);
+    sbit_cluster0_o.address  <= fifo_dout(10 downto  0);
+    sbit_cluster1_o.size     <= fifo_dout(27 downto 25);
+    sbit_cluster1_o.address  <= fifo_dout(24 downto 14);
+    sbit_cluster2_o.size     <= fifo_dout(41 downto 39);
+    sbit_cluster2_o.address  <= fifo_dout(38 downto 28);
+    sbit_cluster3_o.size     <= fifo_dout(55 downto 53);
+    sbit_cluster3_o.address  <= fifo_dout(52 downto 42);
     
 end Behavioral;
