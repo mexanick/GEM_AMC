@@ -130,7 +130,7 @@ begin
                     when DATA_2 => 
                         gbt_tx_data_o(43 downto 32) <= req_data(11 downto 0);
                     when FRAME_END =>
-                        gbt_tx_data_o(43 downto 32) <= x"000";
+                        gbt_tx_data_o(43 downto 32) <= x"ABC";
                     when others => 
                         gbt_tx_data_o(43 downto 32) <= x"000";
                 end case;
