@@ -134,8 +134,9 @@ architecture gem_amc_arch of gem_amc is
     signal gt_trig1_rx_clk_arr      : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
     signal gt_trig1_rx_data_arr     : t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);
     
-    --== OH link status ==--
-    signal oh_link_status_arr       : t_oh_link_status_arr(g_NUM_OF_OHs - 1 downto 0);    
+    --== OH link status and control ==--
+    signal oh_link_status_arr       : t_oh_link_status_arr(g_NUM_OF_OHs - 1 downto 0);
+    signal oh_link_control_arr      : t_oh_link_control_arr(g_NUM_OF_OHs - 1 downto 0);    
 
     --== GBT ==--
     signal gbt_tx_we_arr                : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
@@ -163,22 +164,31 @@ architecture gem_amc_arch of gem_amc is
     signal gbt_rx_sync_pattern          : std_logic_vector(31 downto 0);
     signal gbt_rx_sync_count_req        : std_logic_vector(7 downto 0);
 
+    -- OHv2 GBT links
+    signal ohv2_gbt_rx_data_arr         : t_gbt_frame_array(g_NUM_OF_OHs - 1 downto 0);
+    signal ohv2_gbt_tx_data_arr         : t_gbt_frame_array(g_NUM_OF_OHs - 1 downto 0);
+    signal ohv2_gbt_ready_arr           : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+    
+    -- test module GBT links
+    signal test_gbt_rx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 3) - 1 downto 0);
+    signal test_gbt_tx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 3) - 1 downto 0);
+    signal test_gbt_ready_arr           : std_logic_vector((g_NUM_OF_OHs * 3) - 1 downto 0);
+    
 
     --== GBT fake links ==--
-    signal gbt_fake_tx_data_arr              : t_gbt_frame_array((g_NUM_OF_OHs * 2) - 1 downto 0);
-    signal gbt_fake_mgt_tx_data_arr          : t_gt_gbt_tx_data_arr((g_NUM_OF_OHs * 2) - 1 downto 0);
-    signal gbt_fake_mgt_tx_clk_arr           : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_tx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_mgt_tx_data_arr     : t_gt_gbt_tx_data_arr((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_mgt_tx_clk_arr      : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
             
-    signal gbt_fake_rx_valid_arr             : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
-    signal gbt_fake_rx_data_arr              : t_gbt_frame_array((g_NUM_OF_OHs * 2) - 1 downto 0);
-    signal gbt_fake_mgt_rx_data_arr          : t_gt_gbt_rx_data_arr((g_NUM_OF_OHs * 2) - 1 downto 0);
-    signal gbt_fake_mgt_rx_clk_arr           : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_rx_valid_arr        : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_rx_ready_arr        : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_rx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_mgt_rx_data_arr     : t_gt_gbt_rx_data_arr((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_mgt_rx_clk_arr      : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
 
-
-    -- test
-    signal gbt_rx_mismatch_cnt          : t_std16_array(g_NUM_OF_OHs - 1 downto 0);
-    signal gbt_counter_pattern          : unsigned(7 downto 0) := (others => '0');
-
+    --== TEST module ==--
+    signal gbt_loopback_test_en         : std_logic; 
+    
     --== Other ==--
     signal ipb_miso_arr     : ipb_rbus_array(g_NUM_IPB_SLAVES - 1 downto 0) := (others => (ipb_rdata => (others => '0'), ipb_ack => '0', ipb_err => '0'));
 
@@ -273,9 +283,9 @@ begin
                 gth_rx_data_i           => gt_8b10b_rx_data_arr_i(i),
                 gth_tx_data_o           => gt_8b10b_tx_data_arr_o(i),
 
-                gbt_rx_ready_i          => gbt_rx_ready(i) and gbt_rx_valid_arr(i),
-                gbt_rx_data_i           => gbt_rx_data_arr(i),
-                gbt_tx_data_o           => gbt_tx_data_arr(i),
+                gbt_rx_ready_i          => ohv2_gbt_ready_arr(i),
+                gbt_rx_data_i           => ohv2_gbt_rx_data_arr(i),
+                gbt_tx_data_o           => ohv2_gbt_tx_data_arr(i),
 
                 gbt_tx_sync_pattern_i   => gbt_tx_sync_pattern,
                 gbt_rx_sync_pattern_i   => gbt_rx_sync_pattern,
@@ -295,7 +305,8 @@ begin
                 oh_reg_ipb_reg_mosi_i   => ipb_mosi_arr_i(C_IPB_SLV.oh_reg(i)),
 
                 link_status_o           => oh_link_status_arr(i),
-
+                link_control_i          => oh_link_control_arr(i),
+                
                 debug_reset_cnt_i       => debug_clk_reset,
                 debug_clk_cnt_o         => debug_clk_cnt_arr(i)
 
@@ -357,18 +368,19 @@ begin
 
     i_gem_system : entity work.gem_system_regs
         port map(
-            ttc_clks_i       => ttc_clocks,            
-            reset_i          => reset,
-            ipb_clk_i        => ipb_clk_i,
-            ipb_reset_i      => ipb_reset_i,
-            ipb_mosi_i       => ipb_mosi_arr_i(C_IPB_SLV.system),
-            ipb_miso_o       => ipb_miso_arr(C_IPB_SLV.system),
-            tk_rx_polarity_o => open,
-            tk_tx_polarity_o => open,
-            board_id_o       => open,
-            gbt_tx_sync_pattern_o => gbt_tx_sync_pattern,
-            gbt_rx_sync_pattern_o => gbt_rx_sync_pattern,
-            gbt_rx_sync_count_req_o => gbt_rx_sync_count_req       
+            ttc_clks_i              => ttc_clocks,            
+            reset_i                 => reset,
+            ipb_clk_i               => ipb_clk_i,
+            ipb_reset_i             => ipb_reset_i,
+            ipb_mosi_i              => ipb_mosi_arr_i(C_IPB_SLV.system),
+            ipb_miso_o              => ipb_miso_arr(C_IPB_SLV.system),
+            tk_rx_polarity_o        => open,
+            tk_tx_polarity_o        => open,
+            board_id_o              => open,
+            gbt_tx_sync_pattern_o   => gbt_tx_sync_pattern,
+            gbt_rx_sync_pattern_o   => gbt_rx_sync_pattern,
+            gbt_rx_sync_count_req_o => gbt_rx_sync_count_req,       
+            gbt_loopback_test_en_o  => gbt_loopback_test_en
         );
 
     --==================--
@@ -418,7 +430,7 @@ begin
                 tx_word_clk_arr_i           => gbt_mgt_tx_clk_arr,
                 rx_word_clk_arr_i           => gbt_mgt_rx_clk_arr,
                 tx_ready_arr_i              => (others => '1'),
-                tx_we_arr_i                 => gbt_tx_we_arr,
+                tx_we_arr_i                 => (others => '1'),
                 tx_data_arr_i               => gbt_tx_data_arr,
                 tx_gearbox_aligned_arr_o    => gbt_tx_gearbox_aligned_arr,
                 tx_gearbox_align_done_arr_o => gbt_tx_gearbox_align_done_arr,
@@ -460,7 +472,7 @@ begin
                     tx_gearbox_align_done_arr_o => open,
                     rx_frame_clk_rdy_arr_i      => (others => '1'),
                     rx_word_clk_rdy_arr_i       => (others => '1'),
-                    rx_rdy_arr_o                => open,
+                    rx_rdy_arr_o                => gbt_fake_rx_ready_arr,
                     rx_bitslip_nbr_arr_o        => open,
                     rx_header_arr_o             => open,
                     rx_header_locked_arr_o      => open,
@@ -481,10 +493,7 @@ begin
             gbt_mgt_rx_data_arr(i) <= gt_gbt_rx_links_arr_i(i).rx0data;
     
             -- 3x GBT test for resource utilization testing for future OH v3        
-            g_3x_gbt_fake_links : if g_USE_3x_GBTs generate
-                gbt_fake_tx_data_arr(i * 2)             <= gbt_fake_rx_data_arr(i * 2);
-                gbt_fake_tx_data_arr((i * 2) + 1)       <= gbt_fake_rx_data_arr((i * 2) + 1);
-                
+            g_3x_gbt_fake_links : if g_USE_3x_GBTs generate               
                 gt_gbt_tx_links_arr_o(i).tx1data        <= gbt_fake_mgt_tx_data_arr(i * 2); 
                 gt_gbt_tx_links_arr_o(i).tx2data        <= gbt_fake_mgt_tx_data_arr((i * 2) + 1);
     
@@ -504,73 +513,67 @@ begin
         gbt_rx_word_clk_ready <= (others => '1');
         gbt_mgt_rx_ready_arr <= (others => '1');
     
---        i_ila_gbt : component ila_gbt
---            port map(
---                clk     => ttc_clocks.clk_40,
---                probe0  => gbt_tx_data_arr(0),
---                probe1  => gbt_rx_data_arr(0),
---                probe2  => gbt_tx_gearbox_aligned_arr(0 downto 0),
---                probe3  => gbt_tx_gearbox_align_done_arr(0 downto 0),
---                probe4  => gbt_rx_frame_clk_ready(0 downto 0),
---                probe5  => gbt_rx_word_clk_ready(0 downto 0),
---                probe6  => gbt_rx_ready(0 downto 0),
---                probe7  => gbt_rx_header(0 downto 0),
---                probe8  => gbt_rx_header_locked(0 downto 0),
---                probe9  => gbt_rx_valid_arr(0 downto 0),
---                probe10 => gbt_rx_bitslip_nbr(0)
---            );
+        i_gbt_link_mux : entity work.gbt_link_mux
+            generic map(
+                g_NUM_OF_OHs  => g_NUM_OF_OHs,
+                g_USE_3x_GBTs => g_USE_3x_GBTs
+            )
+            port map(
+                gbt_rx_data_arr_i           => gbt_rx_data_arr,
+                gbt_tx_data_arr_o           => gbt_tx_data_arr,
+                gbt_rx_ready_arr_i          => gbt_rx_ready,
+                gbt_rx_valid_arr_i          => gbt_rx_valid_arr,
+                extra_gbt_rx_data_arr_i     => gbt_fake_rx_data_arr,
+                extra_gbt_tx_data_arr_o     => gbt_fake_tx_data_arr,
+                extra_gbt_rx_ready_arr_i    => gbt_fake_rx_ready_arr,
+                extra_gbt_rx_valid_arr_i    => gbt_fake_rx_valid_arr,
+                link_test_mode_i            => gbt_loopback_test_en,
+                ohv2_gbt_rx_data_arr_o      => ohv2_gbt_rx_data_arr,
+                ohv2_gbt_tx_data_arr_i      => ohv2_gbt_tx_data_arr,
+                ohv2_gbt_ready_arr_o        => ohv2_gbt_ready_arr,
+                tst_gbt_rx_data_arr_o       => test_gbt_rx_data_arr,
+                tst_gbt_tx_data_arr_i       => test_gbt_tx_data_arr,
+                tst_gbt_ready_arr_o         => test_gbt_ready_arr
+            );    
+    
+        i_ila_gbt : component ila_gbt
+            port map(
+                clk     => ttc_clocks.clk_40,
+                probe0  => gbt_tx_data_arr(1),
+                probe1  => gbt_rx_data_arr(1),
+                probe2  => gbt_tx_gearbox_aligned_arr(1 downto 1),
+                probe3  => gbt_tx_gearbox_align_done_arr(1 downto 1),
+                probe4  => gbt_rx_frame_clk_ready(1 downto 1),
+                probe5  => gbt_rx_word_clk_ready(1 downto 1),
+                probe6  => gbt_rx_ready(1 downto 1),
+                probe7  => gbt_rx_header(1 downto 1),
+                probe8  => gbt_rx_header_locked(1 downto 1),
+                probe9  => gbt_rx_valid_arr(1 downto 1),
+                probe10 => gbt_rx_bitslip_nbr(1)
+            );
         
     end generate g_gbt;
-          
-    --=== GBT test ===--
     
---    -- 1 Hz counter
---    process (ttc_clocks.clk_40)
---        variable countdown : integer := C_TTC_CLK_FREQUENCY;
---    begin
---        if (rising_edge(ttc_clocks.clk_40)) then
---            if (countdown = 0) then
---                countdown := C_TTC_CLK_FREQUENCY;
---                gbt_counter_pattern <= gbt_counter_pattern + 1;
---            else
---                countdown := countdown - 1;
---            end if;
---        end if;
---    end process;
---    
---    g_gbt_test : for i in 0 to g_NUM_OF_OHs - 1 generate
---
---        -- loopback (comment the next two lines sending data through MGTs)
---        --gbt_mgt_rx_data_arr(i).rxdata <= gbt_mgt_tx_data_arr(i).txdata;
---        --gt_gbt_tx_data_arr_o(i).txdata <= x"BCBCBCBCBC"; -- load the MGT data input with some fake data -- TODO: remove this once you connect the GBT to the real MGTs
---        
---        -- generate test data
---        p_gbt_test_data : process(ttc_clocks.clk_40)
---            variable counter    : unsigned(19 downto 0);
---        begin
---            if (rising_edge(ttc_clocks.clk_40)) then
---                if (reset = '1') then
---                    counter := (others => '0');
---                    gbt_tx_we_arr(i) <= '0';
---                    gbt_rx_mismatch_cnt(i) <= (others => '0');
---                else
---                    counter := counter + 1;
---                    gbt_tx_we_arr(i) <= '1';
---                    gbt_tx_data_arr(i) <= x"0" & std_logic_vector(gbt_counter_pattern) & std_logic_vector(gbt_counter_pattern) &
---                                                 std_logic_vector(gbt_counter_pattern) & std_logic_vector(gbt_counter_pattern) &
---                                                 std_logic_vector(gbt_counter_pattern) & std_logic_vector(gbt_counter_pattern) &
---                                                 std_logic_vector(gbt_counter_pattern) & std_logic_vector(gbt_counter_pattern) &
---                                                 std_logic_vector(gbt_counter_pattern) & std_logic_vector(gbt_counter_pattern);
---                                                 
---                    --gbt_tx_data_arr(i) <= x"aaaa" & x"fafa" & x"ffff" & x"1111" & std_logic_vector(counter);
---                    if (gbt_rx_data_arr(i) /= gbt_rx_data_arr(0)) then
---                        gbt_rx_mismatch_cnt(i) <= std_logic_vector(unsigned(gbt_rx_mismatch_cnt(i)) + 1);
---                    end if;
---                end if;
---            end if;
---        end process;
---        
---    end generate;
+    --=============--
+    --    Tests    --
+    --=============--
     
+    i_gem_tests : entity work.gem_tests
+        generic map(
+            g_NUM_GBT_LINKS => g_NUM_OF_OHs * 3
+        )
+        port map(
+            reset_i              => reset_i,
+            ttc_clk_i            => ttc_clocks,
+            ttc_cmds_i           => ttc_cmd,
+            gbt_loopback_test_en => gbt_loopback_test_en,
+            gbt_link_ready_i     => test_gbt_ready_arr,
+            gbt_tx_data_arr_o    => test_gbt_tx_data_arr,
+            gbt_rx_data_arr_i    => test_gbt_rx_data_arr,
+            ipb_reset_i          => ipb_reset,
+            ipb_clk_i            => ipb_clk_i,
+            ipb_mosi_i           => ipb_mosi_arr_i(C_IPB_SLV.test),
+            ipb_miso_o           => ipb_miso_arr(C_IPB_SLV.test)
+        );
     
 end gem_amc_arch;

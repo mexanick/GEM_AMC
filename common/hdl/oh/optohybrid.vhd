@@ -73,7 +73,9 @@ entity optohybrid is
         oh_reg_ipb_reg_miso_o   : out ipb_rbus;
         oh_reg_ipb_reg_mosi_i   : in  ipb_wbus;
 
+        -- Link status and control
         link_status_o           : out t_oh_link_status;
+        link_control_i          : t_oh_link_control;
         
         -- temporary for debugging the clocks
         debug_reset_cnt_i       : in std_logic;
@@ -105,80 +107,108 @@ architecture optohybrid_arch of optohybrid is
     
     signal gth_tx_data      : t_gt_8b10b_tx_data;
     
-    --== GTX requests ==--
+    --== Register requests ==--
     
-    signal g2o_req_en       : std_logic;
-    signal g2o_req_valid    : std_logic;
-    signal g2o_req_data     : std_logic_vector(64 downto 0);
+    signal gbt_tx_req_en        : std_logic;
+    signal gbt_tx_req_valid     : std_logic;
+    signal gbt_tx_req_data      : std_logic_vector(64 downto 0);
+
+    signal legacy_tx_req_en     : std_logic;
+    signal legacy_tx_req_valid  : std_logic;
+    signal legacy_tx_req_data   : std_logic_vector(64 downto 0);
+
+    signal tx_req_en            : std_logic;
+    signal tx_req_valid         : std_logic;
+    signal tx_req_data          : std_logic_vector(64 downto 0);
+        
+    signal gbt_rx_req_en        : std_logic;
+    signal gbt_rx_req_data      : std_logic_vector(31 downto 0);
     
-    signal o2g_req_en       : std_logic;
-    signal o2g_req_data     : std_logic_vector(31 downto 0);
-    signal o2g_req_error    : std_logic;    
+    signal legacy_rx_req_en     : std_logic;
+    signal legacy_rx_req_data   : std_logic_vector(31 downto 0);
+
+    signal rx_req_en            : std_logic;
+    signal rx_req_data          : std_logic_vector(31 downto 0);
+
+    signal req_clk              : std_logic;
     
     --== Tracking data ==--
     
-    signal evt_en           : std_logic;
-    signal evt_data         : std_logic_vector(15 downto 0);
+    signal gbt_evt_en           : std_logic;
+    signal gbt_evt_data         : std_logic_vector(15 downto 0);
+
+    signal legacy_evt_en        : std_logic;
+    signal legacy_evt_data      : std_logic_vector(15 downto 0);
+
+    signal gbt_tk_evt_rcvd      : std_logic;
+    signal gbt_tk_error         : std_logic;
+    
+    signal legacy_tk_evt_rcvd   : std_logic;
+    signal legacy_tk_error      : std_logic;
 
     --== Tracking sync FIFOs ==--
 
-    signal sync_tk_rx_din   : std_logic_vector(23 downto 0);
-    signal sync_tk_rx_dout  : std_logic_vector(23 downto 0);
-    signal sync_tk_rx_ovf   : std_logic;
-    signal sync_tk_rx_unf   : std_logic;
+    signal sync_tk_rx_din       : std_logic_vector(23 downto 0);
+    signal sync_tk_rx_dout      : std_logic_vector(23 downto 0);
+    signal sync_tk_rx_ovf       : std_logic;
+    signal sync_tk_rx_unf       : std_logic;
 
-    signal sync_tk_tx_din   : std_logic_vector(23 downto 0);
-    signal sync_tk_tx_dout  : std_logic_vector(23 downto 0);
-    signal sync_tk_tx_ovf   : std_logic;
-    signal sync_tk_tx_unf   : std_logic;
+    signal sync_tk_tx_din       : std_logic_vector(23 downto 0);
+    signal sync_tk_tx_dout      : std_logic_vector(23 downto 0);
+    signal sync_tk_tx_ovf       : std_logic;
+    signal sync_tk_tx_unf       : std_logic;
 
     --== Trigger RX sync FIFOs ==--
 
-    signal sync_tr0_rx_din   : std_logic_vector(23 downto 0);
-    signal sync_tr0_rx_dout  : std_logic_vector(23 downto 0);
-    signal sync_tr0_rx_ovf   : std_logic;
-    signal sync_tr0_rx_unf   : std_logic;
+    signal sync_tr0_rx_din      : std_logic_vector(23 downto 0);
+    signal sync_tr0_rx_dout     : std_logic_vector(23 downto 0);
+    signal sync_tr0_rx_ovf      : std_logic;
+    signal sync_tr0_rx_unf      : std_logic;
 
-    signal sync_tr1_rx_din   : std_logic_vector(23 downto 0);
-    signal sync_tr1_rx_dout  : std_logic_vector(23 downto 0);
-    signal sync_tr1_rx_ovf   : std_logic;
-    signal sync_tr1_rx_unf   : std_logic;
+    signal sync_tr1_rx_din      : std_logic_vector(23 downto 0);
+    signal sync_tr1_rx_dout     : std_logic_vector(23 downto 0);
+    signal sync_tr1_rx_ovf      : std_logic;
+    signal sync_tr1_rx_unf      : std_logic;
     
     --== GBT ==--
-    signal gbt_rx_sync_done  : std_logic := '0';
+    signal gbt_rx_sync_done     : std_logic := '0';
 
     --== constant signals ==--
     
-    signal tied_to_ground   : std_logic;
-    signal tied_to_vcc      : std_logic;    
+    signal tied_to_ground       : std_logic;
+    signal tied_to_vcc          : std_logic;    
 
     --== debug signals ==--
     
-    signal debug_tr_tx_link : t_gt_8b10b_tx_data;
-    signal debug_tr_rx_link : t_gt_8b10b_rx_data;
+    signal debug_tr_tx_link     : t_gt_8b10b_tx_data;
+    signal debug_tr_rx_link     : t_gt_8b10b_rx_data;
 
-    signal debug_tk_rx_clk_cnt : std_logic_vector(15 downto 0);
-    signal debug_ttc_clk_cnt   : std_logic_vector(15 downto 0);
+    signal debug_tk_rx_clk_cnt  : std_logic_vector(15 downto 0);
+    signal debug_ttc_clk_cnt    : std_logic_vector(15 downto 0);
     
 begin
 
     gth_tx_data_o <= gth_tx_data;
-
-    g_3g2_fallback_data_clk : if not g_USE_GBT generate
-        tk_data_link_o.clk <= ttc_clk_i.clk_160;
-    end generate;
-
-    g_gbt_data_clk : if g_USE_GBT generate
-        tk_data_link_o.clk <= ttc_clk_i.clk_80;
-    end generate;
-    
-    tk_data_link_o.data_en <= evt_en;
-    tk_data_link_o.data <= evt_data;
+   
+    tk_data_link_o.data_en <= gbt_evt_en when link_control_i.daq_use_gbt = '1' else legacy_evt_en;
+    tk_data_link_o.data <= gbt_evt_data when link_control_i.daq_use_gbt = '1' else legacy_evt_data;
+    tk_data_link_o.clk <= ttc_clk_i.clk_80 when link_control_i.daq_use_gbt = '1' else ttc_clk_i.clk_160;
 
     vfat2_t1.lv1a       <= ttc_cmds_i.l1a;
     vfat2_t1.bc0        <= ttc_cmds_i.bc0;
     vfat2_t1.resync     <= '0';
     vfat2_t1.calpulse   <= '0';
+    
+    req_clk <= ttc_clk_i.clk_40 when link_control_i.reg_use_gbt = '1' else ttc_clk_i.clk_160;
+    
+    tx_req_en <= gbt_tx_req_en when link_control_i.reg_use_gbt = '1' else legacy_tx_req_en;
+    gbt_tx_req_valid <= tx_req_valid when link_control_i.reg_use_gbt = '1' else '0';
+    gbt_tx_req_data <= tx_req_data when link_control_i.reg_use_gbt = '1' else (others => '0');
+    legacy_tx_req_valid <= tx_req_valid when link_control_i.reg_use_gbt = '1' else '0';
+    legacy_tx_req_data <= tx_req_data when link_control_i.reg_use_gbt = '1' else (others => '0');
+    
+    rx_req_en <= gbt_rx_req_en when link_control_i.reg_use_gbt = '1' else legacy_rx_req_en;
+    rx_req_data <= gbt_rx_req_data when link_control_i.reg_use_gbt = '1' else legacy_rx_req_data;
     
     -- constant signals
     tied_to_ground <= '0';
@@ -188,88 +218,49 @@ begin
     --==      Sync FIFOs      ==--
     --==========================--
 
-    g_3g2_fallback_link : if not g_USE_GBT generate
-        
-        ---==== Tracking / Control RX link ====---
-        sync_tk_rx_din <= gth_rx_data_i.rxdisperr(1 downto 0) & gth_rx_data_i.rxnotintable(1 downto 0) & gth_rx_data_i.rxchariscomma(1 downto 0) & gth_rx_data_i.rxcharisk(1 downto 0) & gth_rx_data_i.rxdata(15 downto 0);
-        i_sync_rx_tracking : component sync_fifo_8b10b_16
-            port map(
-                rst       => reset_i,
-                wr_clk    => gth_rx_usrclk_i,
-                rd_clk    => ttc_clk_i.clk_160,
-                din       => sync_tk_rx_din,
-                wr_en     => tied_to_vcc,
-                rd_en     => tied_to_vcc,
-                dout      => sync_tk_rx_dout,
-                full      => open,
-                overflow  => sync_tk_rx_ovf,
-                empty     => open,
-                valid     => open,
-                underflow => sync_tk_rx_unf
-            );
+    ---==== Tracking / Control RX link ====---
     
-        ---==== Tracking / Control TX link ====---
-        i_sync_tx_tracking : component sync_fifo_8b10b_16
-            port map(
-                rst       => reset_i,
-                wr_clk    => ttc_clk_i.clk_160,
-                rd_clk    => gth_tx_usrclk_i,
-                din       => sync_tk_tx_din,
-                wr_en     => tied_to_vcc,
-                rd_en     => tied_to_vcc,
-                dout      => sync_tk_tx_dout,
-                full      => open,
-                overflow  => sync_tk_tx_ovf,
-                empty     => open,
-                valid     => open,
-                underflow => sync_tk_tx_unf
-            );
-            
-        gth_tx_data.txdata(15 downto 0) <= sync_tk_tx_dout(15 downto 0);
-        gth_tx_data.txcharisk(1 downto 0) <= sync_tk_tx_dout(17 downto 16);
+    i_sync_rx_tracking : component sync_fifo_8b10b_16
+        port map(
+            rst       => reset_i,
+            wr_clk    => gth_rx_usrclk_i,
+            rd_clk    => ttc_clk_i.clk_160,
+            din       => sync_tk_rx_din,
+            wr_en     => tied_to_vcc,
+            rd_en     => tied_to_vcc,
+            dout      => sync_tk_rx_dout,
+            full      => open,
+            overflow  => sync_tk_rx_ovf,
+            empty     => open,
+            valid     => open,
+            underflow => sync_tk_rx_unf
+        );
         
-        link_status_o.tk_tx_sync_status.ovf <= sync_tk_tx_ovf;
-        link_status_o.tk_tx_sync_status.unf <= sync_tk_tx_unf;
-        link_status_o.tk_rx_sync_status.ovf <= sync_tk_rx_ovf;
-        link_status_o.tk_rx_sync_status.unf <= sync_tk_rx_unf;
-        link_status_o.tr0_rx_sync_status.ovf <= sync_tr0_rx_ovf;
-        link_status_o.tr0_rx_sync_status.unf <= sync_tr0_rx_unf;
-        link_status_o.tr1_rx_sync_status.ovf <= sync_tr1_rx_ovf;
-        link_status_o.tr1_rx_sync_status.unf <= sync_tr1_rx_unf;
-    
-        link_status_o.tk_rx_gt_status.not_in_table  <= sync_tk_rx_dout(21)  or sync_tk_rx_dout(20);
-        link_status_o.tk_rx_gt_status.disperr       <= sync_tk_rx_dout(23)  or sync_tk_rx_dout(22);
-        link_status_o.tr0_rx_gt_status.not_in_table <= sync_tr0_rx_dout(21) or sync_tr0_rx_dout(20);
-        link_status_o.tr0_rx_gt_status.disperr      <= sync_tr0_rx_dout(23) or sync_tr0_rx_dout(22);
-        link_status_o.tr1_rx_gt_status.not_in_table <= sync_tr1_rx_dout(21) or sync_tr1_rx_dout(20);
-        link_status_o.tr1_rx_gt_status.disperr      <= sync_tr1_rx_dout(23) or sync_tr1_rx_dout(22);
-            
-        gbt_rx_sync_done_o <= '0';
-        
-    end generate;
-    
-    g_gbt_link_status : if g_USE_GBT generate
-        gbt_rx_sync_done_o <= gbt_rx_sync_done;
-        
-        link_status_o.tk_tx_sync_status.ovf <= tied_to_ground;
-        link_status_o.tk_tx_sync_status.unf <= tied_to_ground;
-        link_status_o.tk_rx_sync_status.ovf <= tied_to_ground;
-        link_status_o.tk_rx_sync_status.unf <= tied_to_ground;
-        link_status_o.tr0_rx_sync_status.ovf <= tied_to_ground;
-        link_status_o.tr0_rx_sync_status.unf <= tied_to_ground;
-        link_status_o.tr1_rx_sync_status.ovf <= tied_to_ground;
-        link_status_o.tr1_rx_sync_status.unf <= tied_to_ground;
-    
-        link_status_o.tk_rx_gt_status.not_in_table  <= tied_to_ground;
-        link_status_o.tk_rx_gt_status.disperr       <= tied_to_ground;
-        link_status_o.tr0_rx_gt_status.not_in_table <= tied_to_ground;
-        link_status_o.tr0_rx_gt_status.disperr      <= tied_to_ground;
-        link_status_o.tr1_rx_gt_status.not_in_table <= tied_to_ground;
-        link_status_o.tr1_rx_gt_status.disperr      <= tied_to_ground;
-    end generate;
+    sync_tk_rx_din <= gth_rx_data_i.rxdisperr(1 downto 0) & gth_rx_data_i.rxnotintable(1 downto 0) & gth_rx_data_i.rxchariscomma(1 downto 0) & gth_rx_data_i.rxcharisk(1 downto 0) & gth_rx_data_i.rxdata(15 downto 0);
 
+    ---==== Tracking / Control TX link ====---
+    
+    i_sync_tx_tracking : component sync_fifo_8b10b_16
+        port map(
+            rst       => reset_i,
+            wr_clk    => ttc_clk_i.clk_160,
+            rd_clk    => gth_tx_usrclk_i,
+            din       => sync_tk_tx_din,
+            wr_en     => tied_to_vcc,
+            rd_en     => tied_to_vcc,
+            dout      => sync_tk_tx_dout,
+            full      => open,
+            overflow  => sync_tk_tx_ovf,
+            empty     => open,
+            valid     => open,
+            underflow => sync_tk_tx_unf
+        );
+            
+    gth_tx_data.txdata(15 downto 0) <= sync_tk_tx_dout(15 downto 0);
+    gth_tx_data.txcharisk(1 downto 0) <= sync_tk_tx_dout(17 downto 16);
+    
     ---==== Trigger link 0 ====---
-    sync_tr0_rx_din <= gth_rx_trig_data_i(0).rxdisperr(1 downto 0) & gth_rx_trig_data_i(0).rxnotintable(1 downto 0) & gth_rx_trig_data_i(0).rxchariscomma(1 downto 0) & gth_rx_trig_data_i(0).rxcharisk(1 downto 0) & gth_rx_trig_data_i(0).rxdata(15 downto 0);
+
     i_sync_rx_trig0 : component sync_fifo_8b10b_16
         port map(
             rst       => reset_i,
@@ -286,8 +277,10 @@ begin
             underflow => sync_tr0_rx_unf
         );
 
+    sync_tr0_rx_din <= gth_rx_trig_data_i(0).rxdisperr(1 downto 0) & gth_rx_trig_data_i(0).rxnotintable(1 downto 0) & gth_rx_trig_data_i(0).rxchariscomma(1 downto 0) & gth_rx_trig_data_i(0).rxcharisk(1 downto 0) & gth_rx_trig_data_i(0).rxdata(15 downto 0);
+
     ---==== Trigger link 1 ====---
-    sync_tr1_rx_din <= gth_rx_trig_data_i(1).rxdisperr(1 downto 0) & gth_rx_trig_data_i(1).rxnotintable(1 downto 0) & gth_rx_trig_data_i(1).rxchariscomma(1 downto 0) & gth_rx_trig_data_i(1).rxcharisk(1 downto 0) & gth_rx_trig_data_i(1).rxdata(15 downto 0);
+
     i_sync_rx_trig1 : component sync_fifo_8b10b_16
         port map(
             rst       => reset_i,
@@ -303,125 +296,121 @@ begin
             valid     => open,
             underflow => sync_tr1_rx_unf
         );
+    
+    sync_tr1_rx_din <= gth_rx_trig_data_i(1).rxdisperr(1 downto 0) & gth_rx_trig_data_i(1).rxnotintable(1 downto 0) & gth_rx_trig_data_i(1).rxchariscomma(1 downto 0) & gth_rx_trig_data_i(1).rxcharisk(1 downto 0) & gth_rx_trig_data_i(1).rxdata(15 downto 0);
 
+    --==========================--
+    --==      Link status     ==--
+    --==========================--
+
+    link_status_o.tk_tx_sync_status.ovf <= sync_tk_tx_ovf;
+    link_status_o.tk_tx_sync_status.unf <= sync_tk_tx_unf;
+    link_status_o.tk_rx_sync_status.ovf <= sync_tk_rx_ovf;
+    link_status_o.tk_rx_sync_status.unf <= sync_tk_rx_unf;
+    link_status_o.tr0_rx_sync_status.ovf <= sync_tr0_rx_ovf;
+    link_status_o.tr0_rx_sync_status.unf <= sync_tr0_rx_unf;
+    link_status_o.tr1_rx_sync_status.ovf <= sync_tr1_rx_ovf;
+    link_status_o.tr1_rx_sync_status.unf <= sync_tr1_rx_unf;
+
+    link_status_o.tk_rx_gt_status.not_in_table  <= sync_tk_rx_dout(21)  or sync_tk_rx_dout(20);
+    link_status_o.tk_rx_gt_status.disperr       <= sync_tk_rx_dout(23)  or sync_tk_rx_dout(22);
+    link_status_o.tr0_rx_gt_status.not_in_table <= sync_tr0_rx_dout(21) or sync_tr0_rx_dout(20);
+    link_status_o.tr0_rx_gt_status.disperr      <= sync_tr0_rx_dout(23) or sync_tr0_rx_dout(22);
+    link_status_o.tr1_rx_gt_status.not_in_table <= sync_tr1_rx_dout(21) or sync_tr1_rx_dout(20);
+    link_status_o.tr1_rx_gt_status.disperr      <= sync_tr1_rx_dout(23) or sync_tr1_rx_dout(22);
+            
+    link_status_o.evt_rcvd <= gbt_tk_evt_rcvd when link_control_i.daq_use_gbt = '1' else legacy_tk_evt_rcvd;
+    link_status_o.tk_error <= gbt_tk_error when link_control_i.daq_use_gbt = '1' else legacy_tk_error;
+            
+    gbt_rx_sync_done_o <= gbt_rx_sync_done;
+        
     --==========================--
     --==   TX Tracking link   ==--
     --==========================--
     
-    g_3g2_fallback_tk_tx_link : if not g_USE_GBT generate
-    
-        i_link_tx_tracking : entity work.link_tx_tracking
-            port map(
-                gtx_clk_i   => ttc_clk_i.clk_160,   
-                reset_i     => reset_i,           
-                vfat2_t1_i  => vfat2_t1,        
-                req_en_o    => g2o_req_en,   
-                req_valid_i => g2o_req_valid,   
-                req_data_i  => g2o_req_data,           
-                tx_kchar_o  => sync_tk_tx_din(17 downto 16),   
-                tx_data_o   => sync_tk_tx_din(15 downto 0)
-            );  
-    
-    end generate;
+    i_link_tx_tracking : entity work.link_tx_tracking
+        port map(
+            gtx_clk_i   => ttc_clk_i.clk_160,   
+            reset_i     => reset_i,           
+            use_t1      => not link_control_i.ttc_use_gbt,
+            use_req     => not link_control_i.reg_use_gbt,
+            vfat2_t1_i  => vfat2_t1,        
+            req_en_o    => legacy_tx_req_en,   
+            req_valid_i => legacy_tx_req_valid,   
+            req_data_i  => legacy_tx_req_data,           
+            tx_kchar_o  => sync_tk_tx_din(17 downto 16),   
+            tx_data_o   => sync_tk_tx_din(15 downto 0)
+        );  
 
-    g_gbt_tx_link : if g_USE_GBT generate
-        i_gbt_tx_link : entity work.link_gbt_tx
-            port map(
-                ttc_clk_40_i          => ttc_clk_i.clk_40,
-                reset_i               => reset_i,
-                vfat2_t1_i            => vfat2_t1,
-                req_en_o              => g2o_req_en,
-                req_valid_i           => g2o_req_valid,
-                req_data_i            => g2o_req_data,
-                gbt_tx_data_o         => gbt_tx_data_o,
-                gbt_tx_sync_pattern_i => gbt_tx_sync_pattern_i,
-                gbt_rx_sync_done_i    => gbt_rx_sync_done
-            );
-    end generate;
-
+    i_gbt_tx_link : entity work.link_gbt_tx
+        port map(
+            ttc_clk_40_i          => ttc_clk_i.clk_40,
+            reset_i               => reset_i,
+            use_t1                => link_control_i.ttc_use_gbt,
+            use_req               => link_control_i.reg_use_gbt,
+            vfat2_t1_i            => vfat2_t1,
+            req_en_o              => gbt_tx_req_en,
+            req_valid_i           => gbt_tx_req_valid,
+            req_data_i            => gbt_tx_req_data,
+            gbt_tx_data_o         => gbt_tx_data_o,
+            gbt_tx_sync_pattern_i => gbt_tx_sync_pattern_i,
+            gbt_rx_sync_done_i    => gbt_rx_sync_done
+        );
     
     --==========================--
     --==   RX Tracking link   ==--
     --==========================--
     
-    g_3g2_fallback_tk_rx_link : if not g_USE_GBT generate
+    i_link_rx_tracking : entity work.link_rx_tracking
+        port map(
+            gtx_clk_i   => ttc_clk_i.clk_160,   
+            reset_i     => reset_i,           
+            req_en_o    => legacy_rx_req_en,   
+            req_data_o  => legacy_rx_req_data,   
+            evt_en_o    => legacy_evt_en,
+            evt_data_o  => legacy_evt_data,
+            tk_error_o  => legacy_tk_error,
+            evt_rcvd_o  => legacy_tk_evt_rcvd,
+            rx_kchar_i  => sync_tk_rx_dout(17 downto 16),   
+            rx_data_i   => sync_tk_rx_dout(15 downto 0)        
+        );
 
-        i_link_rx_tracking : entity work.link_rx_tracking
-            port map(
-                gtx_clk_i   => ttc_clk_i.clk_160,   
-                reset_i     => reset_i,           
-                req_en_o    => o2g_req_en,   
-                req_data_o  => o2g_req_data,   
-                evt_en_o    => evt_en,
-                evt_data_o  => evt_data,
-                tk_error_o  => link_status_o.tk_error,
-                evt_rcvd_o  => link_status_o.evt_rcvd,
-                rx_kchar_i  => sync_tk_rx_dout(17 downto 16),   
-                rx_data_i   => sync_tk_rx_dout(15 downto 0)        
-            );
-
-    end generate;
-
-    g_gbt_rx_link : if g_USE_GBT generate
-        
-        i_gbt_rx_link : entity work.link_gbt_rx
-            port map(
-                ttc_clk_40_i            => ttc_clk_i.clk_40,
-                ttc_clk_80_i            => ttc_clk_i.clk_80,
-                reset_i                 => reset_i,
-                req_en_o                => o2g_req_en,
-                req_data_o              => o2g_req_data,
-                evt_en_o                => evt_en,
-                evt_data_o              => evt_data,
-                tk_error_o              => link_status_o.tk_error,
-                evt_rcvd_o              => link_status_o.evt_rcvd,
-                gbt_rx_data_i           => gbt_rx_data_i,
-                gbt_rx_ready_i          => gbt_rx_ready_i,
-                gbt_rx_sync_pattern_i   => gbt_rx_sync_pattern_i,
-                gbt_rx_sync_count_req_i => gbt_rx_sync_count_req_i,
-                gbt_rx_sync_done_o      => gbt_rx_sync_done
-            );
-        
-    end generate;    
+    i_gbt_rx_link : entity work.link_gbt_rx
+        port map(
+            ttc_clk_40_i            => ttc_clk_i.clk_40,
+            ttc_clk_80_i            => ttc_clk_i.clk_80,
+            reset_i                 => reset_i,
+            req_en_o                => gbt_rx_req_en,
+            req_data_o              => gbt_rx_req_data,
+            evt_en_o                => gbt_evt_en,
+            evt_data_o              => gbt_evt_data,
+            tk_error_o              => gbt_tk_error,
+            evt_rcvd_o              => gbt_tk_evt_rcvd,
+            gbt_rx_data_i           => gbt_rx_data_i,
+            gbt_rx_ready_i          => gbt_rx_ready_i,
+            gbt_rx_sync_pattern_i   => gbt_rx_sync_pattern_i,
+            gbt_rx_sync_count_req_i => gbt_rx_sync_count_req_i,
+            gbt_rx_sync_done_o      => gbt_rx_sync_done
+        );
 
     --=================================--
     --== Register request forwarding ==--
     --=================================--
     
-    g_3g2_fallback_ipb_req : if not g_USE_GBT generate
-        i_link_request : entity work.link_request
-            port map(
-                ipb_clk_i       => oh_reg_ipb_clk_i,
-                gtx_rx_clk_i    => ttc_clk_i.clk_160,
-                gtx_tx_clk_i    => ttc_clk_i.clk_160,
-                reset_i         => oh_reg_ipb_reset_i,        
-                ipb_mosi_i      => oh_reg_ipb_reg_mosi_i,
-                ipb_miso_o      => oh_reg_ipb_reg_miso_o,        
-                tx_en_i         => g2o_req_en,
-                tx_valid_o      => g2o_req_valid,
-                tx_data_o       => g2o_req_data,        
-                rx_en_i         => o2g_req_en,
-                rx_data_i       => o2g_req_data        
+    i_link_request : entity work.link_request
+        port map(
+            ipb_clk_i       => oh_reg_ipb_clk_i,
+            gtx_rx_clk_i    => req_clk,
+            gtx_tx_clk_i    => req_clk,
+            reset_i         => oh_reg_ipb_reset_i,        
+            ipb_mosi_i      => oh_reg_ipb_reg_mosi_i,
+            ipb_miso_o      => oh_reg_ipb_reg_miso_o,        
+            tx_en_i         => tx_req_en,
+            tx_valid_o      => tx_req_valid,
+            tx_data_o       => tx_req_data,        
+            rx_en_i         => rx_req_en,
+            rx_data_i       => rx_req_data        
             );
-    end generate;
-
-    -- just a different clock here, maybe should make it neater later (just change the clk signals and keep the module instanciation, but oh well.. :)
-    g_gbt_ipb_req : if g_USE_GBT generate
-        i_link_request : entity work.link_request
-            port map(
-                ipb_clk_i       => oh_reg_ipb_clk_i,
-                gtx_rx_clk_i    => ttc_clk_i.clk_40,
-                gtx_tx_clk_i    => ttc_clk_i.clk_40,
-                reset_i         => oh_reg_ipb_reset_i,        
-                ipb_mosi_i      => oh_reg_ipb_reg_mosi_i,
-                ipb_miso_o      => oh_reg_ipb_reg_miso_o,        
-                tx_en_i         => g2o_req_en,
-                tx_valid_o      => g2o_req_valid,
-                tx_data_o       => g2o_req_data,        
-                rx_en_i         => o2g_req_en,
-                rx_data_i       => o2g_req_data        
-            );
-     end generate;
      
     --=========================--
     --==   RX Trigger Link   ==--

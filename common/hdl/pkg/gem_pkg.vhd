@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20160824";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20160831";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 1;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 5;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
 
     --======================--
     --==      General     ==--
@@ -253,6 +253,14 @@ package gem_pkg is
     end record;
     
     type t_oh_link_status_arr is array(integer range <>) of t_oh_link_status;    
+    
+    type t_oh_link_control is record
+        daq_use_gbt         : std_logic; -- use GBT link for DAQ (only used in OHv2b -- if this is 0 then 8b10b link will be used for DAQ)
+        reg_use_gbt         : std_logic; -- use GBT link for register read/write requests (only used in OHv2b -- if this is 0 then 8b10b link will be used for register access)
+        ttc_use_gbt         : std_logic; -- use GBT link for TTC commands (only used in OHv2b -- if this is 0 then 8b10b link will be used for TTC commands)
+    end record;
+
+    type t_oh_link_control_arr is array(integer range <>) of t_oh_link_control;    
         
     --================--
     --== T1 command ==--

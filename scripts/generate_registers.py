@@ -172,6 +172,8 @@ def findRegisters(node, baseName, baseAddress, modules, currentModule, vars, isG
     if (isGenerated == None or isGenerated == False) and node.get('generate') is not None and node.get('generate') == 'true':
         if node.get('generate_idx_var') == 'OH_IDX':
             generateSize = num_of_oh
+        elif node.get('generate_idx_var') == 'GBT_IDX':
+            generateSize = num_of_oh * 3
         else:
             generateSize = parseInt(node.get('generate_size'))
 
@@ -376,7 +378,7 @@ def updateModuleFile(module):
                                 '      );\n'
 
             f.write('\n')
-            f.write('    -- IPbus slave instanciation\n')
+            f.write('    -- IPbus slave instantiation\n')
             f.write(slaveDeclaration)
             f.write('\n')
 

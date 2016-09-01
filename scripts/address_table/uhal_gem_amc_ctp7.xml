@@ -242,10 +242,80 @@
         <node id="RX_SYNC_PATTERN" address="0x00000001" permission="rw" mask="0xffffffff"/>
         <node id="RX_SYNC_COUNT_REQUIRED" address="0x00000002" permission="rw" mask="0x000000ff"/>
       </node>
+      <node id="TESTS" address="0x00000200" >
+        <node id="GBT_LOOPBACK_EN" address="0x00000000" permission="rw" mask="0x00000001"/>
+      </node>
       <node id="LEGACY_SYSTEM" address="0x00010000" >
         <node id="BOARD_ID" address="0x00000000" permission="r" mask="0xffffffff"/>
         <node id="SYSTEM_ID" address="0x00000001" permission="r" mask="0xffffffff"/>
         <node id="FIRMWARE_VERSION" address="0x00000002" permission="r" mask="0xffffffff"/>
+      </node>
+    </node>
+    <node id="GEM_TESTS" address="0x00a00000" >
+      <node id="CTRL" address="0x00000000" >
+        <node id="RESET" address="0x00000000" permission="w" mask="0x00000001"/>
+      </node>
+      <node id="GBT_LOOPBACK" address="0x00000100" >
+        <node id="LINK_0" address="0x00000000" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_1" address="0x00000010" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_2" address="0x00000020" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_3" address="0x00000030" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_4" address="0x00000040" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_5" address="0x00000050" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_6" address="0x00000060" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_7" address="0x00000070" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_8" address="0x00000080" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_9" address="0x00000090" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_10" address="0x000000a0" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
+        <node id="LINK_11" address="0x000000b0" >
+          <node id="SYNC_DONE" address="0x00000000" permission="r" mask="0x00000001"/>
+          <node id="MEGA_WORD_CNT" address="0x00000001" permission="r" mask="0xffffffff"/>
+          <node id="ERROR_CNT" address="0x00000002" permission="r" mask="0xffffffff"/>
+        </node>
       </node>
     </node>
     <node id="DAQ" address="0x00700000" >
@@ -499,6 +569,11 @@
         <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
         <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
         <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="CTRL" address="0x00000050" >
+          <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
+          <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
+          <node id="TTC_USE_GBT" address="0x00000000" permission="rw" mask="0x00000004"/>
+        </node>
       </node>
       <node id="OH1" address="0x00000200" >
         <node id="TRACK_LINK_ERROR_CNT" address="0x00000000" permission="r" mask="0xffffffff"/>
@@ -519,6 +594,11 @@
         <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
         <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
         <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="CTRL" address="0x00000050" >
+          <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
+          <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
+          <node id="TTC_USE_GBT" address="0x00000000" permission="rw" mask="0x00000004"/>
+        </node>
       </node>
       <node id="OH2" address="0x00000300" >
         <node id="TRACK_LINK_ERROR_CNT" address="0x00000000" permission="r" mask="0xffffffff"/>
@@ -539,6 +619,11 @@
         <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
         <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
         <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="CTRL" address="0x00000050" >
+          <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
+          <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
+          <node id="TTC_USE_GBT" address="0x00000000" permission="rw" mask="0x00000004"/>
+        </node>
       </node>
       <node id="OH3" address="0x00000400" >
         <node id="TRACK_LINK_ERROR_CNT" address="0x00000000" permission="r" mask="0xffffffff"/>
@@ -559,6 +644,11 @@
         <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
         <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
         <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="CTRL" address="0x00000050" >
+          <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
+          <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
+          <node id="TTC_USE_GBT" address="0x00000000" permission="rw" mask="0x00000004"/>
+        </node>
       </node>
     </node>
     <node id="OH" address="0x00400000" >
@@ -940,7 +1030,15 @@
             <node id="REF_CLK" address="0x00000000" permission="rw" mask="0x00000003"/>
           </node>
           <node id="OUTPUT" address="0x00000005" permission="rw" >
-            <node id="SBITS" address="0x00000000" permission="rw" />
+            <node id="SBITS" address="0x00000000" permission="rw" >
+              <node id="OUT0" address="0x00000000" permission="rw" mask="0x0000001f"/>
+              <node id="OUT1" address="0x00000000" permission="rw" mask="0x000003e0"/>
+              <node id="OUT2" address="0x00000000" permission="rw" mask="0x00007c00"/>
+              <node id="OUT3" address="0x00000000" permission="rw" mask="0x000f8000"/>
+              <node id="OUT4" address="0x00000000" permission="rw" mask="0x001f0000"/>
+              <node id="OUT5" address="0x00000000" permission="rw" mask="0x03e00000"/>
+            </node>
+            <node id="HDMI_SBIT_MODE" address="0x00000003" permission="rw" mask="0x00000003"/>
           </node>
           <node id="THROTTLE" address="0x00000006" permission="rw" mask="0xffffffff"/>
           <node id="ZS" address="0x00000007" permission="rw" mask="0x00000001"/>
@@ -5316,7 +5414,15 @@
             <node id="REF_CLK" address="0x00000000" permission="rw" mask="0x00000003"/>
           </node>
           <node id="OUTPUT" address="0x00000005" permission="rw" >
-            <node id="SBITS" address="0x00000000" permission="rw" />
+            <node id="SBITS" address="0x00000000" permission="rw" >
+              <node id="OUT0" address="0x00000000" permission="rw" mask="0x0000001f"/>
+              <node id="OUT1" address="0x00000000" permission="rw" mask="0x000003e0"/>
+              <node id="OUT2" address="0x00000000" permission="rw" mask="0x00007c00"/>
+              <node id="OUT3" address="0x00000000" permission="rw" mask="0x000f8000"/>
+              <node id="OUT4" address="0x00000000" permission="rw" mask="0x001f0000"/>
+              <node id="OUT5" address="0x00000000" permission="rw" mask="0x03e00000"/>
+            </node>
+            <node id="HDMI_SBIT_MODE" address="0x00000003" permission="rw" mask="0x00000003"/>
           </node>
           <node id="THROTTLE" address="0x00000006" permission="rw" mask="0xffffffff"/>
           <node id="ZS" address="0x00000007" permission="rw" mask="0x00000001"/>
@@ -9692,7 +9798,15 @@
             <node id="REF_CLK" address="0x00000000" permission="rw" mask="0x00000003"/>
           </node>
           <node id="OUTPUT" address="0x00000005" permission="rw" >
-            <node id="SBITS" address="0x00000000" permission="rw" />
+            <node id="SBITS" address="0x00000000" permission="rw" >
+              <node id="OUT0" address="0x00000000" permission="rw" mask="0x0000001f"/>
+              <node id="OUT1" address="0x00000000" permission="rw" mask="0x000003e0"/>
+              <node id="OUT2" address="0x00000000" permission="rw" mask="0x00007c00"/>
+              <node id="OUT3" address="0x00000000" permission="rw" mask="0x000f8000"/>
+              <node id="OUT4" address="0x00000000" permission="rw" mask="0x001f0000"/>
+              <node id="OUT5" address="0x00000000" permission="rw" mask="0x03e00000"/>
+            </node>
+            <node id="HDMI_SBIT_MODE" address="0x00000003" permission="rw" mask="0x00000003"/>
           </node>
           <node id="THROTTLE" address="0x00000006" permission="rw" mask="0xffffffff"/>
           <node id="ZS" address="0x00000007" permission="rw" mask="0x00000001"/>
@@ -14068,7 +14182,15 @@
             <node id="REF_CLK" address="0x00000000" permission="rw" mask="0x00000003"/>
           </node>
           <node id="OUTPUT" address="0x00000005" permission="rw" >
-            <node id="SBITS" address="0x00000000" permission="rw" />
+            <node id="SBITS" address="0x00000000" permission="rw" >
+              <node id="OUT0" address="0x00000000" permission="rw" mask="0x0000001f"/>
+              <node id="OUT1" address="0x00000000" permission="rw" mask="0x000003e0"/>
+              <node id="OUT2" address="0x00000000" permission="rw" mask="0x00007c00"/>
+              <node id="OUT3" address="0x00000000" permission="rw" mask="0x000f8000"/>
+              <node id="OUT4" address="0x00000000" permission="rw" mask="0x001f0000"/>
+              <node id="OUT5" address="0x00000000" permission="rw" mask="0x03e00000"/>
+            </node>
+            <node id="HDMI_SBIT_MODE" address="0x00000003" permission="rw" mask="0x00000003"/>
           </node>
           <node id="THROTTLE" address="0x00000006" permission="rw" mask="0xffffffff"/>
           <node id="ZS" address="0x00000007" permission="rw" mask="0x00000001"/>

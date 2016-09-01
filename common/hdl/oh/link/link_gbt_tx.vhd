@@ -21,6 +21,9 @@ port(
 
     ttc_clk_40_i            : in std_logic;    
     reset_i                 : in std_logic;    
+
+    use_t1                  : in std_logic;
+    use_req                 : in std_logic;
     
     vfat2_t1_i              : in t_t1;
     
@@ -107,7 +110,11 @@ begin
             else
                 
                 -- whatever the state, the top 4 bits of elink 1 are reserved for TTC
-                gbt_tx_data_o(47 downto 44) <= vfat2_t1_i.lv1a & vfat2_t1_i.bc0 & vfat2_t1_i.resync & vfat2_t1_i.calpulse;
+                if (use_t1 = '1') then
+                    gbt_tx_data_o(47 downto 44) <= vfat2_t1_i.lv1a & vfat2_t1_i.bc0 & vfat2_t1_i.resync & vfat2_t1_i.calpulse;
+                else
+                    gbt_tx_data_o(47 downto 44) <= x"0";
+                end if;
                 
                 case state is
                     when SYNC =>
@@ -116,7 +123,11 @@ begin
                     when SYNC_DONE =>
                         gbt_tx_data_o(47 downto 32) <= not gbt_tx_sync_pattern_i;
                     when FRAME_BEGIN => 
-                        gbt_tx_data_o(43 downto 40) <= req_valid & req_data(64) & "00";
+                        if (use_req = '1') then
+                            gbt_tx_data_o(43 downto 40) <= req_valid & req_data(64) & "00";
+                        else
+                            gbt_tx_data_o(43 downto 40) <= x"0";
+                        end if;
                         gbt_tx_data_o(39 downto 32) <= req_data(63 downto 56);
                     when ADDR_1 =>  
                         gbt_tx_data_o(43 downto 32) <= req_data(55 downto 44);

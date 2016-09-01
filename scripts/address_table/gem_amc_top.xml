@@ -294,7 +294,13 @@
                   fw_signal="gbt_rx_sync_count_req" fw_default="0x3"/>
         </node>
 
-
+        <node id="TESTS" address="0x200">
+            <node id="GBT_LOOPBACK_EN" address="0x0" mask="0x00000001" permission="rw"
+                  description="GBT Loopback test enable -- if this is true then all GBT links are redirected to the loopback test module and the test module is enabled (communication with optohybrid is not possible during the test)"
+                  fw_signal="gbt_loopback_test_en" fw_default="0b0"
+                  sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
+        </node>
+        
         <node id="LEGACY_SYSTEM" address="0x10000"
               description="Legacy system registers (taken from GLIB system core). These should be removed once the software is made compatible with the new system registers.">
               
@@ -347,6 +353,44 @@
         </node>
     </node>
 
+    <!--GEM Tests module -->
+    <node id="GEM_TESTS"  address="0x00A00000"
+          description="This module is controlling various hardware tests e.g. fiber loopback"
+          fw_is_module="true"
+          fw_module_file="../common/hdl/tests/gem_tests.vhd"
+          fw_user_clock_signal="ttc_clk_i.clk_40"
+          fw_bus_clock_signal="ipb_clk_i"
+          fw_bus_reset_signal="ipb_reset_i"
+          fw_master_bus_signal="ipb_mosi_i"
+          fw_slave_bus_signal="ipb_miso_o"
+          fw_reg_addr_msb="16"
+          fw_reg_addr_lsb="0">
+
+        <node id="CTRL" address="0x0">
+            <node id="RESET" address="0x0" mask="0x00000001" permission="w"
+                  description="GEM system counters reset"
+                  fw_signal="reset_local" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
+        </node>
+        
+        <node id="GBT_LOOPBACK" address="0x100" description="GBT loopback test submodule">
+            <node id="LINK_${GBT_IDX}"  address="0x0"
+                  description="Link specific registers for GBT ${GBT_IDX}"
+                  generate="true" generate_size="12" generate_address_step="0x10" generate_idx_var="GBT_IDX">
+                
+                <node id="SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
+                      description="Indicates whether or not the sync has been acquired between TX and RX"
+                      fw_signal="gbt_loop_sync_done_arr(${GBT_IDX})"/>
+                <node id="MEGA_WORD_CNT" mask="0xffffffff" permission="r" address="0x1"
+                      description="Number of generated data words received by the loopback RX"
+                      fw_signal="gbt_loop_mega_word_cnt_arr(${GBT_IDX})"/>
+                <node id="ERROR_CNT" mask="0xffffffff" permission="r" address="0x2"
+                      description="Number of errors found in the received loopback data"
+                      fw_signal="gbt_loop_error_cnt_arr(${GBT_IDX})"/>
+            </node>
+        </node>
+        
+    </node>
+    
     <!--DAQ module -->
     <node id="DAQ"  address="0x00700000"
           description="DAQ module buffers track data, builds events, analyses the data for consistency and ships off the events with all the needed headers and trailers to AMC13 over DAQLink"
@@ -769,6 +813,18 @@
             <node id="DEBUG_CLK_CNT" address="0x11" mask="0xffffffff" permission="r"
                   description="Clock debug counter -- the lowest 16 bits are counting track/control RX clocks and the top 16 bits are counting the 160MHz TTC clocks"
                   fw_signal="debug_clk_cnt_arr(${OH_IDX})"/>
+
+            <node id="CTRL" address="0x50" description="OH Link ${OH_IDX} control">
+                <node id="DAQ_USE_GBT" address="0x0" mask="0x00000001" permission="rw"
+                      description="For OHv2b: if this is 1 then GBT link will be used for DAQ, otherwise 8b10b link will be used"
+                      fw_signal="daq_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
+                <node id="REG_USE_GBT" address="0x0" mask="0x00000002" permission="rw"
+                      description="For OHv2b: if this is 1 then GBT link will be used for OH register access, otherwise 8b10b link will be used"
+                      fw_signal="reg_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
+                <node id="TTC_USE_GBT" address="0x0" mask="0x00000004" permission="rw"
+                      description="For OHv2b: if this is 1 then GBT link will be used to transmit TTC commands, otherwise 8b10b link will be used"
+                      fw_signal="ttc_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
+            </node>
 
         </node>
     </node>

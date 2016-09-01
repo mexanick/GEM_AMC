@@ -21,10 +21,10 @@ package gem_board_config_package is
 
     constant CFG_BOARD_TYPE     : std_logic_vector(3 downto 0) := x"1"; 
 
-    constant CFG_USE_GBT        : boolean := false;  -- if this is true, GBT links will be used for communicationa with OH, if false 3.2Gbs 8b10b links will be used instead (remember to instanciate the correct links!)
-    constant CFG_USE_3x_GBTs    : boolean := false;  -- if this is true, each OH will use 3 GBT links - this will be default in the future with OH v3, but for now it's a good test
-    constant CFG_USE_TRIG_LINKS : boolean := true; -- this should be TRUE by default, but could be set to false for tests or quicker compilation if not needed
-    constant CFG_NUM_OF_OHs     : integer := 4;    -- total number of OHs to instanciate (remember to adapt the CFG_OH_LINK_CONFIG_ARR accordingly)
+    constant CFG_USE_GBT        : boolean := true;  -- if this is true, GBT links will be used for communicationa with OH, if false 3.2Gbs 8b10b links will be used instead (remember to instanciate the correct links!)
+    constant CFG_USE_3x_GBTs    : boolean := true;  -- if this is true, each OH will use 3 GBT links - this will be default in the future with OH v3, but for now it's a good test
+    constant CFG_USE_TRIG_LINKS : boolean := false; -- this should be TRUE by default, but could be set to false for tests or quicker compilation if not needed
+    constant CFG_NUM_OF_OHs     : integer := 12;    -- total number of OHs to instanciate (remember to adapt the CFG_OH_LINK_CONFIG_ARR accordingly)
 
 
     --========================--
@@ -44,20 +44,20 @@ package gem_board_config_package is
     type t_oh_link_config_arr is array (0 to CFG_NUM_OF_OHs - 1) of t_oh_link_config;
 	
 	constant CFG_OH_LINK_CONFIG_ARR : t_oh_link_config_arr := (
-        (0, 12, 13, 14, 1, 2), 
-        (3, 15, 16, 17, 4, 5), 
-        (6, 18, 19, 20, 7, 8), 
-        (9, 21, 22, 23, 10, 11)
+        (0, 0, 12, 13, 0, 0), 
+        (0, 1, 14, 15, 0, 0), 
+        (0, 2, 16, 17, 0, 0), 
+        (0, 3, 18, 19, 0, 0),
 
---        (12, 12, 13, 14, 13, 14), 
---        (15, 15, 16, 17, 16, 17), 
---        (18, 18, 19, 20, 19, 20), 
---        (21, 21, 22, 23, 22, 23), 
+        (0, 4, 20, 21, 0, 0), 
+        (0, 5, 22, 23, 0, 0), 
+        (0, 6, 24, 25, 0, 0), 
+        (0, 7, 26, 27, 0, 0), 
 
---        (24, 24, 25, 26, 25, 26), 
---        (27, 27, 28, 29, 28, 29), 
---        (30, 30, 31, 32, 31, 32), 
---        (33, 33, 34, 35, 34, 35) 
+        (0, 8, 28, 29, 0, 0), 
+        (0, 9, 30, 31, 0, 0), 
+        (0, 10, 32, 33, 0, 0), 
+        (0, 11, 34, 35, 0, 0) 
 	);
 
     -- this record is used in CXP fiber to GTH map (holding tx and rx GTH index)

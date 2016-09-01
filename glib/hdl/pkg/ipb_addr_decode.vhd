@@ -14,9 +14,10 @@ package ipb_addr_decode is
         ttc              : integer;
         trigger          : integer;
         system           : integer;
+        test             : integer;
     end record;
 
-    constant C_NUM_IPB_SLAVES : integer := 9;
+    constant C_NUM_IPB_SLAVES : integer := 10;
 
     -- IPbus slave index definition
     constant C_IPB_SLV : t_ipb_slv := (oh_reg => (0, 2),
@@ -25,7 +26,8 @@ package ipb_addr_decode is
         oh_links => 5,
         daq => 6,
         trigger => 7,
-        system => 8);
+        system => 8,
+        test => 9);
 
     function ipb_addr_sel(signal addr : in std_logic_vector(31 downto 0)) return integer;
     
@@ -64,6 +66,7 @@ package body ipb_addr_decode is
     elsif std_match(addr, "--------011100000000000---------") then sel := C_IPB_SLV.daq;
     elsif std_match(addr, "--------10000000000-------------") then sel := C_IPB_SLV.trigger;
     elsif std_match(addr, "--------1001000-----------------") then sel := C_IPB_SLV.system;
+    elsif std_match(addr, "--------1010000-----------------") then sel := C_IPB_SLV.test;
     else sel := 99;
     end if;
 
