@@ -165,7 +165,7 @@ package registers is
     -- reporting data to DAQ)
     --============================================================================
 
-    constant REG_TRIGGER_NUM_REGS : integer := 400;
+    constant REG_TRIGGER_NUM_REGS : integer := 412;
     constant REG_TRIGGER_ADDRESS_MSB : integer := 12;
     constant REG_TRIGGER_ADDRESS_LSB : integer := 0;
     constant REG_TRIGGER_CTRL_CNT_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"000";
@@ -283,27 +283,35 @@ package registers is
     constant REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
+    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
+    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
+    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a3";
     constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH0_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
+    constant REG_TRIGGER_OH0_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a3";
     constant REG_TRIGGER_OH0_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH0_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a3";
+    constant REG_TRIGGER_OH0_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a4";
     constant REG_TRIGGER_OH0_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH0_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH0_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a3";
+    constant REG_TRIGGER_OH0_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a4";
     constant REG_TRIGGER_OH0_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH0_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a4";
+    constant REG_TRIGGER_OH0_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a5";
     constant REG_TRIGGER_OH0_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH0_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a4";
+    constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a5";
     constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -435,27 +443,35 @@ package registers is
     constant REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
+    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
+    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
+    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a3";
     constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH1_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
+    constant REG_TRIGGER_OH1_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a3";
     constant REG_TRIGGER_OH1_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH1_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a3";
+    constant REG_TRIGGER_OH1_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a4";
     constant REG_TRIGGER_OH1_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH1_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH1_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a3";
+    constant REG_TRIGGER_OH1_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a4";
     constant REG_TRIGGER_OH1_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH1_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a4";
+    constant REG_TRIGGER_OH1_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a5";
     constant REG_TRIGGER_OH1_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH1_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a4";
+    constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a5";
     constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -587,27 +603,35 @@ package registers is
     constant REG_TRIGGER_OH2_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH2_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH2_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a2";
+    constant REG_TRIGGER_OH2_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a2";
+    constant REG_TRIGGER_OH2_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH2_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH2_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a2";
+    constant REG_TRIGGER_OH2_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH2_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH2_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a3";
     constant REG_TRIGGER_OH2_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH2_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH2_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a2";
+    constant REG_TRIGGER_OH2_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a3";
     constant REG_TRIGGER_OH2_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH2_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH2_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a3";
+    constant REG_TRIGGER_OH2_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a4";
     constant REG_TRIGGER_OH2_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH2_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH2_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a3";
+    constant REG_TRIGGER_OH2_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a4";
     constant REG_TRIGGER_OH2_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH2_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH2_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a4";
+    constant REG_TRIGGER_OH2_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a5";
     constant REG_TRIGGER_OH2_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH2_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH2_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a4";
+    constant REG_TRIGGER_OH2_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"3a5";
     constant REG_TRIGGER_OH2_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH2_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -739,27 +763,35 @@ package registers is
     constant REG_TRIGGER_OH3_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH3_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH3_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a2";
+    constant REG_TRIGGER_OH3_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a2";
+    constant REG_TRIGGER_OH3_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH3_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH3_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a2";
+    constant REG_TRIGGER_OH3_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH3_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH3_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a3";
     constant REG_TRIGGER_OH3_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH3_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH3_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a2";
+    constant REG_TRIGGER_OH3_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a3";
     constant REG_TRIGGER_OH3_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH3_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH3_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a3";
+    constant REG_TRIGGER_OH3_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a4";
     constant REG_TRIGGER_OH3_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH3_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH3_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a3";
+    constant REG_TRIGGER_OH3_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a4";
     constant REG_TRIGGER_OH3_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH3_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH3_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a4";
+    constant REG_TRIGGER_OH3_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a5";
     constant REG_TRIGGER_OH3_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH3_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH3_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a4";
+    constant REG_TRIGGER_OH3_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"4a5";
     constant REG_TRIGGER_OH3_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH3_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -891,27 +923,35 @@ package registers is
     constant REG_TRIGGER_OH4_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH4_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH4_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a2";
+    constant REG_TRIGGER_OH4_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a2";
+    constant REG_TRIGGER_OH4_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH4_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH4_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a2";
+    constant REG_TRIGGER_OH4_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH4_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH4_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a3";
     constant REG_TRIGGER_OH4_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH4_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH4_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a2";
+    constant REG_TRIGGER_OH4_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a3";
     constant REG_TRIGGER_OH4_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH4_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH4_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a3";
+    constant REG_TRIGGER_OH4_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a4";
     constant REG_TRIGGER_OH4_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH4_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH4_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a3";
+    constant REG_TRIGGER_OH4_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a4";
     constant REG_TRIGGER_OH4_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH4_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH4_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a4";
+    constant REG_TRIGGER_OH4_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a5";
     constant REG_TRIGGER_OH4_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH4_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH4_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a4";
+    constant REG_TRIGGER_OH4_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"5a5";
     constant REG_TRIGGER_OH4_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH4_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1043,27 +1083,35 @@ package registers is
     constant REG_TRIGGER_OH5_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH5_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH5_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a2";
+    constant REG_TRIGGER_OH5_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a2";
+    constant REG_TRIGGER_OH5_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH5_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH5_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a2";
+    constant REG_TRIGGER_OH5_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH5_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH5_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a3";
     constant REG_TRIGGER_OH5_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH5_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH5_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a2";
+    constant REG_TRIGGER_OH5_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a3";
     constant REG_TRIGGER_OH5_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH5_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH5_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a3";
+    constant REG_TRIGGER_OH5_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a4";
     constant REG_TRIGGER_OH5_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH5_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH5_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a3";
+    constant REG_TRIGGER_OH5_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a4";
     constant REG_TRIGGER_OH5_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH5_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH5_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a4";
+    constant REG_TRIGGER_OH5_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a5";
     constant REG_TRIGGER_OH5_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH5_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH5_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a4";
+    constant REG_TRIGGER_OH5_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"6a5";
     constant REG_TRIGGER_OH5_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH5_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1195,27 +1243,35 @@ package registers is
     constant REG_TRIGGER_OH6_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH6_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH6_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a2";
+    constant REG_TRIGGER_OH6_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a2";
+    constant REG_TRIGGER_OH6_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH6_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH6_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a2";
+    constant REG_TRIGGER_OH6_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH6_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH6_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a3";
     constant REG_TRIGGER_OH6_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH6_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH6_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a2";
+    constant REG_TRIGGER_OH6_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a3";
     constant REG_TRIGGER_OH6_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH6_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH6_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a3";
+    constant REG_TRIGGER_OH6_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a4";
     constant REG_TRIGGER_OH6_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH6_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH6_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a3";
+    constant REG_TRIGGER_OH6_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a4";
     constant REG_TRIGGER_OH6_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH6_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH6_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a4";
+    constant REG_TRIGGER_OH6_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a5";
     constant REG_TRIGGER_OH6_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH6_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH6_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a4";
+    constant REG_TRIGGER_OH6_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"7a5";
     constant REG_TRIGGER_OH6_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH6_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1347,27 +1403,35 @@ package registers is
     constant REG_TRIGGER_OH7_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH7_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH7_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a2";
+    constant REG_TRIGGER_OH7_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a2";
+    constant REG_TRIGGER_OH7_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH7_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH7_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a2";
+    constant REG_TRIGGER_OH7_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH7_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH7_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a3";
     constant REG_TRIGGER_OH7_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH7_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH7_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a2";
+    constant REG_TRIGGER_OH7_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a3";
     constant REG_TRIGGER_OH7_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH7_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH7_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a3";
+    constant REG_TRIGGER_OH7_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a4";
     constant REG_TRIGGER_OH7_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH7_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH7_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a3";
+    constant REG_TRIGGER_OH7_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a4";
     constant REG_TRIGGER_OH7_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH7_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH7_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a4";
+    constant REG_TRIGGER_OH7_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a5";
     constant REG_TRIGGER_OH7_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH7_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH7_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a4";
+    constant REG_TRIGGER_OH7_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"8a5";
     constant REG_TRIGGER_OH7_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH7_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1499,27 +1563,35 @@ package registers is
     constant REG_TRIGGER_OH8_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH8_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH8_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a2";
+    constant REG_TRIGGER_OH8_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a2";
+    constant REG_TRIGGER_OH8_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH8_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH8_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a2";
+    constant REG_TRIGGER_OH8_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH8_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH8_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a3";
     constant REG_TRIGGER_OH8_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH8_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH8_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a2";
+    constant REG_TRIGGER_OH8_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a3";
     constant REG_TRIGGER_OH8_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH8_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH8_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a3";
+    constant REG_TRIGGER_OH8_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a4";
     constant REG_TRIGGER_OH8_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH8_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH8_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a3";
+    constant REG_TRIGGER_OH8_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a4";
     constant REG_TRIGGER_OH8_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH8_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH8_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a4";
+    constant REG_TRIGGER_OH8_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a5";
     constant REG_TRIGGER_OH8_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH8_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH8_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a4";
+    constant REG_TRIGGER_OH8_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"9a5";
     constant REG_TRIGGER_OH8_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH8_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1651,27 +1723,35 @@ package registers is
     constant REG_TRIGGER_OH9_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH9_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH9_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa2";
+    constant REG_TRIGGER_OH9_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa2";
+    constant REG_TRIGGER_OH9_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH9_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH9_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa2";
+    constant REG_TRIGGER_OH9_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH9_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH9_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa3";
     constant REG_TRIGGER_OH9_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH9_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH9_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa2";
+    constant REG_TRIGGER_OH9_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa3";
     constant REG_TRIGGER_OH9_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH9_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH9_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa3";
+    constant REG_TRIGGER_OH9_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa4";
     constant REG_TRIGGER_OH9_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH9_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH9_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa3";
+    constant REG_TRIGGER_OH9_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa4";
     constant REG_TRIGGER_OH9_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH9_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH9_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa4";
+    constant REG_TRIGGER_OH9_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa5";
     constant REG_TRIGGER_OH9_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH9_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH9_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa4";
+    constant REG_TRIGGER_OH9_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"aa5";
     constant REG_TRIGGER_OH9_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH9_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1803,27 +1883,35 @@ package registers is
     constant REG_TRIGGER_OH10_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH10_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH10_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba2";
+    constant REG_TRIGGER_OH10_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba2";
+    constant REG_TRIGGER_OH10_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH10_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH10_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba2";
+    constant REG_TRIGGER_OH10_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH10_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH10_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba3";
     constant REG_TRIGGER_OH10_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH10_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH10_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba2";
+    constant REG_TRIGGER_OH10_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba3";
     constant REG_TRIGGER_OH10_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH10_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH10_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba3";
+    constant REG_TRIGGER_OH10_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba4";
     constant REG_TRIGGER_OH10_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH10_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH10_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba3";
+    constant REG_TRIGGER_OH10_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba4";
     constant REG_TRIGGER_OH10_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH10_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH10_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba4";
+    constant REG_TRIGGER_OH10_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba5";
     constant REG_TRIGGER_OH10_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH10_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH10_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba4";
+    constant REG_TRIGGER_OH10_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ba5";
     constant REG_TRIGGER_OH10_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH10_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 
@@ -1955,27 +2043,35 @@ package registers is
     constant REG_TRIGGER_OH11_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH11_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH11_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca2";
+    constant REG_TRIGGER_OH11_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca2";
+    constant REG_TRIGGER_OH11_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH11_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_OH11_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca2";
+    constant REG_TRIGGER_OH11_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH11_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
+
+    constant REG_TRIGGER_OH11_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca3";
     constant REG_TRIGGER_OH11_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH11_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH11_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca2";
+    constant REG_TRIGGER_OH11_LINK1_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca3";
     constant REG_TRIGGER_OH11_LINK1_OVERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH11_LINK1_OVERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH11_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca3";
+    constant REG_TRIGGER_OH11_LINK0_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca4";
     constant REG_TRIGGER_OH11_LINK0_UNDERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH11_LINK0_UNDERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH11_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca3";
+    constant REG_TRIGGER_OH11_LINK1_UNDERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca4";
     constant REG_TRIGGER_OH11_LINK1_UNDERFLOW_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH11_LINK1_UNDERFLOW_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH11_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca4";
+    constant REG_TRIGGER_OH11_LINK0_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca5";
     constant REG_TRIGGER_OH11_LINK0_SYNC_WORD_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH11_LINK0_SYNC_WORD_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH11_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca4";
+    constant REG_TRIGGER_OH11_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"ca5";
     constant REG_TRIGGER_OH11_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH11_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
 

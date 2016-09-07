@@ -82,12 +82,14 @@
         <node id="LINK1_NOT_VALID_CNT" address="0x000000a0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0x0000ffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0xffff0000"/>
         <node id="DEBUG_LAST_CLUSTER_0" address="0x000000f0" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_1" address="0x000000f1" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_2" address="0x000000f2" permission="r" mask="0x0000ffff"/>
@@ -122,12 +124,14 @@
         <node id="LINK1_NOT_VALID_CNT" address="0x000000a0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0x0000ffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0xffff0000"/>
         <node id="DEBUG_LAST_CLUSTER_0" address="0x000000f0" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_1" address="0x000000f1" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_2" address="0x000000f2" permission="r" mask="0x0000ffff"/>
@@ -162,12 +166,14 @@
         <node id="LINK1_NOT_VALID_CNT" address="0x000000a0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0x0000ffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0xffff0000"/>
         <node id="DEBUG_LAST_CLUSTER_0" address="0x000000f0" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_1" address="0x000000f1" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_2" address="0x000000f2" permission="r" mask="0x0000ffff"/>
@@ -202,12 +208,14 @@
         <node id="LINK1_NOT_VALID_CNT" address="0x000000a0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0x0000ffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0x000000a1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_OVERFLOW_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
-        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_INVALID_SIZE_CNT" address="0x000000a2" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_OVERFLOW_CNT" address="0x000000a3" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_UNDERFLOW_CNT" address="0x000000a4" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0x0000ffff"/>
+        <node id="LINK1_SYNC_WORD_CNT" address="0x000000a5" permission="r" mask="0xffff0000"/>
         <node id="DEBUG_LAST_CLUSTER_0" address="0x000000f0" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_1" address="0x000000f1" permission="r" mask="0x0000ffff"/>
         <node id="DEBUG_LAST_CLUSTER_2" address="0x000000f2" permission="r" mask="0x0000ffff"/>

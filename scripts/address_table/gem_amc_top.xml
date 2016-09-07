@@ -191,26 +191,34 @@
                   description="Count of missed comma character at the expected time for link 1 (this indicates an out-of-sync condition)"
                   fw_signal="missed_comma_cnt(${OH_IDX})(31 downto 16)"
                   sw_monitor_error_min_threshold="1"/>
-            <node id="LINK0_OVERFLOW_CNT" address="0xa2" mask="0x0000ffff" permission="r"
+            <node id="LINK0_INVALID_SIZE_CNT" address="0xa2" mask="0x0000ffff" permission="r"
+                  description="Count of invalid cluster size on link 0 (for VFAT2 case the cluster size must always be equal to 7)"
+                  fw_signal="invalid_size_cnt(${OH_IDX})(15 downto 0)"
+                  sw_monitor_error_min_threshold="1"/>
+            <node id="LINK1_INVALID_SIZE_CNT" address="0xa2" mask="0xffff0000" permission="r"
+                  description="Count of invalid cluster size on link 1 (for VFAT2 case the cluster size must always be equal to 7)"
+                  fw_signal="invalid_size_cnt(${OH_IDX})(31 downto 16)"
+                  sw_monitor_error_min_threshold="1"/>
+            <node id="LINK0_OVERFLOW_CNT" address="0xa3" mask="0x0000ffff" permission="r"
                   description="Count of overflow occurances in the sync FIFO for link 0"
                   fw_signal="link_overflow_cnt(${OH_IDX})(15 downto 0)"
                   sw_monitor_error_min_threshold="1"/>
-            <node id="LINK1_OVERFLOW_CNT" address="0xa2" mask="0xffff0000" permission="r"
+            <node id="LINK1_OVERFLOW_CNT" address="0xa3" mask="0xffff0000" permission="r"
                   description="Count of overflow occurances in the sync FIFO for link 1"
                   fw_signal="link_overflow_cnt(${OH_IDX})(31 downto 16)"
                   sw_monitor_error_min_threshold="1"/>
-            <node id="LINK0_UNDERFLOW_CNT" address="0xa3" mask="0x0000ffff" permission="r"
+            <node id="LINK0_UNDERFLOW_CNT" address="0xa4" mask="0x0000ffff" permission="r"
                   description="Count of underflow occurances in the sync FIFO for link 0"
                   fw_signal="link_underflow_cnt(${OH_IDX})(15 downto 0)"
                   sw_monitor_error_min_threshold="1"/>
-            <node id="LINK1_UNDERFLOW_CNT" address="0xa3" mask="0xffff0000" permission="r"
+            <node id="LINK1_UNDERFLOW_CNT" address="0xa4" mask="0xffff0000" permission="r"
                   description="Count of underflow occurances in the sync FIFO for link 1"
                   fw_signal="link_underflow_cnt(${OH_IDX})(31 downto 16)"
                   sw_monitor_error_min_threshold="1"/>
-            <node id="LINK0_SYNC_WORD_CNT" address="0xa4" mask="0x0000ffff" permission="r"
+            <node id="LINK0_SYNC_WORD_CNT" address="0xa5" mask="0x0000ffff" permission="r"
                   description="Count of sync words seen on link 0"
                   fw_signal="sync_word_cnt(${OH_IDX})(15 downto 0)"/>
-            <node id="LINK1_SYNC_WORD_CNT" address="0xa4" mask="0xffff0000" permission="r"
+            <node id="LINK1_SYNC_WORD_CNT" address="0xa5" mask="0xffff0000" permission="r"
                   description="Count of sync words seen on link 1"
                   fw_signal="sync_word_cnt(${OH_IDX})(31 downto 16)"/>
             <node id="DEBUG_LAST_CLUSTER_${CLUSTER_IDX}" address="0xf0" mask="0x0000ffff" permission="r"
