@@ -69,8 +69,8 @@ architecture gem_system_regs_arch of gem_system_regs is
     --== LEGACY Firmware date and version (taken from GLIB) ==--
     -- TODO: remove legacy firmware date and version once the software is ready 
     constant c_legacy_sys_ver_year :integer range 0 to 99 :=16;
-    constant c_legacy_sys_ver_month:integer range 0 to 12 :=8;
-    constant c_legacy_sys_ver_day  :integer range 0 to 31 :=31;
+    constant c_legacy_sys_ver_month:integer range 0 to 12 :=9;
+    constant c_legacy_sys_ver_day  :integer range 0 to 31 :=7;
     constant c_legacy_board_id     : std_logic_vector(31 downto 0) := x"474c4942"; -- GLIB
     constant c_legacy_sys_id       : std_logic_vector(31 downto 0) := x"32307631"; -- '2_0_v1'
     

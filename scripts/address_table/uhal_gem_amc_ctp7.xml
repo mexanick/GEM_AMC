@@ -557,18 +557,24 @@
         <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x00000003" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x00000004" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x00000005" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_DISPERR_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_DISPERR_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
-        <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
-        <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_OVF_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_UNF_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x00000010" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_DISPERR_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x00000012" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_DISPERR_CNT" address="0x00000013" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x00000014" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_DISPERR_CNT" address="0x00000015" permission="r" mask="0xffffffff"/>
+        <node id="GBT_LINK_SYNC_DONE" address="0x00000020" permission="r" mask="0x00000001"/>
+        <node id="DEBUG_CLK_CNT" address="0x00000021" permission="r" mask="0xffffffff"/>
         <node id="CTRL" address="0x00000050" >
           <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
           <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
@@ -582,18 +588,24 @@
         <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x00000003" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x00000004" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x00000005" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_DISPERR_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_DISPERR_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
-        <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
-        <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_OVF_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_UNF_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x00000010" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_DISPERR_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x00000012" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_DISPERR_CNT" address="0x00000013" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x00000014" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_DISPERR_CNT" address="0x00000015" permission="r" mask="0xffffffff"/>
+        <node id="GBT_LINK_SYNC_DONE" address="0x00000020" permission="r" mask="0x00000001"/>
+        <node id="DEBUG_CLK_CNT" address="0x00000021" permission="r" mask="0xffffffff"/>
         <node id="CTRL" address="0x00000050" >
           <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
           <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
@@ -607,18 +619,24 @@
         <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x00000003" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x00000004" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x00000005" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_DISPERR_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_DISPERR_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
-        <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
-        <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_OVF_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_UNF_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x00000010" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_DISPERR_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x00000012" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_DISPERR_CNT" address="0x00000013" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x00000014" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_DISPERR_CNT" address="0x00000015" permission="r" mask="0xffffffff"/>
+        <node id="GBT_LINK_SYNC_DONE" address="0x00000020" permission="r" mask="0x00000001"/>
+        <node id="DEBUG_CLK_CNT" address="0x00000021" permission="r" mask="0xffffffff"/>
         <node id="CTRL" address="0x00000050" >
           <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
           <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>
@@ -632,18 +650,24 @@
         <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x00000003" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x00000004" permission="r" mask="0xffffffff"/>
         <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x00000005" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
-        <node id="TRACK_LINK_DISPERR_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
-        <node id="TRIG0_LINK_DISPERR_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
-        <node id="TRIG1_LINK_DISPERR_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
-        <node id="GBT_LINK_SYNC_DONE" address="0x00000010" permission="r" mask="0x00000001"/>
-        <node id="DEBUG_CLK_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_OVF_CNT" address="0x00000006" permission="r" mask="0xffffffff"/>
+        <node id="GBT0_LINK_RX_SYNC_UNF_CNT" address="0x00000007" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_OVF_CNT" address="0x00000008" permission="r" mask="0xffffffff"/>
+        <node id="GBT1_LINK_RX_SYNC_UNF_CNT" address="0x00000009" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_OVF_CNT" address="0x0000000a" permission="r" mask="0xffffffff"/>
+        <node id="GBT2_LINK_RX_SYNC_UNF_CNT" address="0x0000000b" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x0000000c" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x0000000d" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x0000000e" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x0000000f" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x00000010" permission="r" mask="0xffffffff"/>
+        <node id="TRACK_LINK_DISPERR_CNT" address="0x00000011" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x00000012" permission="r" mask="0xffffffff"/>
+        <node id="TRIG0_LINK_DISPERR_CNT" address="0x00000013" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x00000014" permission="r" mask="0xffffffff"/>
+        <node id="TRIG1_LINK_DISPERR_CNT" address="0x00000015" permission="r" mask="0xffffffff"/>
+        <node id="GBT_LINK_SYNC_DONE" address="0x00000020" permission="r" mask="0x00000001"/>
+        <node id="DEBUG_CLK_CNT" address="0x00000021" permission="r" mask="0xffffffff"/>
         <node id="CTRL" address="0x00000050" >
           <node id="DAQ_USE_GBT" address="0x00000000" permission="rw" mask="0x00000001"/>
           <node id="REG_USE_GBT" address="0x00000000" permission="rw" mask="0x00000002"/>

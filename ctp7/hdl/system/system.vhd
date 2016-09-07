@@ -488,7 +488,9 @@ begin
       gth_tx_serial_arr_o   => s_gth_tx_serial_arr,
       gth_rx_serial_arr_i   => s_gth_rx_serial_arr,
 
-      gth_gbt_common_rxusrclk_o => gth_gbt_common_rxusrclk_o
+      gth_gbt_common_rxusrclk_o => gth_gbt_common_rxusrclk_o,
+
+      ttc_clks_i => ttc_clks_i
 
       );
     

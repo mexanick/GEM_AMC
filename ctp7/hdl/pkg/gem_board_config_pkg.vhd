@@ -44,8 +44,8 @@ package gem_board_config_package is
     type t_oh_link_config_arr is array (0 to CFG_NUM_OF_OHs - 1) of t_oh_link_config;
 	
 	constant CFG_OH_LINK_CONFIG_ARR : t_oh_link_config_arr := (
-        (0, 0, 12, 13, 0, 0), 
-        (0, 1, 14, 15, 0, 0), 
+        (0, 0, 12, 13, 0, 0),
+        (0, 1, 14, 15, 0, 0),
         (0, 2, 16, 17, 0, 0), 
         (0, 3, 18, 19, 0, 0),
 

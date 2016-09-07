@@ -78,7 +78,7 @@ architecture ttc_arch of ttc is
     signal clk_40  : std_logic;
     signal clk_80  : std_logic;
     signal clk_160 : std_logic;
-    signal clk_240 : std_logic;
+    signal clk_120 : std_logic;
     signal clk_320 : std_logic;
 
     -- commands
@@ -172,7 +172,7 @@ begin
             clk_40_bufg_o        => clk_40,
             clk_80_bufg_o        => clk_80,
             clk_160_bufg_o       => clk_160,
-            clk_240_bufg_o       => clk_240,
+            clk_120_bufg_o       => clk_120,
             clk_320_bufg_o       => clk_320
         );
 
@@ -408,7 +408,7 @@ begin
     ttc_clks_o.clk_40  <= clk_40;
     ttc_clks_o.clk_80  <= clk_80;
     ttc_clks_o.clk_160 <= clk_160;
-    ttc_clks_o.clk_240 <= clk_240;
+    ttc_clks_o.clk_120 <= clk_120;
     ttc_clks_o.clk_320 <= clk_320;
 
     --===============================================================================================

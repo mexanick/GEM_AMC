@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20160831";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20160907";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 5;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 6;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
 
     --======================--
     --==      General     ==--
@@ -245,6 +245,9 @@ package gem_pkg is
         evt_rcvd            : std_logic;
         tk_tx_sync_status   : t_sync_fifo_status;      
         tk_rx_sync_status   : t_sync_fifo_status;      
+        gbt0_rx_sync_status : t_sync_fifo_status;      
+        gbt1_rx_sync_status : t_sync_fifo_status;      
+        gbt2_rx_sync_status : t_sync_fifo_status;      
         tr0_rx_sync_status  : t_sync_fifo_status;      
         tr1_rx_sync_status  : t_sync_fifo_status;
         tk_rx_gt_status     : t_gt_status;     

@@ -62,6 +62,9 @@ entity gbt is
         rx_data_valid_arr_o         : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_data_arr_o               : out t_gbt_frame_array(NUM_LINKS - 1 downto 0);
         
+        rx_sync_fifo_ovf_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
+        rx_sync_fifo_unf_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
+
         --========--              
         --   MGT  --              
         --========-- 
@@ -168,10 +171,10 @@ begin                                   --========####   Architecture Body   ###
                 rd_en     => tied_to_vcc,
                 dout      => mgt_sync_rx_data_arr(i),
                 full      => open,
-                overflow  => open,
+                overflow  => rx_sync_fifo_ovf_arr_o(i),
                 empty     => open,
                 valid     => mgt_sync_rx_valid_arr(i),
-                underflow => open
+                underflow => rx_sync_fifo_unf_arr_o(i)
             );
             
         rx_wordNbit_from_mgt(i) <= mgt_rx_data_arr_i(i);

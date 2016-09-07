@@ -21,6 +21,7 @@ use UNISIM.VCOMPONENTS.all;
 library work;
 use work.gth_pkg.all;
 use work.system_package.all;
+use work.ttc_pkg.all;
 
 --============================================================================
 --                                                          Entity declaration
@@ -54,8 +55,11 @@ entity gth_clk_bufs is
     clk_gth_tx_usrclk_arr_o : out std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
     clk_gth_rx_usrclk_arr_o : out std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
 
-    clk_gth_4p8g_common_rxusrclk_o : out std_logic
+    clk_gth_4p8g_common_rxusrclk_o : out std_logic;
 
+    ----------------- TTC ------------------------
+    ttc_clks_i        : in t_ttc_clks
+    
     );
 end gth_clk_bufs;
 
@@ -159,6 +163,8 @@ begin
       gen_gth_4p8g_txuserclk_master : if c_gth_config_arr(n).gth_txclk_out_master = true generate
 
         s_gth_4p8g_txoutclk <= gth_gt_clk_out_arr_i(n).txoutclk;
+        
+        --s_gth_4p8g_txusrclk <= ttc_clks_i.clk_120; -- use TTC clk 120 for TXUSRCLK of GBT links to maintain the phase between powercycles (MGT ref clk is also derived from TTC clk, so we should be fine doing this) 
 
         -- Instantiate a MMCM module to divide the reference clock. Uses internal feedback
         -- for improved jitter performance, and to avoid consuming an additional BUFG

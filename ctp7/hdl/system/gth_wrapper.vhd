@@ -22,6 +22,7 @@ use UNISIM.VCOMPONENTS.all;
 library work;
 use work.gth_pkg.all;
 use work.gem_pkg.all;
+use work.ttc_pkg.all;
 
 use work.system_package.all;
 
@@ -97,8 +98,11 @@ entity gth_wrapper is
     gth_gbt_tx_data_arr_i : in  t_gt_gbt_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
     gth_gbt_rx_data_arr_o : out t_gt_gbt_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
     
-    gth_gbt_common_rxusrclk_o : out std_logic
-    
+    gth_gbt_common_rxusrclk_o : out std_logic;
+
+    ----------------- TTC ------------------------
+    ttc_clks_i        : in t_ttc_clks
+        
     );
 end gth_wrapper;
 
@@ -257,7 +261,9 @@ begin
       clk_gth_tx_usrclk_arr_o => s_clk_gth_tx_usrclk_arr,
       clk_gth_rx_usrclk_arr_o => s_clk_gth_rx_usrclk_arr,
 
-      clk_gth_4p8g_common_rxusrclk_o => s_gth_4p8g_common_rxusrclk
+      clk_gth_4p8g_common_rxusrclk_o => s_gth_4p8g_common_rxusrclk,
+
+      ttc_clks_i => ttc_clks_i
 
       );
 

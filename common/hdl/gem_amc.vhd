@@ -146,6 +146,8 @@ architecture gem_amc_arch of gem_amc is
     signal gbt_mgt_tx_data_arr          : t_gt_gbt_tx_data_arr(g_NUM_OF_OHs - 1 downto 0);
     signal gbt_mgt_tx_clk_arr           : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
     signal gbt_rx_sync_done_arr         : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+    signal gbt_rx_sync_fifo_ovf_arr     : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+    signal gbt_rx_sync_fifo_unf_arr     : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
             
     signal gbt_rx_valid_arr             : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
     signal gbt_rx_data_arr              : t_gbt_frame_array(g_NUM_OF_OHs - 1 downto 0);
@@ -183,6 +185,8 @@ architecture gem_amc_arch of gem_amc is
     signal gbt_fake_rx_valid_arr        : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
     signal gbt_fake_rx_ready_arr        : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
     signal gbt_fake_rx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_rx_sync_fifo_ovf_arr: std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
+    signal gbt_fake_rx_sync_fifo_unf_arr: std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);    
     signal gbt_fake_mgt_rx_data_arr     : t_gt_gbt_rx_data_arr((g_NUM_OF_OHs * 2) - 1 downto 0);
     signal gbt_fake_mgt_rx_clk_arr      : std_logic_vector((g_NUM_OF_OHs * 2) - 1 downto 0);
 
@@ -395,6 +399,7 @@ begin
             reset_i                => reset,
             clk_i                  => ttc_clocks.clk_160,
 
+            oh_link_control_arr_o  => oh_link_control_arr,
             oh_link_status_arr_i   => oh_link_status_arr,
             gbt_rx_sync_done_arr_i => gbt_rx_sync_done_arr,
 
@@ -442,6 +447,8 @@ begin
                 rx_header_locked_arr_o      => gbt_rx_header_locked,
                 rx_data_valid_arr_o         => gbt_rx_valid_arr,
                 rx_data_arr_o               => gbt_rx_data_arr,
+                rx_sync_fifo_ovf_arr_o      => gbt_rx_sync_fifo_ovf_arr,
+                rx_sync_fifo_unf_arr_o      => gbt_rx_sync_fifo_unf_arr,
                 mgt_rx_rdy_arr_i            => gbt_mgt_rx_ready_arr,
                 mgt_tx_data_arr_o           => gbt_mgt_tx_data_arr,
                 mgt_rx_data_arr_i           => gbt_mgt_rx_data_arr
@@ -478,6 +485,8 @@ begin
                     rx_header_locked_arr_o      => open,
                     rx_data_valid_arr_o         => gbt_fake_rx_valid_arr,
                     rx_data_arr_o               => gbt_fake_rx_data_arr,
+                    rx_sync_fifo_ovf_arr_o      => gbt_fake_rx_sync_fifo_ovf_arr,
+                    rx_sync_fifo_unf_arr_o      => gbt_fake_rx_sync_fifo_unf_arr,
                     mgt_rx_rdy_arr_i            => (others => '1'),
                     mgt_tx_data_arr_o           => gbt_fake_mgt_tx_data_arr,
                     mgt_rx_data_arr_i           => gbt_fake_mgt_rx_data_arr
@@ -492,6 +501,9 @@ begin
             gbt_mgt_rx_clk_arr(i) <= gt_gbt_rx_links_arr_i(i).rx0clk;
             gbt_mgt_rx_data_arr(i) <= gt_gbt_rx_links_arr_i(i).rx0data;
     
+            oh_link_status_arr(i).gbt0_rx_sync_status.ovf <= gbt_rx_sync_fifo_ovf_arr(i);
+            oh_link_status_arr(i).gbt0_rx_sync_status.unf <= gbt_rx_sync_fifo_unf_arr(i);
+    
             -- 3x GBT test for resource utilization testing for future OH v3        
             g_3x_gbt_fake_links : if g_USE_3x_GBTs generate               
                 gt_gbt_tx_links_arr_o(i).tx1data        <= gbt_fake_mgt_tx_data_arr(i * 2); 
@@ -505,8 +517,21 @@ begin
                 
                 gbt_fake_mgt_rx_clk_arr(i * 2)          <= gt_gbt_rx_links_arr_i(i).rx1clk;
                 gbt_fake_mgt_rx_clk_arr((i * 2) + 1)    <= gt_gbt_rx_links_arr_i(i).rx2clk;
+                
+                oh_link_status_arr(i).gbt1_rx_sync_status.ovf <= gbt_fake_rx_sync_fifo_ovf_arr(i * 2);
+                oh_link_status_arr(i).gbt2_rx_sync_status.ovf <= gbt_fake_rx_sync_fifo_ovf_arr((i * 2) + 1);
+                
+                oh_link_status_arr(i).gbt1_rx_sync_status.unf <= gbt_fake_rx_sync_fifo_unf_arr(i * 2);
+                oh_link_status_arr(i).gbt2_rx_sync_status.unf <= gbt_fake_rx_sync_fifo_unf_arr((i * 2) + 1);
             end generate;
                     
+            g_no_3x_gbt_fake_links : if not g_USE_3x_GBTs generate
+                oh_link_status_arr(i).gbt1_rx_sync_status.ovf <= '0';
+                oh_link_status_arr(i).gbt2_rx_sync_status.ovf <= '0';                
+                oh_link_status_arr(i).gbt1_rx_sync_status.unf <= '0';
+                oh_link_status_arr(i).gbt2_rx_sync_status.unf <= '0';
+            end generate;
+            
         end generate;
         
         gbt_rx_frame_clk_ready <= (others => '1');
@@ -539,17 +564,17 @@ begin
         i_ila_gbt : component ila_gbt
             port map(
                 clk     => ttc_clocks.clk_40,
-                probe0  => gbt_tx_data_arr(1),
-                probe1  => gbt_rx_data_arr(1),
-                probe2  => gbt_tx_gearbox_aligned_arr(1 downto 1),
-                probe3  => gbt_tx_gearbox_align_done_arr(1 downto 1),
-                probe4  => gbt_rx_frame_clk_ready(1 downto 1),
-                probe5  => gbt_rx_word_clk_ready(1 downto 1),
-                probe6  => gbt_rx_ready(1 downto 1),
-                probe7  => gbt_rx_header(1 downto 1),
-                probe8  => gbt_rx_header_locked(1 downto 1),
-                probe9  => gbt_rx_valid_arr(1 downto 1),
-                probe10 => gbt_rx_bitslip_nbr(1)
+                probe0  => gbt_tx_data_arr(0),
+                probe1  => gbt_rx_data_arr(0),
+                probe2  => gbt_tx_gearbox_aligned_arr(0 downto 0),
+                probe3  => gbt_tx_gearbox_align_done_arr(0 downto 0),
+                probe4  => gbt_rx_frame_clk_ready(0 downto 0),
+                probe5  => gbt_rx_word_clk_ready(0 downto 0),
+                probe6  => gbt_rx_ready(0 downto 0),
+                probe7  => gbt_rx_header(0 downto 0),
+                probe8  => gbt_rx_header_locked(0 downto 0),
+                probe9  => gbt_rx_valid_arr(0 downto 0),
+                probe10 => gbt_rx_bitslip_nbr(0)
             );
         
     end generate g_gbt;
