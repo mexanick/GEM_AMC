@@ -26,9 +26,6 @@ port(
     gtx_clk_i       : in std_logic;    
     reset_i         : in std_logic;    
     
-    use_t1          : in std_logic;
-    use_req         : in std_logic;
-    
     vfat2_t1_i      : in t_t1;
     
     req_en_o        : out std_logic;
@@ -112,17 +109,7 @@ begin
                 case state is
                     when FRAME_BEGIN => 
                         tx_kchar_o <= "01";
-                        if (use_req = '1') then
-                            tx_data_o(11 downto 0) <= req_valid & req_data(64) & "11" & x"BC";
-                        else
-                            tx_data_o(11 downto 0) <= "0011" & x"BC";
-                        end if;
-                        
-                        if (use_t1 = '1') then
-                            tx_data_o(15 downto 12) <= vfat2_t1_i.lv1a & vfat2_t1_i.calpulse & vfat2_t1_i.resync & vfat2_t1_i.bc0;
-                        else
-                            tx_data_o(15 downto 12) <= x"0";
-                        end if;
+                        tx_data_o <= vfat2_t1_i.lv1a & vfat2_t1_i.calpulse & vfat2_t1_i.resync & vfat2_t1_i.bc0 & req_valid & req_data(64) & "11" & x"BC";
                     when ADDR_0 =>  
                         tx_kchar_o <= "00";
                         tx_data_o <= req_data(63 downto 48);
@@ -134,11 +121,7 @@ begin
                         tx_data_o <= req_data(31 downto 16);
                     when FRAME_MIDDLE => 
                         tx_kchar_o <= "01";
-                        if (use_t1 = '1') then
-                            tx_data_o <= vfat2_t1_i.lv1a & vfat2_t1_i.calpulse & vfat2_t1_i.resync & vfat2_t1_i.bc0 & x"0BC";
-                        else
-                            tx_data_o <= x"00BC";
-                        end if;                        
+                        tx_data_o <= vfat2_t1_i.lv1a & vfat2_t1_i.calpulse & vfat2_t1_i.resync & vfat2_t1_i.bc0 & x"0BC";                        
                     when DATA_1 => 
                         tx_kchar_o <= "00";
                         tx_data_o <= req_data(15 downto 0);

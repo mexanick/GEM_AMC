@@ -1,0 +1,21 @@
+change log:
+
+---- 1.5.9 ----
+fixed BX count in BC0 lock check
+fixed L1 ID to start from 1 rather than 0
+FIFOs do not assert FULL during reset, so HAD_OVF flags shouldn't be set after reset anymore
+fixed GBT loopback with OH in the loop
+
+---- 1.5.10 ----
+Fixed phase TXUSRCLK
+GBT TX Latency Optimized mode
+
+---- 1.7.0 ----
+Slow control added:
+  * GBTx internal control (lets write/read GBTx internal registers)
+  * SCA controller
+    - configures SCA chip during reset
+    - resets OH FPGA on TTC hard reset command or user request
+    - reads SCA ADC channels automatically and stores the values in registers (reading can be disabled by the user)
+    - drives the SCA JTAG module based on data provided by the user on simple 32bit TMS and TDO registers, also reads TDI data when reading TDI reg
+  * Improved ipbus-slave and generate_registers.py: provides write and read pulses and also write_done and read_ready signals can be used for transactional reads / writes

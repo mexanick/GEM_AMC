@@ -45,6 +45,8 @@ entity gbt is
         tx_ready_arr_i              : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_we_arr_i                 : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_data_arr_i               : in  t_gbt_frame_array(NUM_LINKS - 1 downto 0);
+        tx_sca_data_arr_i           : in  t_std2_array(NUM_LINKS - 1 downto 0);
+        tx_ic_data_arr_i            : in  t_std2_array(NUM_LINKS - 1 downto 0);
         tx_gearbox_aligned_arr_o    : out std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_gearbox_align_done_arr_o : out std_logic_vector(NUM_LINKS - 1 downto 0);
 
@@ -61,10 +63,9 @@ entity gbt is
         rx_header_locked_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_data_valid_arr_o         : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_data_arr_o               : out t_gbt_frame_array(NUM_LINKS - 1 downto 0);
+        rx_sca_data_arr_o           : out t_std2_array(NUM_LINKS - 1 downto 0);
+        rx_ic_data_arr_o            : out t_std2_array(NUM_LINKS - 1 downto 0);
         
-        rx_sync_fifo_ovf_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
-        rx_sync_fifo_unf_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
-
         --========--              
         --   MGT  --              
         --========-- 
@@ -113,6 +114,8 @@ architecture gbt_arch of gbt is
     signal phaligned_from_gbtTx   : std_logic_vector(NUM_LINKS - 1 downto 0);
     signal phcomputing_from_gbtTx : std_logic_vector(NUM_LINKS - 1 downto 0);
 
+    signal tx_data_arr            : t_gbt_frame_array(NUM_LINKS - 1 downto 0);
+
     --==================================--              
     -- Multi Gigabit Transceivers (MGT) --          
     --==================================--                 
@@ -135,6 +138,7 @@ architecture gbt_arch of gbt is
     signal mgt_sync_rx_data_arr      : t_gt_gbt_rx_data_arr(NUM_LINKS - 1 downto 0);
     signal mgt_sync_rx_valid_arr     : std_logic_vector(NUM_LINKS - 1 downto 0);
    
+    signal rx_data_arr               : t_gbt_frame_array(NUM_LINKS - 1 downto 0);
     --== constant signals ==--
     
     signal tied_to_ground   : std_logic;
@@ -145,6 +149,8 @@ architecture gbt_arch of gbt is
 --=================================================================================================--
 begin                                   --========####   Architecture Body   ####========-- 
 --=================================================================================================--
+
+    rx_data_arr_o <= rx_data_arr;
 
     -- constant signals
     tied_to_ground <= '0';
@@ -171,10 +177,10 @@ begin                                   --========####   Architecture Body   ###
                 rd_en     => tied_to_vcc,
                 dout      => mgt_sync_rx_data_arr(i),
                 full      => open,
-                overflow  => rx_sync_fifo_ovf_arr_o(i),
+                overflow  => open,
                 empty     => open,
                 valid     => mgt_sync_rx_valid_arr(i),
-                underflow => rx_sync_fifo_unf_arr_o(i)
+                underflow => open
             );
             
         rx_wordNbit_from_mgt(i) <= mgt_rx_data_arr_i(i);
@@ -206,7 +212,7 @@ begin                                   --========####   Architecture Body   ###
 					PHASE_COMPUTING_DONE_O				=> phcomputing_from_gbtTx(i),
 					TX_ISDATA_SEL_I                     => tx_we_arr_i(i), 
 					-- Data & Word:        
-					TX_DATA_I                           => tx_data_arr_i(i),
+					TX_DATA_I                           => tx_data_arr(i),
 					TX_WORD_O                           => tx_wordNbit_from_gbtTx(i),
 					------------------------------------
 					TX_EXTRA_DATA_WIDEBUS_I             => (others => '0')
@@ -233,6 +239,8 @@ begin                                   --========####   Architecture Body   ###
 				    );
 				
 				mgt_tx_data_arr_o(i)         <= tx_wordNbit_from_gbtTx(i);
+				
+				tx_data_arr(i)              <= tx_ic_data_arr_i(i) & tx_sca_data_arr_i(i) & tx_data_arr_i(i)(79 downto 0);
 				
 			end generate;
 	end generate;   
@@ -269,7 +277,7 @@ begin                                   --========####   Architecture Body   ###
 					RX_READY_O                          => rx_rdy_arr_o(i),
 					-- Word & Data:                  
 					RX_WORD_I                           => mgt_sync_rx_data_arr(i),                  
-					RX_DATA_O                           => rx_data_arr_o(i),
+					RX_DATA_O                           => rx_data_arr(i),
 					------------------------------------
 					RX_EXTRA_DATA_WIDEBUS_O             => open
 				);             
@@ -278,6 +286,8 @@ begin                                   --========####   Architecture Body   ###
             rxReady_from_mgt(i)                       <= mgt_rx_rdy_arr_i(i);
 			rx_bitslip_nbr_arr_o(i)                   <= rxBitSlipNbr_from_gbtRx(i);                         
 			rx_header_locked_arr_o(i)                 <= rxHeaderLocked_from_gbtRx(i);
+            rx_sca_data_arr_o(i)                      <= rx_data_arr(i)(81 downto 80);
+            rx_ic_data_arr_o(i)                       <= rx_data_arr(i)(83 downto 82);			
 	 
 		end generate;
 	end generate;

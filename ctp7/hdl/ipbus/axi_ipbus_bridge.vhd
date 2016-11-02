@@ -249,7 +249,11 @@ begin
               ipb_timer <= (others => '0');
               axi_rdata <= ipb_miso_i(ipb_slv_select).ipb_rdata;
               axi_rvalid <= '1';
-              axi_rresp <= "00"; -- OKAY response
+              if (ipb_miso_i(ipb_slv_select).ipb_err = '0') then
+                axi_rresp <= "00"; -- OKAY response
+              else
+                axi_rresp <= "10"; -- SLVERR: slave error response
+              end if;
               
             -- IPbus timed out
             elsif (ipb_timer > ipb_timeout) then
@@ -299,7 +303,11 @@ begin
               ipb_state <= AXI_WRITE_HANDSHAKE;
               ipb_timer <= (others => '0');
               axi_bvalid <= '1';
-              axi_bresp <= "00"; -- OKAY response
+              if (ipb_miso_i(ipb_slv_select).ipb_err = '0') then
+                axi_bresp <= "00"; -- OKAY response
+              else
+                axi_bresp <= "10"; -- SLVERR: slave error response
+              end if;
               
             -- IPbus timed out
             elsif (ipb_timer > ipb_timeout) then
@@ -314,7 +322,7 @@ begin
               ipb_timer <= ipb_timer + 1;
             end if;
             
-          -- IPBus read transaction finished and axi response is set, so lets finish the axi transaction here
+          -- IPBus write transaction finished and axi response is set, so lets finish the axi transaction here
           when AXI_WRITE_HANDSHAKE =>
             if (S_AXI_BREADY = '1') then
               ipb_state <= IDLE;

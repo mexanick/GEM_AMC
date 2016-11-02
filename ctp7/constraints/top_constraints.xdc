@@ -232,213 +232,260 @@ set_false_path -to [get_cells -hierarchical -filter {NAME =~ *sync*/data_sync_re
 
 
 ############# Channel [0] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [1] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [2] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [3] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [4] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [5] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [6] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [7] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [8] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [9] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [10] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*TXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# Channel [11] - 3.2 Gbps TX, 3.2 Gbps RX #############
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[11].gen_gth_*/i_gthe2*TXOUTCLK}]
-#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[11].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-
-
-
-
-
-############# Channel [0] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[0].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [1] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[1].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [2] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[2].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [3] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[3].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [4] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[4].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [5] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[5].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [6] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[6].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [7] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[7].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [8] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[8].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [9] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[9].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [10] - 4.8 Gbps TX, 4.8 Gbps RX #############
-create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[10].gen_gth_*/i_gthe2*RXOUTCLK}]
-
-############# Channel [11] - 4.8 Gbps TX, 4.8 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[11].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[11].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[11].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 
 
-############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [12] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[12].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[12].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[12].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [13] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [13] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[13].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[13].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[13].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [14] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [14] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[14].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[14].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[14].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [15] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [15] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[15].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[15].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[15].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [16] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [16] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[16].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[16].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[16].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [17] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [17] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[17].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[17].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[17].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [18] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [18] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[18].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[18].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[18].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [19] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [19] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[19].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[19].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[19].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [20] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [20] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[20].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[20].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[20].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [21] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [21] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[21].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[21].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[21].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [22] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [22] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[22].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[22].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[22].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [23] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [23] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[23].gen_gth_*/i_gthe2*TXOUTCLK}]
-create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[23].gen_gth_*/i_gthe2*RXOUTCLK}]
+create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[23].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 
 
-############# Channel [24] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [24] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[24].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[24].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [25] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [25] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[25].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[25].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [26] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [26] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[26].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[26].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [27] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [27] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[27].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[27].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [28] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [28] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[28].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[28].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [29] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [29] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[29].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[29].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [30] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [30] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[30].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[30].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [31] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [31] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[31].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[31].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [32] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [32] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[32].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[32].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [33] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [33] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[33].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[33].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [34] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [34] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[34].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[34].gen_gth_*/i_gthe2*RXOUTCLK}]
 
-############# Channel [35] - 4.8 Gbps TX, 4.8 Gbps RX #############
+############# Channel [35] - 3.2 Gbps TX, 3.2 Gbps RX #############
 create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[35].gen_gth_*/i_gthe2*TXOUTCLK}]
 create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[35].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+
+
+#-------------- 4.8Gbs -----------------------
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[12].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[12].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[13].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[13].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[14].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[14].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[15].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[15].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[16].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[16].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[17].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[17].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[18].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[18].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[19].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[19].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[20].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[20].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[21].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[21].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[22].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[22].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[23].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[23].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[24].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[24].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[25].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[25].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[26].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[26].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[27].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[27].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[28].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[28].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[29].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[29].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[30].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[30].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[31].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[31].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[32].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[32].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[33].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[33].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[34].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[34].gen_gth_*/i_gthe2*RXOUTCLK}]
+
+############# Channel [12] - 4.8 Gbps TX, 4.8 Gbps RX #############
+#create_clock -period 6.250 [get_pins -hier -filter {name=~*gen_gth_single[35].gen_gth_*/i_gthe2*TXOUTCLK}]
+#create_clock -period 8.333 [get_pins -hier -filter {name=~*gen_gth_single[35].gen_gth_*/i_gthe2*RXOUTCLK}]
 
 ############# ############# ############# ############# ############# ############# #############
 ############# ############# False Path Constraints ############# ############# #############
 
 set_clock_groups -asynchronous -group [get_clocks s_clk_40] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
+set_clock_groups -asynchronous -group [get_clocks s_clk_80] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
 set_clock_groups -asynchronous -group [get_clocks s_clk_160] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
 set_clock_groups -asynchronous -group [get_clocks s_clk_120] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
-set_clock_groups -asynchronous -group [get_clocks s_clk_320] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
 #set_clock_groups -asynchronous -group [get_clocks i_gem/i_ttc/clk_40_ttc_p_i] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]
 
 set_clock_groups -asynchronous -group [get_clocks {i_system/i_gth_wrapper/gen_gth_single[*].*/i_gthe2/?XOUTCLK}] -group [get_clocks clk_out2_v7_bd_clk_wiz_0_0]

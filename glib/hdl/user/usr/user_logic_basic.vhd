@@ -248,7 +248,20 @@ architecture user_logic_arch of user_logic is
     signal ipb_miso             : ipb_rbus_array(number_of_ipb_slaves - 1 downto 0);
     signal ipb_mosi             : ipb_wbus_array(number_of_ipb_slaves - 1 downto 0);
     
+    -------------- DEBUG ----------------
+    signal debug_ipb_mosi       : ipb_wbus;
+    signal debug_ipb_miso       : ipb_rbus;
+    
+    -- Debug flags for ChipScope
+    attribute MARK_DEBUG : string;
+    attribute MARK_DEBUG of ipb_clk_i           : signal is "TRUE";
+    attribute MARK_DEBUG of debug_ipb_mosi      : signal is "TRUE";
+    attribute MARK_DEBUG of debug_ipb_miso      : signal is "TRUE";
+    
 begin
+    
+    debug_ipb_mosi <= ipb_mosi(8);
+    debug_ipb_miso <= ipb_miso(8);
     
     --==================--
     -- IP & MAC address --
@@ -368,7 +381,7 @@ begin
             gt_gbt_tx1_clk_arr_i   => gt_gbt_tx1_clk_arr,
             gt_gbt_tx2_clk_arr_i   => gt_gbt_tx2_clk_arr,
             
-            ipb_reset_i            => reset_i,
+            ipb_reset_i            => reset_i or reset_pwrup,
             ipb_clk_i              => ipb_clk_i,
             ipb_miso_arr_o         => ipb_miso,
             ipb_mosi_arr_i         => ipb_mosi,

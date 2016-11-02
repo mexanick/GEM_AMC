@@ -70,6 +70,7 @@ entity system is
 
     ----------------- TTC ------------------------
     ttc_clks_i        : in t_ttc_clks;
+    ttc_status_i      : in t_ttc_status;
     
     ----------------- GTH ------------------------
     clk_gth_tx_arr_o            : out std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
@@ -267,6 +268,10 @@ architecture system_arch of system is
   signal ipb_axi_bresp     : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal ipb_axi_bvalid    : STD_LOGIC_VECTOR ( 0 downto 0 );  
   
+  ----------------- TTC ------------------------
+  signal ttc_clks          : t_ttc_clks;
+  signal ttc_status        : t_ttc_status;
+      
   -------------------------- DEBUG ----------------------------------
 --  attribute mark_debug : string;
 --  attribute mark_debug of s_gth_rx_data_arr: signal is "true";
@@ -311,8 +316,10 @@ begin
   ipb_axi_bresp            <= ipb_axi_miso_i.bresp;
   ipb_axi_bvalid(0)        <= ipb_axi_miso_i.bvalid;
   
-  clk_50_o  <= s_clk_50;
-  clk_200_o <= s_clk_200;
+  clk_50_o   <= s_clk_50;
+  clk_200_o  <= s_clk_200;
+  ttc_clks   <= ttc_clks_i;
+  ttc_status <= ttc_status_i;
   
   i_v7_bd : v7_bd
     port map (
@@ -453,6 +460,9 @@ begin
       clk_gth_rx_usrclk_arr_o => s_clk_gth_rx_usrclk_arr,
       gth_cpll_status_arr_o   => s_gth_cpll_status_arr,
 
+      ttc_clks_i              => ttc_clks,
+      ttc_status_i            => ttc_status,
+
       refclk_F_0_p_i          => refclk_F_0_p_i,
       refclk_F_0_n_i          => refclk_F_0_n_i,
       refclk_F_1_p_i          => refclk_F_1_p_i,
@@ -488,9 +498,7 @@ begin
       gth_tx_serial_arr_o   => s_gth_tx_serial_arr,
       gth_rx_serial_arr_i   => s_gth_rx_serial_arr,
 
-      gth_gbt_common_rxusrclk_o => gth_gbt_common_rxusrclk_o,
-
-      ttc_clks_i => ttc_clks_i
+      gth_gbt_common_rxusrclk_o => gth_gbt_common_rxusrclk_o
 
       );
     

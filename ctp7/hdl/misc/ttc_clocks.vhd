@@ -193,7 +193,7 @@ begin
       I => s_clk_160
       );
 
-  i_bufg_clk_240 : BUFG
+  i_bufg_clk_120 : BUFG
     port map
     (
       O => clk_120_bufg_o,

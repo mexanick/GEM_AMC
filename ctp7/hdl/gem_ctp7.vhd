@@ -124,6 +124,7 @@ architecture gem_ctp7_arch of gem_ctp7 is
 
             ----------------- TTC ------------------------
             ttc_clks_i                     : in  t_ttc_clks;
+            ttc_status_i                   : in  t_ttc_status;
 
             ----------------- GTH ------------------------
             clk_gth_tx_arr_o               : out std_logic_vector(g_NUM_OF_GTH_GTs - 1 downto 0);
@@ -174,7 +175,8 @@ architecture gem_ctp7_arch of gem_ctp7 is
     signal ipb_mosi_arr : ipb_wbus_array(C_NUM_IPB_SLAVES - 1 downto 0);
 
     -------------------------- TTC ---------------------------------
-    signal ttc_clocks : t_ttc_clks;
+    signal ttc_clocks   : t_ttc_clks;
+    signal ttc_status   : t_ttc_status;
 
     -------------------------- GTH ---------------------------------
     signal clk_gth_tx_arr       : std_logic_vector(g_NUM_OF_GTH_GTs - 1 downto 0);
@@ -271,6 +273,7 @@ begin
             ipb_axi_miso_i                 => ipb_axi_miso,
             
             ttc_clks_i                     => ttc_clocks,
+            ttc_status_i                   => ttc_status,
             
             clk_gth_tx_arr_o               => clk_gth_tx_arr,
             clk_gth_rx_arr_o               => clk_gth_rx_arr,
@@ -352,6 +355,7 @@ begin
             ttc_data_p_i            => ttc_data_p_i,
             ttc_data_n_i            => ttc_data_n_i,
             ttc_clocks_o            => ttc_clocks,
+            ttc_status_o            => ttc_status,
             
             gt_8b10b_rx_clk_arr_i   => gem_gt_8b10b_rx_clk_arr,
             gt_8b10b_tx_clk_arr_i   => gem_gt_8b10b_tx_clk_arr,

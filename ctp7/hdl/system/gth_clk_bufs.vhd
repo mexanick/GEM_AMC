@@ -36,6 +36,9 @@ entity gth_clk_bufs is
     GTH_4p8g_TX_MMCM_reset_i  : in  std_logic;
     GTH_4p8g_TX_MMCM_locked_o : out std_logic;
 
+    ttc_clks_i     : in t_ttc_clks;
+    ttc_status_i   : in t_ttc_status;
+
     refclk_F_0_p_i : in std_logic_vector (3 downto 0);
     refclk_F_0_n_i : in std_logic_vector (3 downto 0);
     refclk_F_1_p_i : in std_logic_vector (3 downto 0);
@@ -55,11 +58,8 @@ entity gth_clk_bufs is
     clk_gth_tx_usrclk_arr_o : out std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
     clk_gth_rx_usrclk_arr_o : out std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
 
-    clk_gth_4p8g_common_rxusrclk_o : out std_logic;
+    clk_gth_4p8g_common_rxusrclk_o : out std_logic
 
-    ----------------- TTC ------------------------
-    ttc_clks_i        : in t_ttc_clks
-    
     );
 end gth_clk_bufs;
 
@@ -101,6 +101,9 @@ architecture gth_clk_bufs_arch of gth_clk_bufs is
   signal s_gth_3p2g_txusrclk        : std_logic;
   signal s_gth_3p2g_txoutclk        : std_logic;
 
+  signal ttc_clks                   : t_ttc_clks;
+  signal ttc_status                 : t_ttc_status;
+  
 --============================================================================
 --                                                          Architecture begin
 --============================================================================
@@ -108,6 +111,10 @@ architecture gth_clk_bufs_arch of gth_clk_bufs is
 begin
 
 --============================================================================
+
+  ttc_clks <= ttc_clks_i;
+  ttc_status <= ttc_status_i;
+  GTH_4p8g_TX_MMCM_locked_o <= ttc_status.mmcm_locked;
 
   gen_ibufds_F_clk_gte2 : for i in 0 to 3 generate
 
@@ -163,32 +170,30 @@ begin
       gen_gth_4p8g_txuserclk_master : if c_gth_config_arr(n).gth_txclk_out_master = true generate
 
         s_gth_4p8g_txoutclk <= gth_gt_clk_out_arr_i(n).txoutclk;
-        
-        --s_gth_4p8g_txusrclk <= ttc_clks_i.clk_120; -- use TTC clk 120 for TXUSRCLK of GBT links to maintain the phase between powercycles (MGT ref clk is also derived from TTC clk, so we should be fine doing this) 
 
         -- Instantiate a MMCM module to divide the reference clock. Uses internal feedback
         -- for improved jitter performance, and to avoid consuming an additional BUFG
-        txoutclk_mmcm0_i : gth_4p8_raw_CLOCK_MODULE
-          generic map
-          (
-            MULT        => 9.0,
-            DIVIDE      => 2,
-            CLK_PERIOD  => 6.25,
-            OUT0_DIVIDE => 6.0,
-            OUT1_DIVIDE => 1,
-            OUT2_DIVIDE => 1,
-            OUT3_DIVIDE => 1
-            )
-          port map
-          (
-            CLK0_OUT        => s_gth_4p8g_txusrclk,
-            CLK1_OUT        => open,
-            CLK2_OUT        => open,
-            CLK3_OUT        => open,
-            CLK_IN          => s_gth_4p8g_txoutclk,
-            MMCM_LOCKED_OUT => GTH_4p8g_TX_MMCM_locked_o,
-            MMCM_RESET_IN   => GTH_4p8g_TX_MMCM_reset_i
-            );
+--        txoutclk_mmcm0_i : gth_4p8_raw_CLOCK_MODULE
+--          generic map
+--          (
+--            MULT        => 9.0,
+--            DIVIDE      => 2,
+--            CLK_PERIOD  => 6.25,
+--            OUT0_DIVIDE => 6.0,
+--            OUT1_DIVIDE => 1,
+--            OUT2_DIVIDE => 1,
+--            OUT3_DIVIDE => 1
+--            )
+--          port map
+--          (
+--            CLK0_OUT        => s_gth_4p8g_txusrclk,
+--            CLK1_OUT        => open,
+--            CLK2_OUT        => open,
+--            CLK3_OUT        => open,
+--            CLK_IN          => s_gth_4p8g_txoutclk,
+--            MMCM_LOCKED_OUT => GTH_4p8g_TX_MMCM_locked_o,
+--            MMCM_RESET_IN   => GTH_4p8g_TX_MMCM_reset_i
+--            );
 
         i_bufg_4p8g_rx_common_usrclk : BUFG
             port map(
@@ -198,7 +203,7 @@ begin
 
       end generate;
 
-      clk_gth_tx_usrclk_arr_o(n) <= s_gth_4p8g_txusrclk;
+      clk_gth_tx_usrclk_arr_o(n) <= ttc_clks.clk_120; --s_gth_4p8g_txusrclk;
 
     end generate;
 

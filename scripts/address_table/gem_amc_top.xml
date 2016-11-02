@@ -17,19 +17,19 @@
           fw_reg_addr_lsb="0">
         <node id="CTRL" address="0x0" description="TTC control">
             <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w" description="TTC module reset"
-                  fw_signal="ttc_ctrl.reset_local" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
-            <node id="MMCM_RESET" address="0x0" mask="0x40000000" permission="w" description="TTC MMCM reset"
-                  fw_signal="ttc_ctrl.mmcm_reset" fw_is_write_pulse="true" fw_write_pulse_length="3"/>
-            <node id="CNT_RESET" address="0x0" mask="0x20000000" permission="w" description="TTC counter reset"
-                  fw_signal="ttc_ctrl.cnt_reset" fw_is_write_pulse="true" fw_write_pulse_length="1"
+                  fw_write_pulse_signal="ttc_ctrl.reset_local"/>
+            <node id="MMCM_RESET" address="0x1" mask="0x40000000" permission="w" description="TTC MMCM reset"
+                  fw_write_pulse_signal="ttc_ctrl.mmcm_reset"/>
+            <node id="CNT_RESET" address="0x2" mask="0x20000000" permission="w" description="TTC counter reset"
+                  fw_write_pulse_signal="ttc_ctrl.cnt_reset"
                   sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-            <node id="MMCM_PHASE_SHIFT" address="0x0" mask="0x10000000" permission="w" description="TTC MMCM phase shift trigger"
-                  fw_signal="ttc_ctrl.mmcm_phase_shift" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
-            <node id="L1A_ENABLE" address="0x0" mask="0x00000001" permission="rw" description="Enable L1As (L1As are blocked if this is 0)"
+            <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w" description="TTC MMCM phase shift trigger"
+                  fw_write_pulse_signal="ttc_ctrl.mmcm_phase_shift"/>
+            <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw" description="Enable L1As (L1As are blocked if this is 0)"
                   fw_signal="ttc_ctrl.l1a_enable" fw_default="0b1"
                   sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x1" sw_ctrl_stop_set="0x0"/>
         </node>
-        <node id="CONFIG" address="0x1" description="TTC configuration -- used for setup TTC command decoding">
+        <node id="CONFIG" address="0x5" description="TTC configuration -- used for setup TTC command decoding">
             <node id="CMD_BC0" address="0x0" mask="0x000000ff" permission="rw" description="BC0 command code"
                   fw_signal="ttc_conf.cmd_bc0" fw_default="0x01"
                   sw_ctrl_configure_confdb_check_set="true"/>
@@ -58,7 +58,7 @@
                   fw_signal="ttc_conf.cmd_test_sync" fw_default="0x20"
                   sw_ctrl_configure_confdb_check_set="true"/>
         </node>
-        <node id="STATUS" address="0x4" description="TTC status">
+        <node id="STATUS" address="0x8" description="TTC status">
             <node id="MMCM_LOCKED" address="0x0" mask="0x00000001" permission="r" description="MMCM locked flag"
                   fw_signal="ttc_status.mmcm_locked"
                   sw_monitor_error_value="0"/>
@@ -84,7 +84,7 @@
             </node>
         </node>
 
-        <node id="CMD_COUNTERS" address="0x9" description="TTC command counters">
+        <node id="CMD_COUNTERS" address="0xd" description="TTC command counters">
             <node id="L1A" address="0x0" mask="0xffffffff" permission="r" description="L1A count"
                   fw_signal="ttc_cmds_cnt_arr(0)"/>
             <node id="BC0" address="0x1" mask="0xffffffff" permission="r" description="BC0 count"
@@ -107,16 +107,16 @@
                   fw_signal="ttc_cmds_cnt_arr(9)"/>
         </node>
 
-        <node id="L1A_ID" address="0x13" mask="0x00ffffff" permission="r"
+        <node id="L1A_ID" address="0x17" mask="0x00ffffff" permission="r"
               description="L1A ID (increments with every L1A and resets with EC0), used by DAQ to tag event numbers"
               fw_signal="l1id_cnt"/>
 
-        <node id="L1A_RATE" address="0x14" mask="0xffffffff" permission="r"
+        <node id="L1A_RATE" address="0x18" mask="0xffffffff" permission="r"
               description="L1A rate in Hz"
               fw_signal="l1a_rate"/>
 
-        <node id="TTC_SPY_BUFFER" address="0x15" mask="0xffffffff" permission="r" description="TTC Spy buffer -- this is filled with TTC commands (from LSB to MSB) and freezes until the user reads it out, once read out it resets and fills up again with new TTC commands received from that point on"
-              fw_signal="ttc_spy_buffer" fw_read_pulse_signal="ttc_spy_reset" fw_read_pulse_length="1"/>
+        <node id="TTC_SPY_BUFFER" address="0x19" mask="0xffffffff" permission="r" description="TTC Spy buffer -- this is filled with TTC commands (from LSB to MSB) and freezes until the user reads it out, once read out it resets and fills up again with new TTC commands received from that point on"
+              fw_signal="ttc_spy_buffer" fw_read_pulse_signal="ttc_spy_reset"/>
     </node>
     <!--end TTC module -->
 
@@ -136,12 +136,12 @@
         <node id="CTRL" address="0x0" description="Trigger control">
             <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w"
                   description="Trigger module reset"
-                  fw_signal="reset_local" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
-            <node id="CNT_RESET" address="0x0" mask="0x40000000" permission="w"
+                  fw_write_pulse_signal="reset_local"/>
+            <node id="CNT_RESET" address="0x1" mask="0x40000000" permission="w"
                   description="Trigger counter reset"
-                  fw_signal="reset_cnt" fw_is_write_pulse="true" fw_write_pulse_length="1"
+                  fw_write_pulse_signal="reset_cnt"
                   sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-            <node id="OH_KILL_MASK" address="0x1" mask="0x00ffffff" permission="rw"
+            <node id="OH_KILL_MASK" address="0x2" mask="0x00ffffff" permission="rw"
                   description="OH trigger kill mask (kills all sbits from the corresponding OHs)"
                   fw_signal="oh_mask"
                   fw_default="0x000000"/>
@@ -158,7 +158,7 @@
         </node>
 
         <node id="OH${OH_IDX}" address="0x100" description="Trigger link for OH ${OH_IDX}"
-              generate="true" generate_size="4" generate_address_step="0x100" generate_idx_var="OH_IDX">
+              generate="true" generate_size="2" generate_address_step="0x100" generate_idx_var="OH_IDX">
             <node id="TRIGGER_RATE" address="0x0" mask="0xffffffff" permission="r"
                   description="Trigger rate (Hz) -- this trigger fires whenever there's at least one valid sbit cluster"
                   fw_signal="trigger_rate(${OH_IDX})"
@@ -198,7 +198,7 @@
             <node id="LINK1_INVALID_SIZE_CNT" address="0xa2" mask="0xffff0000" permission="r"
                   description="Count of invalid cluster size on link 1 (for VFAT2 case the cluster size must always be equal to 7)"
                   fw_signal="invalid_size_cnt(${OH_IDX})(31 downto 16)"
-                  sw_monitor_error_min_threshold="1"/>
+                  sw_monitor_error_min_threshold="1"/>                  
             <node id="LINK0_OVERFLOW_CNT" address="0xa3" mask="0x0000ffff" permission="r"
                   description="Count of overflow occurances in the sync FIFO for link 0"
                   fw_signal="link_overflow_cnt(${OH_IDX})(15 downto 0)"
@@ -246,7 +246,7 @@
         <node id="CTRL" address="0x100">
             <node id="CNT_RESET" address="0x0" mask="0x40000000" permission="w"
                   description="GEM system counters reset"
-                  fw_signal="reset_cnt" fw_is_write_pulse="true" fw_write_pulse_length="1"
+                  fw_write_pulse_signal="reset_cnt"
                   sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
         </node>
           
@@ -305,10 +305,18 @@
         <node id="TESTS" address="0x200">
             <node id="GBT_LOOPBACK_EN" address="0x0" mask="0x00000001" permission="rw"
                   description="GBT Loopback test enable -- if this is true then all GBT links are redirected to the loopback test module and the test module is enabled (communication with optohybrid is not possible during the test)"
-                  fw_signal="gbt_loopback_test_en" fw_default="0b0"
+                  fw_signal="loopback_gbt_test_en" fw_default="0b0"
+                  sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
+            <node id="8B10B_LOOPBACK_EN" address="0x0" mask="0x00000002" permission="rw"
+                  description="8b10b loopback test enable -- if this is true then all 8b10b DAQ/control links are redirected to the loopback test module and the test module is enabled (communication with optohybrid is not possible during the test)"
+                  fw_signal="loopback_8b10b_test_en" fw_default="0b0"
+                  sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
+            <node id="8B10B_LOOPBACK_USE_TRIG_LINKS" address="0x0" mask="0x00000004" permission="rw"
+                  description="If this bit is set then the 8b10b loopback test will also expect the DAQ TX data to be looped back to the trigger links and do the sync and count the errors on these links"
+                  fw_signal="loopback_8b10b_use_trig" fw_default="0b0"
                   sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
         </node>
-        
+
         <node id="LEGACY_SYSTEM" address="0x10000"
               description="Legacy system registers (taken from GLIB system core). These should be removed once the software is made compatible with the new system registers.">
               
@@ -377,13 +385,18 @@
         <node id="CTRL" address="0x0">
             <node id="RESET" address="0x0" mask="0x00000001" permission="w"
                   description="GEM system counters reset"
-                  fw_signal="reset_local" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
+                  fw_write_pulse_signal="reset_local"/>
         </node>
         
-        <node id="GBT_LOOPBACK" address="0x100" description="GBT loopback test submodule">
-            <node id="LINK_${GBT_IDX}"  address="0x0"
+        <node id="GBT_LOOPBACK" address="0x1000" description="GBT loopback test submodule">
+            <node id="CTRL" address="0x0">
+	        <node id="LOOP_THROUGH_OH" address="0x0" mask="0x00000001" permission="rw"
+		      description="This flag is used to indicate if the loopback test goes through OH or not. If it's set to 1 then only elinks that go to OH FPGA are checked."
+		      fw_signal="gbt_loop_through_oh" fw_default="0b0"/>
+            </node>
+            <node id="LINK_${GBT_IDX}"  address="0x10"
                   description="Link specific registers for GBT ${GBT_IDX}"
-                  generate="true" generate_size="12" generate_address_step="0x10" generate_idx_var="GBT_IDX">
+                  generate="true" generate_size="6" generate_address_step="0x10" generate_idx_var="GBT_IDX">
                 
                 <node id="SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
                       description="Indicates whether or not the sync has been acquired between TX and RX"
@@ -397,8 +410,37 @@
             </node>
         </node>
         
+        <node id="8b10b_LOOPBACK" address="0x2000" description="8b10b loopback test submodule">
+            <node id="LINK_${OH_IDX}"  address="0x10"
+                  description="Link specific registers for 8b10b link ${OH_IDX}"
+                  generate="true" generate_size="2" generate_address_step="0x10" generate_idx_var="OH_IDX">
+                
+                <node id="DAQ_SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
+                      description="Indicates whether or not the sync has been acquired between the DAQ TX and DAQ RX"
+                      fw_signal="daq_8b10b_loop_sync_done_arr(${OH_IDX})"/>
+                <node id="TRIG0_SYNC_DONE" mask="0x00000002" permission="r" address="0x0"
+                      description="Indicates whether or not the sync has been acquired between the DAQ TX and TRIG0 RX"
+                      fw_signal="trig0_8b10b_loop_sync_done_arr(${OH_IDX})"/>
+                <node id="TRIG1_SYNC_DONE" mask="0x00000004" permission="r" address="0x0"
+                      description="Indicates whether or not the sync has been acquired between the DAQ TX and TRIG1 RX"
+                      fw_signal="trig1_8b10b_loop_sync_done_arr(${OH_IDX})"/>
+                <node id="MEGA_WORD_CNT" mask="0xffffffff" permission="r" address="0x1"
+                      description="Number of generated data words received by the loopback RX"
+                      fw_signal="all_8b10b_loop_mega_word_cnt_arr(${OH_IDX})"/>
+                <node id="DAQ_ERROR_CNT" mask="0xffffffff" permission="r" address="0x2"
+                      description="Number of errors found in the received loopback data on the DAQ RX link"
+                      fw_signal="daq_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
+                <node id="TRIG0_ERROR_CNT" mask="0xffffffff" permission="r" address="0x3"
+                      description="Number of errors found in the received loopback data on the TRIG0 RX link"
+                      fw_signal="trig0_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
+                <node id="TRIG1_ERROR_CNT" mask="0xffffffff" permission="r" address="0x4"
+                      description="Number of errors found in the received loopback data on the TRIG1 RX link"
+                      fw_signal="trig1_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
+            </node>
+        </node>
+
     </node>
-    
+
     <!--DAQ module -->
     <node id="DAQ"  address="0x00700000"
           description="DAQ module buffers track data, builds events, analyses the data for consistency and ships off the events with all the needed headers and trailers to AMC13 over DAQLink"
@@ -561,7 +603,7 @@
 
         <node id="OH${OH_IDX}"  address="0x10"
               description="Link specific registers for OH${OH_IDX}"
-              generate="true" generate_size="4" generate_address_step="0x10" generate_idx_var="OH_IDX">
+              generate="true" generate_size="2" generate_address_step="0x10" generate_idx_var="OH_IDX">
             
             <node id="CONTROL"  address="0x0">
                 <node id="EOE_TIMEOUT" address="0x3"  mask="0x00ffffff" permission="rw"
@@ -741,13 +783,11 @@
           fw_reg_addr_lsb="0">
         <node id="CTRL" address="0x0" description="OH Link control">
             <node id="CNT_RESET" address="0x0" mask="0x80000000" permission="w" description="Counter reset"
-                  fw_signal="reset_local" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
-            <node id="DEBUG_CLK_CNT_RESET" address="0x0" mask="0x40000000" permission="w" description="Debug clocks counter reset"
-                  fw_signal="debug_clk_reset" fw_is_write_pulse="true" fw_write_pulse_length="1"/>
+                  fw_write_pulse_signal="reset_local"/>
         </node>
 
         <node id="OH${OH_IDX}" address="0x100" description="Links for OH ${OH_IDX}"
-              generate="true" generate_size="4" generate_address_step="0x100" generate_idx_var="OH_IDX">
+              generate="true" generate_size="2" generate_address_step="0x100" generate_idx_var="OH_IDX">
             <node id="TRACK_LINK_ERROR_CNT" address="0x0" mask="0xffffffff" permission="r"
                   description="Number of times this link didn't see the correct comma character at the correct time"
                   fw_signal="tk_error_cnt_arr(${OH_IDX})"
@@ -772,93 +812,269 @@
                   description="Number of underflow occurences in the track rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
                   fw_signal="sync_tk_rx_unf_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT0_LINK_RX_SYNC_OVF_CNT" address="0x6" mask="0xffffffff" permission="r"
-                  description="Number of overflow occurences in the GBT0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt0_rx_ovf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT0_LINK_RX_SYNC_UNF_CNT" address="0x7" mask="0xffffffff" permission="r"
-                  description="Number of underflow occurences in the GBT0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt0_rx_unf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT1_LINK_RX_SYNC_OVF_CNT" address="0x8" mask="0xffffffff" permission="r"
-                  description="Number of overflow occurences in the GBT1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt1_rx_ovf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT1_LINK_RX_SYNC_UNF_CNT" address="0x9" mask="0xffffffff" permission="r"
-                  description="Number of underflow occurences in the GBT1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt1_rx_unf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT2_LINK_RX_SYNC_OVF_CNT" address="0xa" mask="0xffffffff" permission="r"
-                  description="Number of overflow occurences in the GBT2 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt2_rx_ovf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>
-            <node id="GBT2_LINK_RX_SYNC_UNF_CNT" address="0xb" mask="0xffffffff" permission="r"
-                  description="Number of underflow occurences in the GBT2 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
-                  fw_signal="sync_gbt2_rx_unf_arr(${OH_IDX})"
-                  sw_monitor_warn_min_threshold="1"/>                  
-            <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0xc" mask="0xffffffff" permission="r"
+            <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x6" mask="0xffffffff" permission="r"
                   description="Number of overflow occurences in the trigger link0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
                   fw_signal="sync_tr0_rx_ovf_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1"/>
-            <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0xd" mask="0xffffffff" permission="r"
+            <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x7" mask="0xffffffff" permission="r"
                   description="Number of underflow occurences in the trigger link0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
                   fw_signal="sync_tr0_rx_unf_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1"/>
-            <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0xe" mask="0xffffffff" permission="r"
+            <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x8" mask="0xffffffff" permission="r"
                   description="Number of overflow occurences in the trigger link1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
                   fw_signal="sync_tr1_rx_ovf_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1"/>
-            <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0xf" mask="0xffffffff" permission="r"
+            <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x9" mask="0xffffffff" permission="r"
                   description="Number of underflow occurences in the trigger link1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
                   fw_signal="sync_tr1_rx_unf_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1"/>
 
-            <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0x10" mask="0xffffffff" permission="r"
+            <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0xa" mask="0xffffffff" permission="r"
                   description="Number of not-in-table errors in the tracking rx link"
                   fw_signal="tk_not_in_table_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
-            <node id="TRACK_LINK_DISPERR_CNT" address="0x11" mask="0xffffffff" permission="r"
+            <node id="TRACK_LINK_DISPERR_CNT" address="0xb" mask="0xffffffff" permission="r"
                   description="Number of dispersion errors in the tracking rx link"
                   fw_signal="tk_disperr_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
-            <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0x12" mask="0xffffffff" permission="r"
+            <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0xc" mask="0xffffffff" permission="r"
                   description="Number of not-in-table errors in the trigger link0 rx"
                   fw_signal="tr0_not_in_table_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
-            <node id="TRIG0_LINK_DISPERR_CNT" address="0x13" mask="0xffffffff" permission="r"
+            <node id="TRIG0_LINK_DISPERR_CNT" address="0xd" mask="0xffffffff" permission="r"
                   description="Number of dispersion errors in the trigger link0 rx"
                   fw_signal="tr0_disperr_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
-            <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0x14" mask="0xffffffff" permission="r"
+            <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0xe" mask="0xffffffff" permission="r"
                   description="Number of not-in-table errors in the trigger link1 rx"
                   fw_signal="tr1_not_in_table_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
-            <node id="TRIG1_LINK_DISPERR_CNT" address="0x15" mask="0xffffffff" permission="r"
+            <node id="TRIG1_LINK_DISPERR_CNT" address="0xf" mask="0xffffffff" permission="r"
                   description="Number of dispersion errors in the trigger link1 rx"
                   fw_signal="tr1_disperr_arr(${OH_IDX})"
                   sw_monitor_warn_min_threshold="1000"/>
 
-            <node id="GBT_LINK_SYNC_DONE" address="0x20" mask="0x00000001" permission="r"
+            <node id="GBT_LINK_SYNC_DONE" address="0x10" mask="0x00000001" permission="r"
                   description="Indicates whether or not the sync procedure has been done on the GBT link for this OH (if GBT is not enabled, this will be always 0)"
                   fw_signal="gbt_rx_sync_done_arr_i(${OH_IDX})"/>
 
-            <node id="DEBUG_CLK_CNT" address="0x21" mask="0xffffffff" permission="r"
-                  description="Clock debug counter -- the lowest 16 bits are counting track/control RX clocks and the top 16 bits are counting the 160MHz TTC clocks"
-                  fw_signal="debug_clk_cnt_arr(${OH_IDX})"/>
+        </node>
+    </node>
 
-            <node id="CTRL" address="0x50" description="OH Link ${OH_IDX} control">
-                <node id="DAQ_USE_GBT" address="0x0" mask="0x00000001" permission="rw"
-                      description="For OHv2b: if this is 1 then GBT link will be used for DAQ, otherwise 8b10b link will be used"
-                      fw_signal="daq_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
-                <node id="REG_USE_GBT" address="0x0" mask="0x00000002" permission="rw"
-                      description="For OHv2b: if this is 1 then GBT link will be used for OH register access, otherwise 8b10b link will be used"
-                      fw_signal="reg_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
-                <node id="TTC_USE_GBT" address="0x0" mask="0x00000004" permission="rw"
-                      description="For OHv2b: if this is 1 then GBT link will be used to transmit TTC commands, otherwise 8b10b link will be used"
-                      fw_signal="ttc_use_gbt_arr(${OH_IDX})" fw_default="0b0"/>
+    <!--GEM slow control module -->
+    <node id="SLOW_CONTROL"  address="0x00B00000"
+          description="This module is handling slow control (mainly OH SCA and OH GBTx IC related communication)"
+          fw_is_module="true"
+          fw_module_file="../common/hdl/slow_control/slow_control.vhd"
+          fw_user_clock_signal="ttc_clk_i.clk_40"
+          fw_bus_clock_signal="ipb_clk_i"
+          fw_bus_reset_signal="ipb_reset_i"
+          fw_master_bus_signal="ipb_mosi_i"
+          fw_slave_bus_signal="ipb_miso_o"
+          fw_reg_addr_msb="16"
+          fw_reg_addr_lsb="0">
+
+        <node id="SCA" address="0x0">
+            <node id="MODULE_RESET" address="0x0" mask="0x00000001" permission="w"
+                  description="SCA controller reset (coming out of module reset it will also reset and reconfigure the SCA chip)"
+                  fw_write_pulse_signal="sca_reset"/>
+                  
+            <node id="STATUS" address="0x1">
+                <node id="READY" address="0x0" mask="0x00000001" permission="r"
+                      description="Indicates that the SCA controller has good communication with the SCA chip"
+                      fw_signal="sca_ready"/>
+                <node id="CRITICAL_ERROR" address="0x0" mask="0x00000002" permission="r"
+                      description="Indicates that the SCA controller has encountered a critical error (needs reset)"
+                      fw_signal="sca_critical_error"/>
+                <node id="RX_ERR_CNT" address="0x1" mask="0x0000ffff" permission="r"
+                      description="Number of RX errors"
+                      fw_signal="sca_rx_err_cnt"/>
+                <node id="SEQ_NUM_ERR_CNT" address="0x1" mask="0xffff0000" permission="r"
+                      description="Number of sequence number errors"
+                      fw_signal="sca_seq_num_err_cnt"/>
+                <node id="CRC_ERR_CNT" address="0x2" mask="0x0000ffff" permission="r"
+                      description="Number of CRC errors"
+                      fw_signal="sca_crc_err_cnt"/>
+                <node id="TRANSACTION_TIMEOUT_CNT" address="0x2" mask="0xffff0000" permission="r"
+                      description="Number of transaction timeouts"
+                      fw_signal="sca_tr_timeout_cnt"/>
+                <node id="TRANSACTION_FAIL_CNT" address="0x3" mask="0x0000ffff" permission="r"
+                      description="Number of transaction failures (all retries used up)"
+                      fw_signal="sca_tr_fail_cnt"/>
+                <node id="LAST_SCA_ERROR" address="0x3" mask="0x007f0000" permission="r"
+                      description="Last error reported by the SCA chip"
+                      fw_signal="sca_last_sca_error"/>
+                <node id="TRANSACTION_DONE_CNT" address="0x4" mask="0xffffffff" permission="r"
+                      description="Number of transactions successfully executed"
+                      fw_signal="sca_tr_done_cnt"/>
+            </node>
+            
+            <node id="MANUAL_CONTROL" address="0x1000">
+                <node id="FPGA_HARD_RESET" address="0x0" mask="0x00000001" permission="w"
+                      description="Writing to this register will trigger OH FPGA hard reset"
+                      fw_write_pulse_signal="manual_hard_reset"/>
+                <node id="SCA_CMD_CHANNEL" address="0x1" mask="0x000000ff" permission="rw"
+                      description="Manual SCA command: channel"
+                      fw_signal="sca_user_command.channel" fw_default="0x00"/>
+                <node id="SCA_CMD_COMMAND" address="0x1" mask="0x0000ff00" permission="rw"
+                      description="Manual SCA command: command"
+                      fw_signal="sca_user_command.command" fw_default="0x00"/>
+                <node id="SCA_CMD_LENGTH" address="0x1" mask="0x00ff0000" permission="rw"
+                      description="Manual SCA command: length (range = 0 to 4)"
+                      fw_signal="sca_user_command.length" fw_default="0x00"/>
+                <node id="SCA_CMD_DATA" address="0x2" mask="0xffffffff" permission="rw"
+                      description="Manual SCA command: data"
+                      fw_signal="sca_user_command.data" fw_default="0x00000000"/>
+                <node id="SCA_CMD_EXECUTE" address="0x3" mask="0x00000001" permission="w"
+                      description="Manual SCA command: writing to this register will trigger the execution of the SCA command"
+                      fw_write_pulse_signal="sca_user_command_en" fw_write_done_signal="sca_user_command_done"/>
+                <node id="SCA_RPY_CHANNEL" address="0x4" mask="0x000000ff" permission="r"
+                      description="SCA reply to the manual command: channel"
+                      fw_signal="sca_user_reply.channel"/>
+                <node id="SCA_RPY_ERROR" address="0x4" mask="0x0000ff00" permission="r"
+                      description="SCA reply to the manual command: command"
+                      fw_signal="sca_user_reply.error"/>
+                <node id="SCA_RPY_LENGTH" address="0x4" mask="0x00ff0000" permission="r"
+                      description="SCA reply to the manual command: length (range = 0 to 4)"
+                      fw_signal="sca_user_reply.length"/>
+                <node id="SCA_RPY_DATA" address="0x5" mask="0xffffffff" permission="r"
+                      description="SCA reply to the manual command: data"
+                      fw_signal="sca_user_reply.data"/>
             </node>
 
+            <node id="ADC_MONITORING" address="0x2000">
+                <node id="MONITORING_OFF" address="0x0" mask="0x10000000" permission="rw"
+                      description="If this is set to 1 then ADC monitoring is turned suspended"
+                      fw_signal="sca_adc_monitor_off" fw_default="0b0"/>
+                <node id="AVCCN" address="0x1" mask="0x00000fff" permission="r"
+                      description="AVCCN voltage"
+                      fw_signal="sca_adc_readings(0)"/>
+                <node id="AVTTN" address="0x1" mask="0x00fff000" permission="r"
+                      description="AVTTN voltage"
+                      fw_signal="sca_adc_readings(1)"/>
+                <node id="1V0_INT" address="0x2" mask="0x00000fff" permission="r"
+                      description="1.0V INT voltage"
+                      fw_signal="sca_adc_readings(2)"/>
+                <node id="1V8F" address="0x2" mask="0x00fff000" permission="r"
+                      description="1.8V F voltage"
+                      fw_signal="sca_adc_readings(3)"/>
+                <node id="1V5" address="0x3" mask="0x00000fff" permission="r"
+                      description="1.5V voltage"
+                      fw_signal="sca_adc_readings(4)"/>
+                <node id="2V5_IO" address="0x3" mask="0x00fff000" permission="r"
+                      description="2.5V IO voltage"
+                      fw_signal="sca_adc_readings(5)"/>
+                <node id="3V0" address="0x4" mask="0x00000fff" permission="r"
+                      description="3.0V voltage"
+                      fw_signal="sca_adc_readings(6)"/>
+                <node id="1V8" address="0x4" mask="0x00fff000" permission="r"
+                      description="1.8V voltage"
+                      fw_signal="sca_adc_readings(7)"/>
+                <node id="VTRX_RSSI2" address="0x5" mask="0x00000fff" permission="r"
+                      description="VTRX RSSI2 voltage"
+                      fw_signal="sca_adc_readings(8)"/>
+                <node id="VTRX_RSSI1" address="0x5" mask="0x00fff000" permission="r"
+                      description="VTRX RSSI1 voltage"
+                      fw_signal="sca_adc_readings(9)"/>
+                <node id="SCA_TEMP" address="0x6" mask="0x00000fff" permission="r"
+                      description="SCA Temperature"
+                      fw_signal="sca_adc_readings(10)"/>
+                <node id="BOARD_TEMP1" address="0x6" mask="0x00fff000" permission="r"
+                      description="Board Temperature Sensor #1"
+                      fw_signal="sca_adc_readings(11)"/>
+                <node id="BOARD_TEMP2" address="0x7" mask="0x00000fff" permission="r"
+                      description="Board Temperature Sensor #2"
+                      fw_signal="sca_adc_readings(12)"/>
+                <node id="BOARD_TEMP3" address="0x7" mask="0x00fff000" permission="r"
+                      description="Board Temperature Sensor #3"
+                      fw_signal="sca_adc_readings(13)"/>
+                <node id="BOARD_TEMP4" address="0x8" mask="0x00000fff" permission="r"
+                      description="Board Temperature Sensor #4"
+                      fw_signal="sca_adc_readings(14)"/>
+                <node id="BOARD_TEMP5" address="0x8" mask="0x00fff000" permission="r"
+                      description="Board Temperature Sensor #5"
+                      fw_signal="sca_adc_readings(15)"/>
+                <node id="BOARD_TEMP6" address="0x9" mask="0x00000fff" permission="r"
+                      description="Board Temperature Sensor #6"
+                      fw_signal="sca_adc_readings(16)"/>
+                <node id="BOARD_TEMP7" address="0x9" mask="0x00fff000" permission="r"
+                      description="Board Temperature Sensor #7"
+                      fw_signal="sca_adc_readings(17)"/>
+                <node id="BOARD_TEMP8" address="0xa" mask="0x00000fff" permission="r"
+                      description="Board Temperature Sensor #8"
+                      fw_signal="sca_adc_readings(18)"/>
+                <node id="BOARD_TEMP9" address="0xa" mask="0x00fff000" permission="r"
+                      description="Board Temperature Sensor #9"
+                      fw_signal="sca_adc_readings(19)"/>
+            </node>
+
+            <node id="JTAG" address="0x2100">
+                <node id="ENABLE" address="0x0" mask="0x00000001" permission="rw"
+                      description="If this is not set to 1 then none of the JTAG registers will work"
+                      fw_signal="jtag_enabled" fw_default="0b0"/>
+                <node id="NUM_BITS" address="0x1" mask="0x000007f" permission="rw"
+                      description="Number of bits in the JTAG command (0 means 128). Once you shift this number of bits of TDO data, the JTAG command will be executed and TDI is available for reading"
+                      fw_signal="jtag_cmd_length" fw_default="0b0000000"/>
+                <node id="TMS" address="0x2" mask="0xffffffff" permission="w"
+                      description="TMS bits to shift to the SCA chip. 32 bits are shifted with each write to this register. The write transaction completes once the bit shifting to the SCA is already done and confirmed by the SCA, so there's no need to sleep between the consecutive writes to this register."
+                      fw_signal="jtag_tms" fw_write_pulse_signal="jtag_shift_tms_en" fw_write_done_signal="jtag_shift_done"
+                      fw_default="0x00000000"/>
+                <node id="TDO" address="0x3" mask="0xffffffff" permission="w"
+                      description="TDO bits to shift to the SCA chip. 32 bits are shifted with each write to this register. Once the number of bits shifted is equal to or greater than the NUM_BITS the JTAG command will be executed. The write transaction completes once the bit shifting to the SCA is already done and confirmed by the SCA, so there's no need to sleep between the consecutive writes to this register."
+                      fw_signal="jtag_tdo" fw_write_pulse_signal="jtag_shift_tdo_en" fw_write_done_signal="jtag_shift_done"
+                      fw_default="0x00000000"/>
+                <node id="TDI" address="0x4" mask="0xffffffff" permission="r"
+                      description="When reading this register the TDI bits are shifted from the SCA (32 bits with each read)."
+                      fw_signal="jtag_tdi" fw_read_pulse_signal="jtag_shift_tdi_en" fw_read_ready_signal="jtag_shift_done"/>
+            </node>
+                                    
+            <node id="DEBUG" address="0x3000">
+                <node id="RAW_TX_LAST_CMD_0" address="0x0" mask="0xffffffff" permission="r"
+                      description="Last raw output on the TX, bits [31:0]"
+                      fw_signal="sca_tx_raw_last_cmd(31 downto 0)"/>
+                <node id="RAW_TX_LAST_CMD_1" address="0x1" mask="0xffffffff" permission="r"
+                      description="Last raw output on the TX, bits [63:32]"
+                      fw_signal="sca_tx_raw_last_cmd(63 downto 32)"/>
+                <node id="RAW_TX_LAST_CMD_2" address="0x2" mask="0xffffffff" permission="r"
+                      description="Last raw output on the TX, bits [95:64]"
+                      fw_signal="sca_tx_raw_last_cmd(95 downto 64)"/>
+                <node id="RAW_RX_LAST_RPY_0" address="0x3" mask="0xffffffff" permission="r"
+                      description="Last raw input on the RX, bits [31:0]"
+                      fw_signal="sca_rx_raw_last_reply(31 downto 0)"/>
+                <node id="RAW_RX_LAST_RPY_1" address="0x4" mask="0xffffffff" permission="r"
+                      description="Last raw input on the RX, bits [63:32]"
+                      fw_signal="sca_rx_raw_last_reply(63 downto 32)"/>
+                <node id="RAW_RX_LAST_RPY_2" address="0x5" mask="0xffffffff" permission="r"
+                      description="Last raw input on the RX, bits [95:64]"
+                      fw_signal="sca_rx_raw_last_reply(95 downto 64)"/>
+                <node id="RX_LAST_CALC_CRC" address="0x6" mask="0x0000ffff" permission="r"
+                      description="RX last calculated CRC"
+                      fw_signal="sca_rx_last_calc_crc"/>
+            </node>
+                  
         </node>
+
+        <node id="IC" address="0x10000">
+            <node id="ADDRESS" address="0x0" mask="0x0000ffff" permission="rw"
+                  description="GBTx register address to read or write"
+                  fw_signal="ic_address" fw_default="0x0000"/>
+            <node id="READ_WRITE_LENGTH" address="0x1" mask="0x00000007" permission="rw"
+                  description="Number of data bytes to be written or read e.g. if you set it to 4 then 4 consecutive GBTx registers will be written with the 4 bytes in WRITE_DATA register. Max is 4."
+                  fw_signal="ic_rw_length" fw_default="0x01"/>
+            <node id="WRITE_DATA" address="0x2" mask="0xffffffff" permission="rw"
+                  description="GBTx register value to write"
+                  fw_signal="ic_write_data" fw_default="0x00"/>
+            <node id="EXECUTE_WRITE" address="0x3" mask="0x00000001" permission="w"
+                  description="writing any value here will execute a GBTx register write operation"
+                  fw_write_pulse_signal="ic_write_req" fw_write_done_signal="ic_write_done"/>
+            <node id="EXECUTE_READ" address="0x4" mask="0x00000001" permission="w"
+                  description="writing any value here will execute a GBTx register read operation"
+                  fw_write_pulse_signal="ic_read_req"/>
+            <node id="GBTX_I2C_ADDR" address="0x5" mask="0x0000000f" permission="rw"
+                  description="GBTx I2C address as defined by the I2CADDRESS pins of the GBTx chip"
+                  fw_signal="ic_gbtx_i2c_addr" fw_default="0x1"/>
+        </node>
+
     </node>
 
     <!--OptoHybrid module -->
@@ -868,7 +1084,7 @@
           fw_is_module_external="true">
                     
         <node id="OH${OH_IDX}"  address="0x0" description="Optohybrid ${OH_IDX}"
-              generate="true" generate_size="4" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
+              generate="true" generate_size="2" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
 
             <node id="COUNTERS"  address="0xa000"
                     description="Counters provided on the OptoHybrid">       
@@ -1054,8 +1270,23 @@
                 <node id="T1"  address="0x54"
                         description="Counters related to the OptoHybrid T1 signals">
                     <node id="TTC"       address="0x00"
-                            description="T1 signals received from the GLIB TTC decoder
-                                        by way of the uTCA backplane (AMC13)">
+                            description="T1 signals received from the AMC over the 8b10b fiber link">
+                        <node id="L1A"      address="0x0"  permission="r">
+                            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                        </node>
+                        <node id="CalPulse" address="0x1"  permission="r">
+                            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                        </node>
+                        <node id="Resync"   address="0x2"  permission="r">
+                            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                        </node>
+                        <node id="BC0"      address="0x3"  permission="r">
+                            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                        </node>                                        
+                    </node>
+
+                    <node id="GBT"       address="0x1b"
+                            description="T1 signals received from the AMC over the GBT link">
                         <node id="L1A"      address="0x0"  permission="r">
                             <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
                         </node>

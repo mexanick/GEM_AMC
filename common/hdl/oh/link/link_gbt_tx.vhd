@@ -21,9 +21,6 @@ port(
 
     ttc_clk_40_i            : in std_logic;    
     reset_i                 : in std_logic;    
-
-    use_t1                  : in std_logic;
-    use_req                 : in std_logic;
     
     vfat2_t1_i              : in t_t1;
     
@@ -52,17 +49,27 @@ begin
     --== STATE ==--
 
     process(ttc_clk_40_i)
+        variable sync_done_cnt : integer range 0 to 10 := 0;
     begin
         if (rising_edge(ttc_clk_40_i)) then
             if (reset_i = '1') then
                 state <= SYNC;
+                sync_done_cnt := 0;
             else
                 if (gbt_rx_sync_done_i = '0') then
                     state <= SYNC; -- go to sync state if rx is not synced (e.g. if we lost connection)
+                    sync_done_cnt := 0;
                 else
                     case state is
                         when SYNC        => state <= SYNC_DONE;
-                        when SYNC_DONE   => state <= FRAME_BEGIN;
+                        when SYNC_DONE   =>
+                            -- keep it in SYNC_DONE for 5 clock cycles
+                            if sync_done_cnt >= 5 then
+                                state <= FRAME_BEGIN;
+                            else
+                                state <= SYNC_DONE;
+                                sync_done_cnt := sync_done_cnt + 1;
+                            end if;
                         when FRAME_BEGIN => state <= ADDR_1;
                         when ADDR_1      => state <= ADDR_2;
                         when ADDR_2      => state <= DATA_0;
@@ -110,11 +117,7 @@ begin
             else
                 
                 -- whatever the state, the top 4 bits of elink 1 are reserved for TTC
-                if (use_t1 = '1') then
-                    gbt_tx_data_o(47 downto 44) <= vfat2_t1_i.lv1a & vfat2_t1_i.bc0 & vfat2_t1_i.resync & vfat2_t1_i.calpulse;
-                else
-                    gbt_tx_data_o(47 downto 44) <= x"0";
-                end if;
+                gbt_tx_data_o(47 downto 44) <= vfat2_t1_i.lv1a & vfat2_t1_i.bc0 & vfat2_t1_i.resync & vfat2_t1_i.calpulse;
                 
                 case state is
                     when SYNC =>
@@ -123,11 +126,7 @@ begin
                     when SYNC_DONE =>
                         gbt_tx_data_o(47 downto 32) <= not gbt_tx_sync_pattern_i;
                     when FRAME_BEGIN => 
-                        if (use_req = '1') then
-                            gbt_tx_data_o(43 downto 40) <= req_valid & req_data(64) & "00";
-                        else
-                            gbt_tx_data_o(43 downto 40) <= x"0";
-                        end if;
+                        gbt_tx_data_o(43 downto 40) <= req_valid & req_data(64) & "00";
                         gbt_tx_data_o(39 downto 32) <= req_data(63 downto 56);
                     when ADDR_1 =>  
                         gbt_tx_data_o(43 downto 32) <= req_data(55 downto 44);

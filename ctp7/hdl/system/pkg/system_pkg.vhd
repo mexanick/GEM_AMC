@@ -43,33 +43,33 @@ package system_package is
   type t_gth_config_arr is array (0 to g_NUM_OF_GTH_GTs-1) of t_gth_config;
 
   constant c_gth_config_arr : t_gth_config_arr := (
-    (gth_4p8g, TRUE),                   -- GTH FW Ch 0
-    (gth_4p8g, false),                  -- GTH FW Ch 1
-    (gth_4p8g, false),                  -- GTH FW Ch 2
-    (gth_4p8g, false),                  -- GTH FW Ch 3
-    (gth_4p8g, false),                  -- GTH FW Ch 4
-    (gth_4p8g, false),                  -- GTH FW Ch 5
-    (gth_4p8g, false),                  -- GTH FW Ch 6
-    (gth_4p8g, false),                  -- GTH FW Ch 7
-    (gth_4p8g, false),                  -- GTH FW Ch 8
-    (gth_4p8g, false),                  -- GTH FW Ch 9
-    (gth_4p8g, false),                  -- GTH FW Ch 10
-    (gth_4p8g, false),                  -- GTH FW Ch 11
+    (gth_3p2g, TRUE),                   -- GTH FW Ch 0
+    (gth_3p2g, false),                  -- GTH FW Ch 1
+    (gth_3p2g, false),                  -- GTH FW Ch 2
+    (gth_3p2g, false),                  -- GTH FW Ch 3
+    (gth_3p2g, false),                  -- GTH FW Ch 4
+    (gth_3p2g, false),                  -- GTH FW Ch 5
+    (gth_3p2g, false),                  -- GTH FW Ch 6
+    (gth_3p2g, false),                  -- GTH FW Ch 7
+    (gth_3p2g, false),                  -- GTH FW Ch 8
+    (gth_3p2g, false),                  -- GTH FW Ch 9
+    (gth_3p2g, false),                  -- GTH FW Ch 10
+    (gth_3p2g, false),                  -- GTH FW Ch 11
 
-    (gth_4p8g, false),                   -- GTH FW Ch 12
-    (gth_4p8g, false),                  -- GTH FW Ch 13
-    (gth_4p8g, false),                  -- GTH FW Ch 14
-    (gth_4p8g, false),                  -- GTH FW Ch 15
-    (gth_4p8g, false),                  -- GTH FW Ch 16
-    (gth_4p8g, false),                  -- GTH FW Ch 17
-    (gth_4p8g, false),                  -- GTH FW Ch 18
-    (gth_4p8g, false),                  -- GTH FW Ch 19
-    (gth_4p8g, false),                  -- GTH FW Ch 20
-    (gth_4p8g, false),                  -- GTH FW Ch 21
-    (gth_4p8g, false),                  -- GTH FW Ch 22
-    (gth_4p8g, false),                  -- GTH FW Ch 23
+    (gth_3p2g, false),                   -- GTH FW Ch 12
+    (gth_3p2g, false),                  -- GTH FW Ch 13
+    (gth_3p2g, false),                  -- GTH FW Ch 14
+    (gth_3p2g, false),                  -- GTH FW Ch 15
+    (gth_3p2g, false),                  -- GTH FW Ch 16
+    (gth_3p2g, false),                  -- GTH FW Ch 17
+    (gth_3p2g, false),                  -- GTH FW Ch 18
+    (gth_3p2g, false),                  -- GTH FW Ch 19
+    (gth_3p2g, false),                  -- GTH FW Ch 20
+    (gth_3p2g, false),                  -- GTH FW Ch 21
+    (gth_3p2g, false),                  -- GTH FW Ch 22
+    (gth_3p2g, false),                  -- GTH FW Ch 23
     
-    (gth_4p8g, false),                   -- GTH FW Ch 24
+    (gth_4p8g, TRUE),                   -- GTH FW Ch 24
     (gth_4p8g, false),                  -- GTH FW Ch 25
     (gth_4p8g, false),                  -- GTH FW Ch 26
     (gth_4p8g, false),                  -- GTH FW Ch 27

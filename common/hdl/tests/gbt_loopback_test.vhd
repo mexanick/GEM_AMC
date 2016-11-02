@@ -19,6 +19,9 @@ entity gbt_loopback_test is
         -- reset
         reset_i                 : in  std_logic;
         
+        -- control
+        oh_in_the_loop_i        : in std_logic;
+        
         -- gbt link
         gbt_clk_i               : in  std_logic;
         gbt_link_ready_i        : in  std_logic;
@@ -130,8 +133,18 @@ begin
                     case rx_state is
                         when SYNC => rx_state <= WAITING_TEST_BEGIN;
                         when WAITING_TEST_BEGIN =>
-                            if (gbt_rx_data_i = not SYNC_PATTERN) then -- start running when we see an inverted sync pattern
-                                rx_state <= RUNNING;
+                            if (oh_in_the_loop_i = '0') then
+                                if (gbt_rx_data_i = not SYNC_PATTERN) then -- start running when we see an inverted sync pattern
+                                    rx_state <= RUNNING;
+                                end if;
+                            else
+                                if ((gbt_rx_data_i(71 downto 64) = not SYNC_PATTERN(47 downto 40)) and
+                                    (gbt_rx_data_i(55 downto 48) = not SYNC_PATTERN(39 downto 32)) and
+                                    (gbt_rx_data_i(39 downto 32) = not SYNC_PATTERN(47 downto 40)) and
+                                    (gbt_rx_data_i(7 downto 0) = not SYNC_PATTERN(39 downto 32)))
+                                then
+                                    rx_state <= RUNNING;
+                                end if;                                
                             end if;
                         when RUNNING => rx_state <= RUNNING;
                         when others => rx_state <= SYNC;
@@ -160,20 +173,42 @@ begin
                         when SYNC =>
                             error_en <= '0';
                             rx_test_counter <= (others => '0');
-                            if (gbt_rx_data_i = SYNC_PATTERN) then
-                                link_sync_done <= '1';
+                            if (oh_in_the_loop_i = '0') then
+                                if (gbt_rx_data_i = SYNC_PATTERN) then
+                                    link_sync_done <= '1';
+                                end if;
+                            else
+                                if ((gbt_rx_data_i(71 downto 64) = SYNC_PATTERN(47 downto 40)) and
+                                    (gbt_rx_data_i(55 downto 48) = SYNC_PATTERN(39 downto 32)) and
+                                    (gbt_rx_data_i(39 downto 32) = SYNC_PATTERN(47 downto 40)) and
+                                    (gbt_rx_data_i(7 downto 0) = SYNC_PATTERN(39 downto 32)))
+                                then
+                                    link_sync_done <= '1';
+                                end if;
                             end if;
                         when RUNNING =>
                             rx_test_counter <= std_logic_vector(unsigned(rx_test_counter) + 1);
-                            if (gbt_rx_data_i = x"0" & rx_test_counter & not rx_test_counter &
-                                                       rx_test_counter & not rx_test_counter &
-                                                       rx_test_counter & not rx_test_counter &
-                                                       rx_test_counter & not rx_test_counter &
-                                                       rx_test_counter & not rx_test_counter)
-                            then
-                                error_en <= '0';
+                            if (oh_in_the_loop_i = '0') then
+                                if (gbt_rx_data_i = x"0" & rx_test_counter & not rx_test_counter &
+                                                           rx_test_counter & not rx_test_counter &
+                                                           rx_test_counter & not rx_test_counter &
+                                                           rx_test_counter & not rx_test_counter &
+                                                           rx_test_counter & not rx_test_counter)
+                                then
+                                    error_en <= '0';
+                                else
+                                    error_en <= '1';
+                                end if;
                             else
-                                error_en <= '1';
+                                if ((gbt_rx_data_i(71 downto 64) = rx_test_counter) and
+                                    (gbt_rx_data_i(55 downto 48) = not rx_test_counter) and
+                                    (gbt_rx_data_i(39 downto 32) = rx_test_counter) and
+                                    (gbt_rx_data_i(7 downto 0) = not rx_test_counter))
+                                then
+                                    error_en <= '0';
+                                else
+                                    error_en <= '1';
+                                end if;
                             end if;
                         when others =>
                             error_en <= '0';

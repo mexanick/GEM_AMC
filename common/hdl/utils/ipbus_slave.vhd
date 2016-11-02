@@ -34,11 +34,14 @@ entity ipbus_slave is
         usr_clk_i              : in  std_logic;                              -- user clock used to read and write regs_write_arr_o and regs_read_arr_i 
         regs_read_arr_i        : in  t_std32_array(g_NUM_REGS - 1 downto 0); -- read registers
         regs_write_arr_o       : out t_std32_array(g_NUM_REGS - 1 downto 0); -- write registers 
-        read_pulse_arr_o       : out std_logic_vector(g_NUM_REGS - 1 downto 0);  -- asserted when reading the given register (note that this is not guaranteed to only last 1 clock cycle -- it depends on the frequency relation between usr_clk_i and ipb_clk_i)
-        write_pulse_arr_o      : out std_logic_vector(g_NUM_REGS - 1 downto 0);  -- asserted when writing the given register (note that this is not guaranteed to only last 1 clock cycle -- it depends on the frequency relation between usr_clk_i and ipb_clk_i)
+        read_pulse_arr_o       : out std_logic_vector(g_NUM_REGS - 1 downto 0);  -- asserted when reading the given register
+        write_pulse_arr_o      : out std_logic_vector(g_NUM_REGS - 1 downto 0);  -- asserted when writing the given register
+        regs_read_ready_arr_i  : in  std_logic_vector(g_NUM_REGS - 1 downto 0); -- read operations will wait for this bit to be 1 before latching in the data and completing the read operation
+        regs_write_done_arr_i  : in  std_logic_vector(g_NUM_REGS - 1 downto 0); -- write operations will wait for this bit to be 1 before finishing the transaction
 
-        regs_defaults_arr_i    : in  t_std32_array(g_NUM_REGS - 1 downto 0); -- register default values - set when ipb_reset_i = '1'
-        individual_addrs_arr_i : in  t_std32_array(g_NUM_REGS - 1 downto 0)  -- individual register addresses - only used when g_USE_INDIVIDUAL_ADDRS = "TRUE"
+        regs_defaults_arr_i    : in  t_std32_array(g_NUM_REGS - 1 downto 0);    -- register default values - set when ipb_reset_i = '1'
+        writable_regs_i        : in  std_logic_vector(g_NUM_REGS - 1 downto 0); -- bitmask indicating which registers are writable and need defaults to be loaded (this helps to save resources)
+        individual_addrs_arr_i : in  t_std32_array(g_NUM_REGS - 1 downto 0)     -- individual register addresses - only used when g_USE_INDIVIDUAL_ADDRS = "TRUE"
     );
 end ipbus_slave;
 
@@ -58,11 +61,16 @@ architecture Behavioral of ipbus_slave is
     signal regs_read_ack            : std_logic := '0';
     signal regs_read_ack_sync_ipb   : std_logic := '0';
     signal regs_write_ack_sync_ipb  : std_logic := '0';
+    signal regs_read_strb_sync_usr  : std_logic := '0';
+    signal regs_write_strb_sync_usr : std_logic := '0';
     signal ipb_reset_sync_usr       : std_logic := '0';
     
+    signal regs_write_pulse_done    : std_logic := '0'; 
+    signal regs_read_pulse_done     : std_logic := '0'; 
+    
     -- Timeout
-    constant ipb_timeout      : unsigned(3 downto 0) := x"f";
-    signal ipb_timer          : unsigned(3 downto 0) := (others => '0');
+    constant ipb_timeout      : unsigned(15 downto 0) := x"1388"; -- 5000 clock cycles
+    signal ipb_timer          : unsigned(15 downto 0) := (others => '0');
     
     -- DEBUG
     signal ipb_mosi_debug   : ipb_wbus;
@@ -158,7 +166,7 @@ begin
                             ipb_state <= RST;
                         -- Timeout (useful if user clock is not available)
                         elsif (ipb_timer > ipb_timeout) then
-                            ipb_miso <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => (others => '0'));
+                            ipb_miso <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => x"baadbaad");
                             regs_read_strb <= '0';
                             ipb_state <= RST;
                             ipb_timer <= (others => '0');
@@ -204,6 +212,28 @@ begin
             sync_o  => regs_write_ack_sync_ipb
         );
 
+    i_write_strb_sync_usr_clk: 
+    entity work.synchronizer
+        generic map(
+            N_STAGES => 2
+        )
+        port map(
+            async_i => regs_write_strb,
+            clk_i   => usr_clk_i,
+            sync_o  => regs_write_strb_sync_usr
+        );
+
+    i_read_strb_sync_usr_clk: 
+    entity work.synchronizer
+        generic map(
+            N_STAGES => 2
+        )
+        port map(
+            async_i => regs_read_strb,
+            clk_i   => usr_clk_i,
+            sync_o  => regs_read_strb_sync_usr
+        );
+
     i_ipb_reset_sync_usr_clk: 
     entity work.synchronizer
         generic map(
@@ -214,7 +244,7 @@ begin
             clk_i   => usr_clk_i,
             sync_o  => ipb_reset_sync_usr
         );
-
+                
     -- data transfer from the user clock domain to ipb clock domain
     p_usr_clk_write_sync:
     process (usr_clk_i) is
@@ -223,16 +253,30 @@ begin
             if (ipb_reset_sync_usr = '1') then
                 defaults:
                 for i in 0 to g_NUM_REGS - 1 loop
-                    regs_write_arr_o(i) <= regs_defaults_arr_i(i);
+                    if (writable_regs_i(i) = '1') then
+                        regs_write_arr_o(i) <= regs_defaults_arr_i(i);
+                    end if;
                 end loop;
+                
+                regs_write_pulse_done <= '0';
             else
-                if (regs_write_strb = '1') then
+                if (regs_write_strb_sync_usr = '1') then
                     regs_write_arr_o(ipb_reg_sel) <= reg_write_data;
-                    regs_write_ack <= '1';
-                    write_pulse_arr_o(ipb_reg_sel) <= '1';
+                    
+                    if (regs_write_done_arr_i(ipb_reg_sel) = '1') then
+                        regs_write_ack <= '1';
+                    end if;
+                    
+                    if (regs_write_pulse_done = '0') then
+                        write_pulse_arr_o(ipb_reg_sel) <= '1';
+                        regs_write_pulse_done <= '1';
+                    else
+                        write_pulse_arr_o(ipb_reg_sel) <= '0';
+                    end if;
                 else
                     regs_write_ack <= '0';
                     write_pulse_arr_o(ipb_reg_sel) <= '0';
+                    regs_write_pulse_done <= '0';
                 end if;
             end if;
         end if;
@@ -243,13 +287,23 @@ begin
     process (usr_clk_i) is
     begin
         if rising_edge(usr_clk_i) then            
-            if (regs_read_strb = '1') then
-                reg_read_data <= regs_read_arr_i(ipb_reg_sel);
-                regs_read_ack <= '1';
-                read_pulse_arr_o(ipb_reg_sel) <= '1';
+            if (regs_read_strb_sync_usr = '1') then
+                
+                if (regs_read_ready_arr_i(ipb_reg_sel) = '1') then
+                    reg_read_data <= regs_read_arr_i(ipb_reg_sel);
+                    regs_read_ack <= '1';
+                end if;
+                
+                if (regs_read_pulse_done = '0') then
+                    read_pulse_arr_o(ipb_reg_sel) <= '1';
+                    regs_read_pulse_done <= '1';
+                else
+                    read_pulse_arr_o(ipb_reg_sel) <= '0';
+                end if;
             else
                 regs_read_ack <= '0';
                 read_pulse_arr_o(ipb_reg_sel) <= '0';
+                regs_read_pulse_done <= '0';
             end if;
         end if;
     end process p_usr_clk_read_sync;

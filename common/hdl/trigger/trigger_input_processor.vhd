@@ -58,8 +58,7 @@ begin
         valid_clusters(i) <= '0' when sbit_clusters_i(i).address(10 downto 9) = "11" else '1';
     end generate;
 
-    p_vfat2_size_check:
-    process (clk_i)
+    p_vfat2_size_check : process(clk_i)
     begin
         if (rising_edge(clk_i)) then
             invalid_size <= '0';
@@ -168,18 +167,19 @@ begin
             en_i      => link_status_i(i).missed_comma,
             count_o    => missed_comma_cnt_o(((i + 1) * 16) - 1 downto i * 16)
         );
+            
         
-        i_invalid_size_cnt: entity work.counter
-            generic map(
-                g_COUNTER_WIDTH  => 16
-            )
-            port map(
-                ref_clk_i => clk_i,
-                reset_i   => reset_i or reset_cnt_i,
-                en_i      => invalid_size,
-                count_o   => invalid_size_cnt_o(((i + 1) * 16) - 1 downto i * 16)
-            );     
-        
+        i_invalid_size_cnt : entity work.counter
+        generic map(
+            g_COUNTER_WIDTH => 16
+        )
+        port map(
+            ref_clk_i => clk_i,
+            reset_i   => reset_i or reset_cnt_i,
+            en_i      => invalid_size,
+            count_o   => invalid_size_cnt_o(((i + 1) * 16) - 1 downto i * 16)
+        );     
+             
         i_link_ovf_cnt: entity work.counter
         generic map(
             g_COUNTER_WIDTH => 16            

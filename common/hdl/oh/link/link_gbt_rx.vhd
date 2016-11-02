@@ -194,14 +194,11 @@ begin
     begin
         if (rising_edge(ttc_clk_40_i)) then
             if (reset_i = '1') then
-                evt_en_o <= '0';
                 evt_rcvd_o <= '0';
-                evt_data_o <= (others => '0');
                 evt_valid <= '0';
             else
                 case state is   
                     when HEADER => 
-                        evt_en_o <= '0'; 
                         evt_rcvd_o <= oh_data(30);
                         evt_valid <= oh_data(30);
                     when TK_DATA =>                         
