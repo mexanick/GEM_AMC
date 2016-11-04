@@ -209,16 +209,6 @@ begin
     regs_addresses(27)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2022";
     regs_addresses(28)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2023";
     regs_addresses(29)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2024";
-    regs_addresses(30)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2030";
-    regs_addresses(31)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2031";
-    regs_addresses(32)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2032";
-    regs_addresses(33)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2033";
-    regs_addresses(34)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2034";
-    regs_addresses(35)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2040";
-    regs_addresses(36)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2041";
-    regs_addresses(37)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2042";
-    regs_addresses(38)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2043";
-    regs_addresses(39)(REG_GEM_TESTS_ADDRESS_MSB downto REG_GEM_TESTS_ADDRESS_LSB) <= '0' & x"2044";
 
     -- Connect read signals
     regs_read_arr(1)(REG_GEM_TESTS_GBT_LOOPBACK_CTRL_LOOP_THROUGH_OH_BIT) <= gbt_loop_through_oh;
@@ -254,20 +244,6 @@ begin
     regs_read_arr(27)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_DAQ_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_DAQ_ERROR_CNT_LSB) <= daq_8b10b_loop_error_cnt_arr(1);
     regs_read_arr(28)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_TRIG0_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_TRIG0_ERROR_CNT_LSB) <= trig0_8b10b_loop_error_cnt_arr(1);
     regs_read_arr(29)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_TRIG1_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_1_TRIG1_ERROR_CNT_LSB) <= trig1_8b10b_loop_error_cnt_arr(1);
-    regs_read_arr(30)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_DAQ_SYNC_DONE_BIT) <= daq_8b10b_loop_sync_done_arr(2);
-    regs_read_arr(30)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG0_SYNC_DONE_BIT) <= trig0_8b10b_loop_sync_done_arr(2);
-    regs_read_arr(30)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG1_SYNC_DONE_BIT) <= trig1_8b10b_loop_sync_done_arr(2);
-    regs_read_arr(31)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_MEGA_WORD_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_MEGA_WORD_CNT_LSB) <= all_8b10b_loop_mega_word_cnt_arr(2);
-    regs_read_arr(32)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_DAQ_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_DAQ_ERROR_CNT_LSB) <= daq_8b10b_loop_error_cnt_arr(2);
-    regs_read_arr(33)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG0_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG0_ERROR_CNT_LSB) <= trig0_8b10b_loop_error_cnt_arr(2);
-    regs_read_arr(34)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG1_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_2_TRIG1_ERROR_CNT_LSB) <= trig1_8b10b_loop_error_cnt_arr(2);
-    regs_read_arr(35)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_DAQ_SYNC_DONE_BIT) <= daq_8b10b_loop_sync_done_arr(3);
-    regs_read_arr(35)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG0_SYNC_DONE_BIT) <= trig0_8b10b_loop_sync_done_arr(3);
-    regs_read_arr(35)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG1_SYNC_DONE_BIT) <= trig1_8b10b_loop_sync_done_arr(3);
-    regs_read_arr(36)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_MEGA_WORD_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_MEGA_WORD_CNT_LSB) <= all_8b10b_loop_mega_word_cnt_arr(3);
-    regs_read_arr(37)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_DAQ_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_DAQ_ERROR_CNT_LSB) <= daq_8b10b_loop_error_cnt_arr(3);
-    regs_read_arr(38)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG0_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG0_ERROR_CNT_LSB) <= trig0_8b10b_loop_error_cnt_arr(3);
-    regs_read_arr(39)(REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG1_ERROR_CNT_MSB downto REG_GEM_TESTS_8b10b_LOOPBACK_LINK_3_TRIG1_ERROR_CNT_LSB) <= trig1_8b10b_loop_error_cnt_arr(3);
 
     -- Connect write signals
     gbt_loop_through_oh <= regs_write_arr(1)(REG_GEM_TESTS_GBT_LOOPBACK_CTRL_LOOP_THROUGH_OH_BIT);

@@ -394,7 +394,6 @@ begin
                             top_state <= ERROR;
                             trans_en <= '0';
                         else
-                            trans_en <= '0';
                             jtag_sca_reply_data <= rx_sca_reply.data;
 
                             if ((jtag_sca_exec_go = '1') and (trans_en = '0')) then
@@ -402,6 +401,7 @@ begin
                             elsif ((jtag_sca_exec_go = '0') and (jtag_sca_cmd_req = '1')) then
                                 jtag_sca_cmd_done <= '1';
                             elsif ((jtag_sca_cmd_done = '1') and (jtag_sca_cmd_req = '0')) then
+                                trans_en <= '0';
                                 jtag_sca_cmd_done <= '0';
                                 top_state <= IDLE;
                             end if;                            
@@ -435,10 +435,10 @@ begin
                             top_state <= ERROR;
                             trans_en <= '0';
                         else
-                            trans_en <= '0';
                             if (jtag_sca_cmd_req = '1') then
                                 jtag_sca_cmd_done <= '1';
                             else
+                                trans_en <= '0';
                                 jtag_sca_cmd_done <= '0';
                                 top_state <= IDLE;
                             end if;
