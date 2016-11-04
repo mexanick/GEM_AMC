@@ -35,7 +35,7 @@ entity ttc_clocks is
     clk_40_bufg_o  : out std_logic;
     clk_80_bufg_o  : out std_logic;
     clk_160_bufg_o : out std_logic;
-    clk_240_bufg_o : out std_logic;
+    clk_120_bufg_o : out std_logic;
     clk_320_bufg_o : out std_logic
 
     );
@@ -55,7 +55,7 @@ architecture ttc_clocks_arch of ttc_clocks is
   signal s_clk_40  : std_logic;
   signal s_clk_80  : std_logic;
   signal s_clk_160 : std_logic;
-  signal s_clk_240 : std_logic;
+  signal s_clk_120 : std_logic;
   signal s_clk_320 : std_logic;
 
   signal s_clkfbout      : std_logic;
@@ -106,7 +106,7 @@ begin
      CLKOUT2_DUTY_CYCLE  => 0.500,
      CLKOUT2_USE_FINE_PS => false,
 
-     CLKOUT3_DIVIDE      => 4,
+     CLKOUT3_DIVIDE      => 8,
      CLKOUT3_PHASE       => 0.000,
      CLKOUT3_DUTY_CYCLE  => 0.500,
      CLKOUT3_USE_FINE_PS => false,
@@ -129,7 +129,7 @@ begin
       CLKOUT1B  => open,
       CLKOUT2   => s_clk_160,
       CLKOUT2B  => open,
-      CLKOUT3   => s_clk_240,
+      CLKOUT3   => s_clk_120,
       CLKOUT3B  => open,
       CLKOUT4   => s_clk_320,
       CLKOUT5   => open,
@@ -193,11 +193,11 @@ begin
       I => s_clk_160
       );
 
-  i_bufg_clk_240 : BUFG
+  i_bufg_clk_120 : BUFG
     port map
     (
-      O => clk_240_bufg_o,
-      I => s_clk_240
+      O => clk_120_bufg_o,
+      I => s_clk_120
       );
 
   i_bufg_clk_320 : BUFG

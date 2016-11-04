@@ -38,6 +38,10 @@ entity link_hub is
         gt_trig0_rx_data_arr_i      : in  t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);
         gt_trig1_rx_data_arr_i      : in  t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);
         
+        -- from OHv2
+        oh_link_tk_error_arr_i      : in  std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+        oh_link_evt_rcvd_arr_i      : in  std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+        
         -- status
         link_status_arr_o           : out t_oh_link_status_arr(g_NUM_OF_OHs - 1 downto 0);
                 
@@ -110,7 +114,7 @@ architecture Behavioral of link_hub is
 begin
 
     gt_8b10b_tx_data_arr_o <= gt_8b10b_tx_data_arr;
-    link_status_arr_o <= link_status_arr;
+    --link_status_arr_o <= link_status_arr;
     tied_to_ground <= '0';
 
     --==== Transfet to TTC clock domain (sync fifos) ====--
@@ -246,6 +250,9 @@ begin
         link_status_arr_o(i).tr0_rx_gt_status.disperr      <= sync_tr0_rx_dout_arr(i)(23) or sync_tr0_rx_dout_arr(i)(22);
         link_status_arr_o(i).tr1_rx_gt_status.not_in_table <= sync_tr1_rx_dout_arr(i)(21) or sync_tr1_rx_dout_arr(i)(20);
         link_status_arr_o(i).tr1_rx_gt_status.disperr      <= sync_tr1_rx_dout_arr(i)(23) or sync_tr1_rx_dout_arr(i)(22);
+        
+        link_status_arr_o(i).tk_error <= oh_link_tk_error_arr_i(i) when daq_link_test_mode_i = '0' else '0';
+        link_status_arr_o(i).evt_rcvd <= oh_link_evt_rcvd_arr_i(i) when daq_link_test_mode_i = '0' else '0';
         
         oh_trig0_rx_data_arr_o(i).rxdata(15 downto 0) <= sync_tr0_rx_dout_arr(i)(15 downto 0) when trig_link_test_mode_i = '0' else (others => '0');
         oh_trig0_rx_data_arr_o(i).rxcharisk(1 downto 0) <= sync_tr0_rx_dout_arr(i)(17 downto 16) when trig_link_test_mode_i = '0' else (others => '0');

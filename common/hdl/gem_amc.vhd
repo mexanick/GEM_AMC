@@ -141,6 +141,8 @@ architecture gem_amc_arch of gem_amc is
     signal oh_trig0_rx_data_arr         : t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);
     signal oh_trig1_rx_data_arr         : t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);    
     signal oh_link_status_arr           : t_oh_link_status_arr(g_NUM_OF_OHs - 1 downto 0);    
+    signal oh_link_tk_error_arr         : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
+    signal oh_link_evt_rcvd_arr         : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
 
     --== GBT ==--
     signal gbt_tx_we_arr                : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
@@ -312,8 +314,8 @@ begin
                 gth_rx_trig_data_i      => (oh_trig0_rx_data_arr(i), oh_trig1_rx_data_arr(i)),
 
                 tk_data_link_o          => tk_data_links(i),
-                tk_error_o              => oh_link_status_arr(i).tk_error,
-                tk_evt_received_o       => oh_link_status_arr(i).evt_rcvd,
+                tk_error_o              => oh_link_tk_error_arr(i),
+                tk_evt_received_o       => oh_link_evt_rcvd_arr(i),
 
                 oh_reg_ipb_reset_i      => ipb_reset,
                 oh_reg_ipb_clk_i        => ipb_clk_i,
@@ -440,6 +442,8 @@ begin
             gt_8b10b_tx_data_arr_o  => gt_8b10b_tx_data_arr_o,
             gt_trig0_rx_data_arr_i  => gt_trig0_rx_data_arr,
             gt_trig1_rx_data_arr_i  => gt_trig1_rx_data_arr,
+            oh_link_tk_error_arr_i  => oh_link_tk_error_arr,
+            oh_link_evt_rcvd_arr_i  => oh_link_evt_rcvd_arr,            
             daq_link_test_mode_i    => loopback_8b10b_test_en,
             trig_link_test_mode_i   => loopback_8b10b_use_trig,
             oh_8b10b_rx_data_arr_o  => oh_8b10b_rx_data_arr,
@@ -457,32 +461,34 @@ begin
     --    Slow Control   --
     --===================--
 
-    i_slow_control : entity work.slow_control
-        generic map(
-            g_NUM_OF_OHs => g_NUM_OF_OHs,
-            g_USE_GBT    => g_USE_GBT,
-            g_DEBUG      => false
-        )
-        port map(
-            reset_i             => reset,
-            ttc_clk_i           => ttc_clocks,
-            ttc_cmds_i          => ttc_cmd,
-            gbt_rx_ready_i      => ohv2_gbt_ready_arr,
-            gbt_rx_sca_elinks_i => gbt_rx_sca_data_arr,
-            gbt_tx_sca_elinks_o => gbt_tx_sca_data_arr,
-            gbt_rx_ic_elinks_i  => gbt_rx_ic_data_arr,
-            gbt_tx_ic_elinks_o  => gbt_tx_ic_data_arr,
-            ipb_reset_i         => ipb_reset_i,
-            ipb_clk_i           => ipb_clk_i,
-            ipb_miso_o          => ipb_miso_arr(C_IPB_SLV.slow_control),
-            ipb_mosi_i          => ipb_mosi_arr_i(C_IPB_SLV.slow_control)
-        );
+    g_slow_control: if g_USE_GBT generate
+        i_slow_control : entity work.slow_control
+            generic map(
+                g_NUM_OF_OHs => g_NUM_OF_OHs,
+                g_USE_GBT    => g_USE_GBT,
+                g_DEBUG      => false
+            )
+            port map(
+                reset_i             => reset,
+                ttc_clk_i           => ttc_clocks,
+                ttc_cmds_i          => ttc_cmd,
+                gbt_rx_ready_i      => ohv2_gbt_ready_arr,
+                gbt_rx_sca_elinks_i => gbt_rx_sca_data_arr,
+                gbt_tx_sca_elinks_o => gbt_tx_sca_data_arr,
+                gbt_rx_ic_elinks_i  => gbt_rx_ic_data_arr,
+                gbt_tx_ic_elinks_o  => gbt_tx_ic_data_arr,
+                ipb_reset_i         => ipb_reset_i,
+                ipb_clk_i           => ipb_clk_i,
+                ipb_miso_o          => ipb_miso_arr(C_IPB_SLV.slow_control),
+                ipb_mosi_i          => ipb_mosi_arr_i(C_IPB_SLV.slow_control)
+            );
+    end generate;
 
     --==========--
     --    GBT   --
     --==========--
     
-    --g_gbt : if g_USE_GBT generate
+    g_gbt : if g_USE_GBT generate
     
         i_gbt : entity work.gbt
             generic map(
@@ -629,7 +635,7 @@ begin
                 probe10 => gbt_rx_bitslip_nbr(1)
             );
         
-    --end generate g_gbt;
+    end generate g_gbt;
     
     --=============--
     --    Tests    --
