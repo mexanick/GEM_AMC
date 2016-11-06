@@ -34,6 +34,10 @@
 --                                                                                    - Uses "gbt_bank_package.vhd" instead of "Constant_Declaration.vhd".
 --                                                                                    - Removed gearbox address control.
 --
+--                        26/05/2016	4.1		 P. Vicente Leitao (CERN)			  - Rewritten code to implement safe state-machine	
+--                                                                                    - Optimized bitslip
+--                                                                                    - Bug fixes
+--
 -- Additional Comments:                                                                               
 --
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -118,14 +122,31 @@ end gbt_rx_framealigner_pattsearch;
 architecture behavioral of gbt_rx_framealigner_pattsearch is
   
    --================================ Signal Declarations ================================--  
-  
+
    signal checkedHeader                         : integer range 0 to NBR_CHECKED_HEADER;
-   signal falseHeader                           : integer range 0 to NBR_ACCEPTED_FALSE_HEADER + 1;
+   signal falseHeader                           : integer range 0 to NBR_ACCEPTED_FALSE_HEADER;
    signal consecCorrectHeaders                  : integer range 0 to DESIRED_CONSEC_CORRECT_HEADERS;
    signal headerLocked                          : std_logic;
-
-   --=====================================================================================--
    
+   signal RX_BITSLIP_CMD_O_pre                  : std_logic;
+   signal RX_BITSLIP_CMD_O_now                  : std_logic;
+   signal RX_GB_WRITE_ADDRESS_RST_O_pre         : std_logic;
+   signal RX_GB_WRITE_ADDRESS_RST_O_now         : std_logic;
+   --=====================================================================================--
+   -- Pedro.Leitao@cern.ch // 2016 05 24
+	--		Changed to a safe state machine 
+	
+	type machine is (UNLOCKED, TOGGLE_BITSLIP, GOING_LOCK, LOCKED, GOING_UNLOCK);
+	signal state   : machine;
+
+	-- Attribute "safe" implements a safe state machine.
+	-- This is a state machine that can recover from an
+	-- illegal state (by returning to the reset state).
+	attribute syn_encoding : string;
+	attribute syn_encoding of machine : type is "safe";
+   --endof Pedro.Leitao@cern.ch // 2016 05 24
+
+	
 --=================================================================================================--
 begin                 --========####   Architecture Body   ####========-- 
 --=================================================================================================--     
@@ -136,72 +157,161 @@ begin                 --========####   Architecture Body   ####========--
       constant ZERO                             : std_logic_vector(WORD_ADDR_PS_CHECK_MSB downto 0) := (others => '0'); 
    begin    
       if (RX_RESET_I = '1') or (RIGHTSHIFTER_READY_I = '0') then
-         checkedHeader                          <=  0 ;
-         falseHeader                            <=  0 ;
-         consecCorrectHeaders                   <=  0 ;
-         headerLocked                           <= '0';
-         RX_HEADER_FLAG_O                       <= '0';
-         RX_GB_WRITE_ADDRESS_RST_O              <= '0';
-         RX_BITSLIP_CMD_O                       <= '0';         
-      elsif rising_edge(RX_WORDCLK_I) then        
+         checkedHeader                          <=  0 ;             -- counts the number of corrected headers while header goes "unlocking"; races falseHeader
+         falseHeader                            <=  0 ;             -- counts the number of false headers while header goes "unlocking"; races checkedHeader
+         consecCorrectHeaders                   <=  0 ;             -- counts the number of correct headers in a row while going_for_lock
+         headerLocked                           <= '0';             -- headerLocked ; high if locked or losing_lock
+         RX_HEADER_FLAG_O                       <= '0';             -- seems to work as "instantLock"
+         state                                  <= UNLOCKED;
+         RX_BITSLIP_CMD_O_pre                   <= '0';
+         RX_BITSLIP_CMD_O_now                   <= '0';
+         RX_GB_WRITE_ADDRESS_RST_O_pre          <= '0';
+         RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
          
-         RX_HEADER_FLAG_O                       <= '0';         
-         RX_GB_WRITE_ADDRESS_RST_O              <= '0';
-         RX_BITSLIP_CMD_O                       <= '0';
-         
-         -- Comment: * "RX_WRITE_ADDRESS_I(WORD_ADDR_PS_CHECK_MSB downto 0)= ZERO" corresponds to the most significant word of the frame (header). 
-         
-         if RX_WRITE_ADDRESS_I(WORD_ADDR_PS_CHECK_MSB downto 0)= ZERO then
-         
-            -- Comment: Counter of false headers among a certain number of checked headers.
-         
-            if checkedHeader <= NBR_CHECKED_HEADER then
-               checkedHeader                    <= checkedHeader + 1;
-               if (RX_WORD_I(3 downto 0) /= DATA_HEADER_PATTERN_REVERSED) and (RX_WORD_I(3 downto 0) /= IDLE_HEADER_PATTERN_REVERSED) then
-                  if falseHeader <= NBR_ACCEPTED_FALSE_HEADER then
-                     falseHeader                <= falseHeader + 1;
-                  end if;               
-               end if;
-            else
-               checkedHeader                    <= 0;
-               falseHeader                      <= 0;
-            end if;         
+      elsif rising_edge(RX_WORDCLK_I) then 
+			-- Comment: * "RX_WRITE_ADDRESS_I(WORD_ADDR_PS_CHECK_MSB downto 0)= ZERO" corresponds to the most significant word of the frame (header). 
+			        
+			if RX_WRITE_ADDRESS_I(WORD_ADDR_PS_CHECK_MSB downto 0)= ZERO then
+				RX_HEADER_FLAG_O <= '1';
+				case state is
+					-- ---------------------------------------
+					when UNLOCKED =>	-- should have header, if not, toggle RX_BITSLIP_CMD_O
+						if (RX_WORD_I(3 downto 0) /= DATA_HEADER_PATTERN_REVERSED) and (RX_WORD_I(3 downto 0) /= IDLE_HEADER_PATTERN_REVERSED) then
+							checkedHeader                          <=  0 ;
+							falseHeader                            <=  0 ;
+							consecCorrectHeaders                   <=  0 ;
+							headerLocked                           <= '0';
+							RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '1'; 
+							state 											<= TOGGLE_BITSLIP;
+							
+						else
+							-- header position has been found
+							checkedHeader                          <=  0 ;
+							falseHeader                            <=  0 ;
+							consecCorrectHeaders                   <=  0 ;
+							headerLocked                           <= '0';
+							RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '0';         
+							state 											<= GOING_LOCK;
+							
+						end if;
+					-- ---------------------------------------
+					when TOGGLE_BITSLIP =>
+						checkedHeader                          <=  0 ;
+						falseHeader                            <=  0 ;
+						consecCorrectHeaders                   <=  0 ;
+						headerLocked                           <= '0';
+						RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+						RX_BITSLIP_CMD_O_now                   <= '0';         
+						state 								   		<= UNLOCKED;
+					-- ---------------------------------------
+					when GOING_LOCK =>
+						if (RX_WORD_I(3 downto 0) /= DATA_HEADER_PATTERN_REVERSED) and (RX_WORD_I(3 downto 0) /= IDLE_HEADER_PATTERN_REVERSED) then
+							checkedHeader                          <=  0 ;
+							falseHeader                            <=  0 ;
+							consecCorrectHeaders                   <=  0 ;
+							headerLocked                           <= '0';
+							RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '0';         
+							state 											<= UNLOCKED;
+							
+						else
+							checkedHeader                          <=  0 ;
+							falseHeader                            <=  0 ;
+							headerLocked                           <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '0';     
+							
+							if consecCorrectHeaders < DESIRED_CONSEC_CORRECT_HEADERS then
+								consecCorrectHeaders          <= consecCorrectHeaders + 1;
+								state <= GOING_LOCK;
+                                RX_GB_WRITE_ADDRESS_RST_O_now              <= '0';
+							else
+								consecCorrectHeaders                   <=  0 ;
+								state <= LOCKED;    -- it goes from going_lock to lock (one way trip!)
+                                RX_GB_WRITE_ADDRESS_RST_O_now              <= '1';
+							end if;
+						end if;
+					-- ---------------------------------------
+					when LOCKED =>
+						if (RX_WORD_I(3 downto 0) /= DATA_HEADER_PATTERN_REVERSED) and (RX_WORD_I(3 downto 0) /= IDLE_HEADER_PATTERN_REVERSED) then      
+							state 										<= GOING_UNLOCK;							
+						else
+							state 										<= LOCKED;
+						end if;
+						
+						checkedHeader                          <=  0 ;
+						falseHeader                            <=  0 ;
+						consecCorrectHeaders                   <=  0 ;
+						headerLocked                           <= '1';
+						RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+						RX_BITSLIP_CMD_O_now                   <= '0';   
+						
+					-- ---------------------------------------
+					when GOING_UNLOCK =>	
+						-- this is a race condition between falseHeader and checkedHeader
+						if checkedHeader < NBR_CHECKED_HEADER then
+							checkedHeader                    <= checkedHeader + 1;
+							
+							if (RX_WORD_I(3 downto 0) /= DATA_HEADER_PATTERN_REVERSED) and (RX_WORD_I(3 downto 0) /= IDLE_HEADER_PATTERN_REVERSED) then
+								if falseHeader < NBR_ACCEPTED_FALSE_HEADER then
+									falseHeader                <= falseHeader + 1;
+									state <= GOING_UNLOCK;
+								else
+									falseHeader                <= 0;
+									state <= UNLOCKED;
+								end if;               
+									
+							else
+								falseHeader             	<= falseHeader; 
+								state 							<= GOING_UNLOCK;
+							end if;
+							consecCorrectHeaders                   <=  0 ;
+							headerLocked                           <= '1';
+							RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '0';   
 
-            -- Comment: Counters of consecutive correct headers.
-         
-            if (RX_WORD_I(3 downto 0) = DATA_HEADER_PATTERN_REVERSED) or (RX_WORD_I(3 downto 0) = IDLE_HEADER_PATTERN_REVERSED) then
-               if headerLocked = '1' then               
-                  RX_HEADER_FLAG_O              <= '1';
-               end if;   
-               if consecCorrectHeaders < DESIRED_CONSEC_CORRECT_HEADERS then
-                  consecCorrectHeaders          <= consecCorrectHeaders + 1;
-               end if;
-            else
-               consecCorrectHeaders             <= 0;
-            end if;         
+						else	-- returns to locked position, clears all counters
+							checkedHeader						   <=  0 ;
+							falseHeader                            <=  0 ;
+							consecCorrectHeaders                   <=  0 ;
+							headerLocked                           <= '1';
+							RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+							RX_BITSLIP_CMD_O_now                   <= '0';   
+							state 											<= LOCKED;
+						end if;
+					-- ---------------------------------------
+					when OTHERS =>
+						checkedHeader                          <=  0 ;
+						falseHeader                            <=  0 ;
+						consecCorrectHeaders                   <=  0 ;
+						headerLocked                           <= '1';
+						RX_GB_WRITE_ADDRESS_RST_O_now          <= '0';
+						RX_BITSLIP_CMD_O_now                   <= '0';         
+						state 								   		<= LOCKED;
+				end case;
+				
+			else
+				-- do nothing
+				RX_HEADER_FLAG_O                       <= '0';
 
-            -- Comment: Out Of Lock or In Lock state decision.
+			end if;
             
-            if (headerLocked = '0') and (consecCorrectHeaders = DESIRED_CONSEC_CORRECT_HEADERS) then   -- Comment: Goes from OOL to IL.
-               headerLocked                     <= '1';
-               RX_GB_WRITE_ADDRESS_RST_O        <= '1';
-            elsif (headerLocked = '1') and (falseHeader >= NBR_ACCEPTED_FALSE_HEADER) then   -- Comment: Return from IL to OOL.
-               headerLocked                     <= '0';
-            end if;
-        
-         end if;
-
-         -- Comment: Sending bit slip command.
-         
-         if falseHeader = NBR_ACCEPTED_FALSE_HEADER + 1 then
-            RX_BITSLIP_CMD_O                    <= '1';
-            checkedHeader                       <=  0 ;
-            falseHeader                         <=  0 ;
-         end if;      
-         
-      end if;
+			------------------------------------------------
+			-- Comment: send bit slip command
+			RX_BITSLIP_CMD_O_pre <= RX_BITSLIP_CMD_O_now; 
+			
+			------------------------------------------------
+			--send out RX_GB_WRITE_ADDRESS_RST_O
+			RX_GB_WRITE_ADDRESS_RST_O_pre <= RX_GB_WRITE_ADDRESS_RST_O_now;
+            
+            
+		end if;
    end process;
-   
+	---------------------------- ---------------------------- ---------------------------- ----------------------------
+	RX_BITSLIP_CMD_O <= '1' WHEN (RX_BITSLIP_CMD_O_pre = '0' and RX_BITSLIP_CMD_O_now = '1') ELSE '0'; -- avoid 1 bit skew..
+	RX_GB_WRITE_ADDRESS_RST_O <= '1' WHEN (RX_GB_WRITE_ADDRESS_RST_O_pre = '0' and RX_GB_WRITE_ADDRESS_RST_O_now = '1') ELSE '0'; -- avoid 1 bit skew..
+	
    RX_HEADER_LOCKED_O                           <= headerLocked;
    RX_WORD_O                                    <= RX_WORD_I;
 

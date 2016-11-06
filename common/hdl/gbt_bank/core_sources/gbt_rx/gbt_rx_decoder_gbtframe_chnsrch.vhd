@@ -31,6 +31,10 @@
 --                                                                       zero_from_errLocPolyEval. Libero/Synopsis says
 --                                                                       that if they are different sizes, the
 --                                                                       comparison is always FALSE.
+--
+--                        02/04/2015   4.1       J. Mendez             - Correction of a major bug in generation of the
+--                                                                       out_from_primEncRight and out_from_primEncLeft
+--                                                                       values.
 --                        
 --
 -- Additional Comments:
@@ -155,45 +159,44 @@ begin                 --========####   Architecture Body   ####========--
    --==================--
    
    -- Primary encoder right:
-   -------------------------
-   
-   out_from_primEncRight <= "0001" when (zero_from_errLocPolyEval = "000000000000001") else
-                            "0010" when (zero_from_errLocPolyEval = "000000000000010") else
-                            "0011" when (zero_from_errLocPolyEval = "000000000000100") else
-                            "0100" when (zero_from_errLocPolyEval = "000000000001000") else
-                            "0101" when (zero_from_errLocPolyEval = "000000000010000") else
-                            "0110" when (zero_from_errLocPolyEval = "000000000100000") else
-                            "0111" when (zero_from_errLocPolyEval = "000000001000000") else
-                            "1000" when (zero_from_errLocPolyEval = "000000010000000") else
-                            "1001" when (zero_from_errLocPolyEval = "000000100000000") else
-                            "1010" when (zero_from_errLocPolyEval = "000001000000000") else
-                            "1011" when (zero_from_errLocPolyEval = "000010000000000") else
-                            "1100" when (zero_from_errLocPolyEval = "000100000000000") else
-                            "1101" when (zero_from_errLocPolyEval = "001000000000000") else
-                            "1110" when (zero_from_errLocPolyEval = "010000000000000") else
-                            "1111" when (zero_from_errLocPolyEval = "100000000000000") else
+   -------------------------			
+					
+   out_from_primEncRight <= "0001" when (zero_from_errLocPolyEval(0) = '1') else
+                            "0010" when (zero_from_errLocPolyEval(1 DOWNTO 0)  = "10") else
+                            "0011" when (zero_from_errLocPolyEval(2 DOWNTO 0)  = "100") else
+                            "0100" when (zero_from_errLocPolyEval(3 DOWNTO 0)  = "1000") else
+                            "0101" when (zero_from_errLocPolyEval(4 DOWNTO 0)  = "10000") else
+                            "0110" when (zero_from_errLocPolyEval(5 DOWNTO 0)  = "100000") else
+                            "0111" when (zero_from_errLocPolyEval(6 DOWNTO 0)  = "1000000") else
+                            "1000" when (zero_from_errLocPolyEval(7 DOWNTO 0)  = "10000000") else
+                            "1001" when (zero_from_errLocPolyEval(8 DOWNTO 0)  = "100000000") else
+                            "1010" when (zero_from_errLocPolyEval(9 DOWNTO 0)  = "1000000000") else
+                            "1011" when (zero_from_errLocPolyEval(10 DOWNTO 0) = "10000000000") else
+                            "1100" when (zero_from_errLocPolyEval(11 DOWNTO 0) = "100000000000") else
+                            "1101" when (zero_from_errLocPolyEval(12 DOWNTO 0) = "1000000000000") else
+                            "1110" when (zero_from_errLocPolyEval(13 DOWNTO 0) = "10000000000000") else
+                            "1111" when (zero_from_errLocPolyEval(14 DOWNTO 0) = "100000000000000") else
                             "0000";              
    
    -- Primary encoder left:
    ------------------------
    
-    out_from_primEncLeft <= "1111" when (zero_from_errLocPolyEval = "100000000000000") else
-                            "1110" when (zero_from_errLocPolyEval = "010000000000000") else
-                            "1101" when (zero_from_errLocPolyEval = "001000000000000") else
-                            "1100" when (zero_from_errLocPolyEval = "000100000000000") else
-                            "1011" when (zero_from_errLocPolyEval = "000010000000000") else
-                            "1010" when (zero_from_errLocPolyEval = "000001000000000") else
-                            "1001" when (zero_from_errLocPolyEval = "000000100000000") else
-                            "1000" when (zero_from_errLocPolyEval = "000000010000000") else
-                            "0111" when (zero_from_errLocPolyEval = "000000001000000") else
-                            "0110" when (zero_from_errLocPolyEval = "000000000100000") else
-                            "0101" when (zero_from_errLocPolyEval = "000000000010000") else
-                            "0100" when (zero_from_errLocPolyEval = "000000000001000") else
-                            "0011" when (zero_from_errLocPolyEval = "000000000000100") else
-                            "0010" when (zero_from_errLocPolyEval = "000000000000010") else
+    out_from_primEncLeft <= "1111" when (zero_from_errLocPolyEval(14) = '1') else
+                            "1110" when (zero_from_errLocPolyEval(14 DOWNTO 13) = "01") else
+                            "1101" when (zero_from_errLocPolyEval(14 DOWNTO 12) = "001") else
+                            "1100" when (zero_from_errLocPolyEval(14 DOWNTO 11) = "0001") else
+                            "1011" when (zero_from_errLocPolyEval(14 DOWNTO 10) = "00001") else
+                            "1010" when (zero_from_errLocPolyEval(14 DOWNTO 9)  = "000001") else
+                            "1001" when (zero_from_errLocPolyEval(14 DOWNTO 8)  = "0000001") else
+                            "1000" when (zero_from_errLocPolyEval(14 DOWNTO 7)  = "00000001") else
+                            "0111" when (zero_from_errLocPolyEval(14 DOWNTO 6)  = "000000001") else
+                            "0110" when (zero_from_errLocPolyEval(14 DOWNTO 5)  = "0000000001") else
+                            "0101" when (zero_from_errLocPolyEval(14 DOWNTO 4)  = "00000000001") else
+                            "0100" when (zero_from_errLocPolyEval(14 DOWNTO 3)  = "000000000001") else
+                            "0011" when (zero_from_errLocPolyEval(14 DOWNTO 2)  = "0000000000001") else
+                            "0010" when (zero_from_errLocPolyEval(14 DOWNTO 1)  = "00000000000001") else
                             "0001" when (zero_from_errLocPolyEval = "000000000000001") else
                             "0000";  
- 
    --========--  
    -- Output --
    --========--

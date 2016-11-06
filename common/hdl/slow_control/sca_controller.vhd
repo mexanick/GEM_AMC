@@ -396,15 +396,30 @@ begin
                         else
                             jtag_sca_reply_data <= rx_sca_reply.data;
 
-                            if ((jtag_sca_exec_go = '1') and (trans_en = '0')) then
-                                top_state <= JTAG_SET_LENGTH;
-                            elsif ((jtag_sca_exec_go = '0') and (jtag_sca_cmd_req = '1')) then
-                                jtag_sca_cmd_done <= '1';
-                            elsif ((jtag_sca_cmd_done = '1') and (jtag_sca_cmd_req = '0')) then
+                            if (jtag_sca_exec_go = '1') then
                                 trans_en <= '0';
-                                jtag_sca_cmd_done <= '0';
-                                top_state <= IDLE;
-                            end if;                            
+                                if (trans_en = '0') then
+                                    top_state <= JTAG_SET_LENGTH;
+                                end if;
+                            else
+                                if (jtag_sca_cmd_req = '1') then
+                                    jtag_sca_cmd_done <= '1';
+                                else
+                                    trans_en <= '0';
+                                    jtag_sca_cmd_done <= '0';
+                                    top_state <= IDLE;                                    
+                                end if;
+                            end if;
+                            
+--                            if ((jtag_sca_exec_go = '1') and (trans_en = '0')) then
+--                                top_state <= JTAG_SET_LENGTH;
+--                            elsif ((jtag_sca_exec_go = '0') and (jtag_sca_cmd_req = '1')) then
+--                                jtag_sca_cmd_done <= '1';
+--                            elsif ((jtag_sca_cmd_done = '1') and (jtag_sca_cmd_req = '0')) then
+--                                trans_en <= '0';
+--                                jtag_sca_cmd_done <= '0';
+--                                top_state <= IDLE;
+--                            end if;                            
                         end if;
 
                     when JTAG_SET_LENGTH =>
