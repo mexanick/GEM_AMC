@@ -642,7 +642,7 @@ begin
                 if ((jtag_sca_cmd_req = '0') and (jtag_shift_tdo_en_i = '1')) then
                     jtag_sca_cmd.command <= std_logic_vector(to_unsigned(jtag_shift_tdo_pos * 16, 8)); -- TDO0_W = 0x00, TDI1_W = 0x10, TDI2_W = 0x20, TDI3_W = 0x30
                     jtag_sca_cmd.length <= x"04";
-                    jtag_sca_cmd.data <= jtag_tdo_i;
+                    jtag_sca_cmd.data <= jtag_tdo_i(7 downto 0) & jtag_tdo_i(15 downto 8) & jtag_tdo_i(23 downto 16) & jtag_tdo_i(31 downto 24);
                     jtag_sca_cmd_req <= '1';
                     
                     -- if we've already shifted all necessary bits, then enable the JTAG GO request
@@ -656,7 +656,7 @@ begin
                 elsif ((jtag_sca_cmd_req = '0') and (jtag_shift_tms_en_i = '1')) then
                     jtag_sca_cmd.command <= std_logic_vector(to_unsigned((jtag_shift_tms_pos * 16) + 64, 8)); -- TMS0_W = 0x40, TMS1_W = 0x50, TMS2_W = 0x60, TMS3_W = 0x70
                     jtag_sca_cmd.length <= x"04";
-                    jtag_sca_cmd.data <= jtag_tms_i;
+                    jtag_sca_cmd.data <= jtag_tms_i(7 downto 0) & jtag_tms_i(15 downto 8) & jtag_tms_i(23 downto 16) & jtag_tms_i(31 downto 24);
                     jtag_sca_cmd_req <= '1';
                 
                     if (jtag_shift_tms_pos < 3) then
@@ -689,7 +689,7 @@ begin
                     
                     -- if it was a read command (i.e. TDI_R) then set the reply data on the jtag_tdi_o
                     if (jtag_sca_cmd.command(0) = '1') then
-                        jtag_tdi_o <= jtag_sca_reply_data;
+                        jtag_tdi_o <= jtag_sca_reply_data(7 downto 0) & jtag_sca_reply_data(15 downto 8) & jtag_sca_reply_data(23 downto 16) & jtag_sca_reply_data(31 downto 24);
                     end if;
                 
                 end if;
