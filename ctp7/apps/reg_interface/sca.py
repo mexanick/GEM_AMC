@@ -176,6 +176,11 @@ def main():
             if len(words) < VIRTEX6_FIRMWARE_SIZE/4:
                 raise ValueError("Bit file is too short.. For Virtex6 we expect it to be " + str(VIRTEX6_FIRMWARE_SIZE) + " bytes long")
 
+        for i in range(0, 30):
+            print(hex(words[i]) + " not reversed = " + hex(bitWords[i]))
+
+        return
+
         numWords = VIRTEX6_FIRMWARE_SIZE / 4
 
         timeStart = clock()
@@ -237,23 +242,39 @@ def main():
         tms = tms >> 32
         wReg(ADDR_JTAG_TMS, tms & 0xffffffff)
 
-        cnt = 0
-        for i in range(1, numWords):
-            if i == numWords - 1:
-                tms = 0b011 << 31
-                wReg(ADDR_JTAG_LENGTH, 34)
-                wReg(ADDR_JTAG_TMS, tms & 0xffffffff)
-                tms = tms >> 32
-                wReg(ADDR_JTAG_TMS, tms & 0xffffffff)
+        # send the first byte so that the LENGTH is updated
+        wReg(ADDR_JTAG_TDO, words[0])
+        wReg(ADDR_JTAG_TDO, 0x0)
 
+        # enter optimized mode that executes JTAG_GO on every TDO shift and doesn't update the LENGTH with every JTAG_GO
+        sleep(0.001)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.EXEC_ON_EVERY_TDO'), 0x1)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.NO_SCA_LENGTH_UPDATE'), 0x1)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.SHIFT_TDO_ASYNC'), 0x1)
+
+        cnt = 0
+        for i in range(1, numWords - 1):
             wReg(ADDR_JTAG_TDO, words[i])
-            wReg(ADDR_JTAG_TDO, 0x0)
+            #wReg(ADDR_JTAG_TDO, 0x0) # not needed when EXEC_ON_EVERY_TDO is set to 0x1
             #jtagCommand(False, None, 0, (bytes[i*4 + 2] << 24) + (bytes[i*4 + 3] << 16) + (bytes[i*4] << 8) + (bytes[i*4 + 1]), 32, False)
-            #sleep(0.000032)
             cnt += 1
-            if cnt >= 1000:
+            if cnt >= 10000:
                print("word " + str(i) + " out of " + str(numWords))
                cnt = 0
+
+        # exit the optimized mode and send the last word (also exit the FSM to IDLE)
+        sleep(0.01)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.EXEC_ON_EVERY_TDO'), 0x0)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.NO_SCA_LENGTH_UPDATE'), 0x0)
+        writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.SHIFT_TDO_ASYNC'), 0x0)
+        tms = 0b011 << 31 #go back to idle and don't enter DR shift again
+        wReg(ADDR_JTAG_LENGTH, 34)
+        wReg(ADDR_JTAG_TMS, tms & 0xffffffff)
+        tms = tms >> 32
+        wReg(ADDR_JTAG_TMS, tms & 0xffffffff)
+        wReg(ADDR_JTAG_TDO, words[i]) #send the last word
+        wReg(ADDR_JTAG_TDO, 0x0)
+
 
         print("DONE sending data")
 
@@ -390,7 +411,11 @@ def enableJtag(freqDiv=None):
     writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.ADC_MONITORING.MONITORING_OFF'), 0x1)                                                    
     sleep(0.01)                                                                                                                         
     subheading('Enable JTAG module')                                                                                                    
-    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.ENABLE'), 0x1)                                                                      
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.ENABLE'), 0x1)
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.SHIFT_MSB'), 0x0)
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.EXEC_ON_EVERY_TDO'), 0x0)
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.NO_SCA_LENGTH_UPDATE'), 0x0)
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.EXPERT.SHIFT_TDO_ASYNC'), 0x0)
 
     if freqDiv is not None:
         subheading('Setting JTAG CLK frequency to ' + str(20 / (freqDiv)) + 'MHz (divider value = ' + hex((freqDiv - 1) << 24) + ')')
@@ -399,7 +424,7 @@ def enableJtag(freqDiv=None):
 
 def disableJtag():
     subheading('Disabling JTAG module')                                                                                                 
-    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.ENABLE'), 0x0)                                                                      
+    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.JTAG.CTRL.ENABLE'), 0x0)
 #    subheading('Enabling SCA ADC monitoring')                                                                                           
 #    writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.ADC_MONITORING.MONITORING_OFF'), 0x0)                                                    
 

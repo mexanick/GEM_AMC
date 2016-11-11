@@ -57,6 +57,11 @@ entity sca_controller is
         jtag_shift_tms_en_i     : in  std_logic;
         jtag_shift_tdi_en_i     : in  std_logic;
         jtag_shift_done_o       : out std_logic; 
+        jtag_shift_msb_first_i  : in  std_logic; -- tell SCA to shift out MSB first instead of the default LSB first
+        -- expert JTAG controller config signals
+        jtag_exec_on_every_tdo_i: in  std_logic; -- EXPERT ONLY: used to optimize firmware downloading, when set high the controller will execute JTAG_GO after every TDO shift (even if length is higher than 32)
+        jtag_no_length_update_i : in  std_logic; -- EXPERT ONLY: used to optimize firmware downloading, when set high the controller will assume that SCA already has the correct length and will not update it before each JTAG_GO
+        jtag_shift_tdo_async_i  : in  std_logic; -- kindof expert: if this is set high then JTAG controller will assert jtag_shift_done_o immediately after TDO shift command, but if the second command is received while it's still busy it won't assert jtag_shift_done_o until the previous command is done
         
         -- controller monitoring
         ready_o                 : out std_logic;
@@ -177,6 +182,8 @@ architecture sca_controller_arch of sca_controller is
     signal jtag_sca_cmd_req     : std_logic;                 -- request to send out the SCA command
     signal jtag_sca_exec_go     : std_logic;                 -- when jtag_sca_cmd_req and this signal is set then SCA JTAG GO command should also be executed 
     signal jtag_sca_cmd_done    : std_logic;                 -- SCA command done
+    signal jtag_async_ack_done  : std_logic;                 -- used to send a done pulse to the user when in async mode
+    signal jtag_async_tdo_en    : std_logic;                 -- used to latch in a TDO shift command in async mode so that the command can be executed after the previous command is completed
     
     -- debug
     signal hard_reset_i_sync    : std_logic;
@@ -398,8 +405,10 @@ begin
 
                             if (jtag_sca_exec_go = '1') then
                                 trans_en <= '0';
-                                if (trans_en = '0') then
+                                if ((trans_en = '0') and (jtag_no_length_update_i = '0')) then
                                     top_state <= JTAG_SET_LENGTH;
+                                elsif(trans_en = '0') then
+                                    top_state <= JTAG_GO;
                                 end if;
                             else
                                 if (jtag_sca_cmd_req = '1') then
@@ -428,7 +437,7 @@ begin
                             tx_sca_command.channel <= SCA_CHANNEL_JTAG;
                             tx_sca_command.command <= SCA_CMD_JTAG_SET_CTRL_REG;
                             tx_sca_command.length <= x"04";
-                            tx_sca_command.data <= SCA_CFG_JTAG_CTRL_REG or ("0" & std_logic_vector(jtag_cmd_length_i) & x"000000");
+                            tx_sca_command.data <= (SCA_CFG_JTAG_CTRL_REG and (x"fffff" & (not jtag_shift_msb_first_i) & "111" & x"ff")) or ("0" & std_logic_vector(jtag_cmd_length_i) & x"000000");
                         elsif (trans_error = '1') then
                             top_state <= ERROR;
                             trans_en <= '0';
@@ -614,14 +623,6 @@ begin
     end process;
 
     --========= JTAG =========--
-
---    signal jtag_shift_tdo_pos   : integer range 0 to 3 := 0; -- position of the 32bit TDO register to shift (SCA TDO0, TDO1, TDO2, TDO3)
---    signal jtag_shift_tms_pos   : integer range 0 to 3 := 0; -- position of the 32bit TMS register to shift (SCA TMS0, TMS1, TMS2, TMS3)
---    signal jtag_shift_tdi_pos   : integer range 0 to 3 := 0; -- position of the 32bit TDI register to shift (SCA TDI0, TDI1, TDI2, TDI3)
---    signal jtag_sca_cmd         : t_sca_command;             -- command to be sent to the SCA
---    signal jtag_sca_reply_data  : std_logic_vector(31 downto 0); -- SCA reply data
---    signal jtag_sca_cmd_req     : std_logic;                 -- request to send out the SCA command
---    signal jtag_sca_cmd_done    : std_logic;                 -- SCA command done            else
     
     process(gbt_clk_40_i)
     begin
@@ -632,21 +633,28 @@ begin
                 jtag_shift_tdi_pos <= 0;
                 jtag_sca_cmd_req <= '0';
                 jtag_sca_exec_go <= '0';
+                jtag_async_ack_done <= '0';
+                jtag_async_tdo_en <= '0';
                 jtag_sca_cmd.channel <= SCA_CHANNEL_JTAG;
             else
                 
                 jtag_shift_done_o <= '0';
                 
+                if ((jtag_shift_tdo_async_i = '1') and (jtag_shift_tdo_en_i = '1') and (jtag_sca_cmd_req = '1')) then
+                    jtag_async_tdo_en <= '1';
+                end if;
+                
                 -- sorry, this can only do one shift at a time, so it's important that the user waits for the done pulse before doing another shift
                 -- tdo shift
-                if ((jtag_sca_cmd_req = '0') and (jtag_shift_tdo_en_i = '1')) then
+                if ((jtag_sca_cmd_req = '0') and ((jtag_shift_tdo_en_i = '1') or (jtag_async_tdo_en = '1'))) then
                     jtag_sca_cmd.command <= std_logic_vector(to_unsigned(jtag_shift_tdo_pos * 16, 8)); -- TDO0_W = 0x00, TDI1_W = 0x10, TDI2_W = 0x20, TDI3_W = 0x30
                     jtag_sca_cmd.length <= x"04";
                     jtag_sca_cmd.data <= jtag_tdo_i(7 downto 0) & jtag_tdo_i(15 downto 8) & jtag_tdo_i(23 downto 16) & jtag_tdo_i(31 downto 24);
                     jtag_sca_cmd_req <= '1';
+                    jtag_async_tdo_en <= '0';
                     
                     -- if we've already shifted all necessary bits, then enable the JTAG GO request
-                    if ((jtag_shift_tdo_pos = 3) or ((jtag_shift_tdo_pos + 1) * 32 >= to_integer(jtag_cmd_length_i))) then
+                    if ((jtag_shift_tdo_pos = 3) or (jtag_exec_on_every_tdo_i = '1') or ((jtag_shift_tdo_pos + 1) * 32 >= to_integer(jtag_cmd_length_i))) then
                         jtag_sca_exec_go <= '1';
                     elsif (jtag_shift_tdo_pos < 3) then
                         jtag_shift_tdo_pos <= jtag_shift_tdo_pos + 1;
@@ -674,11 +682,18 @@ begin
                         jtag_shift_tdi_pos <= jtag_shift_tdi_pos + 1;
                     end if;
                 
+                elsif ((jtag_sca_cmd_req = '1') and (jtag_shift_tdo_async_i = '1') and (jtag_async_ack_done = '0')) then
+                    jtag_shift_done_o <= '1';
+                    jtag_async_ack_done <= '1';
+                    
                 -- command is done
                 elsif (jtag_sca_cmd_done = '1') then
                     jtag_sca_cmd_req <= '0';
                     jtag_sca_exec_go <= '0';
-                    jtag_shift_done_o <= '1';
+                    jtag_async_ack_done <= '0';
+                    if (jtag_shift_tdo_async_i = '0') then
+                        jtag_shift_done_o <= '1';
+                    end if;
                     
                     -- if JTAG GO was executed then reset all shift positions
                     if (jtag_sca_exec_go = '1') then

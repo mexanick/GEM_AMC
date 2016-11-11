@@ -1464,9 +1464,25 @@ package registers is
     constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP9_MSB    : integer := 23;
     constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP9_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_ENABLE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
-    constant REG_SLOW_CONTROL_SCA_JTAG_ENABLE_BIT    : integer := 0;
-    constant REG_SLOW_CONTROL_SCA_JTAG_ENABLE_DEFAULT : std_logic := '0';
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_DEFAULT : std_logic := '0';
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_BIT    : integer := 1;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_DEFAULT : std_logic := '0';
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_BIT    : integer := 2;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_DEFAULT : std_logic := '0';
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_BIT    : integer := 3;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_DEFAULT : std_logic := '0';
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_BIT    : integer := 4;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_DEFAULT : std_logic := '0';
 
     constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2101";
     constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_MSB    : integer := 6;
