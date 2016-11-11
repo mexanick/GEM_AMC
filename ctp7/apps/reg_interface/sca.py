@@ -176,11 +176,6 @@ def main():
             if len(words) < VIRTEX6_FIRMWARE_SIZE/4:
                 raise ValueError("Bit file is too short.. For Virtex6 we expect it to be " + str(VIRTEX6_FIRMWARE_SIZE) + " bytes long")
 
-        for i in range(0, 30):
-            print(hex(words[i]) + " not reversed = " + hex(bitWords[i]))
-
-        return
-
         numWords = VIRTEX6_FIRMWARE_SIZE / 4
 
         timeStart = clock()
