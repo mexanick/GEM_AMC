@@ -20,7 +20,7 @@
 !glib/ip/*.ngc
 
 zamiacad
-sigasi
+sigasi*
 scratch
 
 .idea
