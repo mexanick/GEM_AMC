@@ -1685,7 +1685,7 @@
                                If no data is present, an error is returned."/>
             <node id="MONITOR"    address="0x9">
               <node id="STATUS"  address="0x0"  mask="0x000000f"  permission="r"
-                    description="Status of the scan module
+                    description="[3:0]: Status of the scan module
                                  0 = nothing running
                                  1 = threshold scan running
                                  2 = threshold scan by channel running
@@ -1695,9 +1695,9 @@
               <node id="ERROR"  address="0x0"  mask="0x00000010"  permission="r"
                     description="4: Error bit (scan did not start due to error)"/>
               <node id="READY"  address="0x0"  mask="0x00000020"  permission="r"
-                    description="Ready bit (data is ready for readout)"/>
+                    description="5: Ready bit (data is ready for readout)"/>
               <node id="MASK"   address="0x0"  mask="0xffffff00"  permission="r"
-                    description="Mask (mask with the data that is valid)"/>
+                    description="[31:8]: Mask (mask with the data that is valid)"/>
             </node>
             <node id="RESET"    address="0xa"   permission="w"
                   description="Local reset of the module"/>
@@ -1745,7 +1745,7 @@
             </node>
             <node id="MONITOR"    address="0x20">
               <node id="STATUS"  address="0x0"  mask="0x000000f"  permission="r"
-                    description="Status of the scan module
+                    description="[3:0]: Status of the scan module
                                  0 = nothing running
                                  1 = threshold scan running
                                  2 = threshold scan by channel running
@@ -1755,9 +1755,9 @@
               <node id="ERROR"  address="0x0"  mask="0x00000010"  permission="r"
                     description="4: Error bit (scan did not start due to error)"/>
               <node id="READY"  address="0x0"  mask="0x00000020"  permission="r"
-                    description="Ready bit (data is ready for readout)"/>
+                    description="5: Ready bit (data is ready for readout)"/>
               <node id="MASK"   address="0x0"  mask="0xffffff00"   permission="r"
-                    description="Mask (mask with the data that is valid)"/>
+                    description="[31:8]: Mask (mask with the data that is valid)"/>
             </node>
             <node id="RESET"    address="0x21"   permission="w"
                   description="Local reset of the module"/>
