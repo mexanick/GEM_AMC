@@ -45,19 +45,23 @@ def main():
     getAllChildren(random_node, kids)
     print len(kids), kids.name
 
-def parseXML(filename = None):
+def parseXML(filename = None, num_of_oh = None):
     if filename == None:
         filename = ADDRESS_TABLE_TOP
     print 'Parsing',filename,'...'
     tree = xml.parse(filename)
     root = tree.getroot()[0]
     vars = {}
-    makeTree(root,'',0x0,nodes,None,vars,False)
+    makeTree(root,'',0x0,nodes,None,vars,False,num_of_oh)
 
-def makeTree(node,baseName,baseAddress,nodes,parentNode,vars,isGenerated):
+def makeTree(node,baseName,baseAddress,nodes,parentNode,vars,isGenerated,num_of_oh=None):
     
     if (isGenerated == None or isGenerated == False) and node.get('generate') is not None and node.get('generate') == 'true':
-        generateSize = parseInt(node.get('generate_size'))
+        if (node.get('generate_idx_var') == 'OH_IDX' and num_of_oh is not None):
+            generateSize = num_of_oh
+        else:
+            generateSize = parseInt(node.get('generate_size'))
+        # generateSize = parseInt(node.get('generate_size'))
         generateAddressStep = parseInt(node.get('generate_address_step'))
         generateIdxVar = node.get('generate_idx_var')
         for i in range(0, generateSize):

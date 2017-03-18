@@ -558,10 +558,10 @@ def writeStatusBashScript(modules, filename):
 
     f.close()
 
-def writeUHalAddressTable(modules, filename, addrOffset):
+def writeUHalAddressTable(modules, filename, addrOffset, num_of_oh = None):
     print('Writing uHAL address table XML')
 
-    rw_reg.parseXML(ADDRESS_TABLE_TOP)
+    rw_reg.parseXML(ADDRESS_TABLE_TOP, num_of_oh)
     top = rw_reg.getNode('GEM_AMC')
     f = open(filename, 'w')
     f.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
