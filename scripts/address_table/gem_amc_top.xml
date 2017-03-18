@@ -1597,11 +1597,26 @@
 
         <node id="ADC"  address="0x8000" description="ADC provided on the OptoHybrid">
           <node id="TEMP"  address="0x0"  permission="r"
-                description="Returns the value from the ADC temperature"/>
+                description="Returns the value from the ADC temperature">
+            <node id="MAX"    address="0x20"  permission="r"
+                  description="Returns the maximum seen temperature value"/>
+            <node id="MIN"    address="0x24"  permission="r"
+                  description="Returns the minimum seen temperature value"/>
+          </node>
           <node id="VCCINT"  address="0x1"  permission="r"
-                description="Returns the value from the ADC VCC int"/>
+                description="Returns the value from the ADC VCC int">
+            <node id="MAX"    address="0x20"  permission="r"
+                  description="Returns the maximum seen VCC int value"/>
+            <node id="MIN"    address="0x24"  permission="r"
+                  description="Returns the minimum seen VCC int value"/>
+          </node>
           <node id="VCCAUX"  address="0x2"  permission="r"
-                description="Returns the value from the ADC VCC aux"/>
+                description="Returns the value from the ADC VCC aux">
+            <node id="MAX"    address="0x20"  permission="r"
+                  description="Returns the maximum seen VCC aux value"/>
+            <node id="MIN"    address="0x24"  permission="r"
+                  description="Returns the minimum seen VCC aux value"/>
+          </node>
           <node id="VPVN"  address="0x3"  permission="r"
                 description="Returns the value from the ADC VPVN"/>
           <node id="VAUX"  address="0x10"
@@ -1610,18 +1625,6 @@
                   description="Returns the value from the ADC VAUX channel ${VAUX_IDX}"
                   generate="true" generate_size="16" generate_address_step="0x1" generate_idx_var="VAUX_IDX"/>
           </node>
-          <node id="TEMP_MAX"    address="0x20"  permission="r"
-                description="Returns the value from the ADC for max temperature"/>
-          <node id="VCCINT_MAX"  address="0x21"  permission="r"
-                description="Returns the value from the ADC for VCC int max "/>
-          <node id="VCCAUX_MAX"  address="0x22"  permission="r"
-                description="Returns the value from the ADC for VCC aux max"/>
-          <node id="TEMP_MIN"    address="0x24"  permission="r"
-                description="Returns the value from the ADC for min temperature"/>
-          <node id="VCCINT_MIN"  address="0x25"  permission="r"
-                description="Returns the value from the ADC for VCC int min"/>
-          <node id="VCCAUX_MIN"  address="0x26"  permission="r"
-                description="Returns the value from the ADC for VCC aux min"/>
           <node id="CONTROL"     address="0x40"
                 description="Returns the value from the ADC control registers">
             <node id="CONTROL_REGISTER_${CTRL_IDX}"  address="0x0"  permission="r"
