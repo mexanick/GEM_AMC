@@ -1459,6 +1459,8 @@
                                5: T1 from AMC TTC decoder over backplane (GBT, AMC13)"/>
             <node id="LOOPBACK"  address="0x1"  mask="0x1f"  permission="rw"
                   description="Selects the S-bit source to loop back  (5 bits)"/>
+            <node id="THROTTLE"  address="0x5"   permission="rw"
+	          description="Throttle the triggers sent to the GEB "/>
           </node>
 
           <node id="HDMI_OUTPUT"  address="0x5"  permission="rw"
@@ -1479,9 +1481,6 @@
                                2: OUT[0-5] correspond to I2C sectors (automatically selected)
                                3: OUT[0-5] are constant 0"/>
           </node>
-
-          <node id="THROTTLE"  address="0x6"   permission="rw"
-	        description="Throttle the triggers sent to the GEB "/>
 
           <node id="ZS"  address="0x7"  mask="0x00000001"  permission="rw"
 	        description="Enable/disable zero-suppression"/>
@@ -1510,6 +1509,7 @@
               <node id="PATCH"  mask="0x000000ff"    permission="r"/>
             </node>
           </node>
+
           <!-- registers only in V2A -->
           <node id="FPGA_PLL_LOCK"  address="0x1"  mask="0x1"  permission="r"
                 description="Returns the lock status of the FPGA clock PLL"/>
@@ -1520,12 +1520,15 @@
           <node id="GTX_LOCK"       address="0x4"  mask="0x1"  permission="r"
                 description="Returns the lock status of the recovered clock (GTX)"/>
 
-
           <!-- registers only in V2B -->
           <node id="QPLL_LOCK"            address="0x1"  mask="0x1"  permission="r"
                 description="Returns the lock status of the QPLL"/>
           <node id="QPLL_FPGA_PLL_LOCK"   address="0x2"  mask="0x1"  permission="r"
                 description="Returns the lock status of the QPLL to FPGA clock PLL"/>
+
+          <node id="SEU"  address="0x4"  mask="0x1"  permission="r"
+                description="0: no critical errors due to SEU
+                             1: critical error detected, due to SEU"/>
         </node> <!-- end of STATUS -->
 
         <node id="T1Controller"  address="0x3000"
@@ -1819,45 +1822,35 @@
               <node id="ContReg1"     address="0x01"   permission="rw"
                     description="VFAT control register 1"/>
               <node id="IPreampIn"    address="0x02"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0xa8"/>
               <node id="IPreampFeed"  address="0x03"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x50"/>
               <node id="IPreampOut"   address="0x04"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x96"/>
               <node id="IShaper"      address="0x05"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x96"/>
               <node id="IShaperFeed"  address="0x06"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x64"/>
               <node id="IComp"        address="0x07"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x78"/>
-
               <node id="ChipID0"      address="0x08"   permission="r"
                     description="8 least significant bits in the chip ID"/>
               <node id="ChipID1"      address="0x09"   permission="r"
                     description="8 most significant bits in the chip ID"/>
-
               <node id="UpsetReg"     address="0x0a"   permission="r"
                     description=""/>
-
               <node id="HitCount0"    address="0x0b"   permission="r"
                     description=""/>
               <node id="HitCount1"    address="0x0c"   permission="r"
                     description=""/>
               <node id="HitCount2"    address="0x0d"   permission="r"
                     description=""/>
-
               <node id="ExtRegPointer"  address="0x0e"   permission="rw"
                     description="Pointer to one of the extended registers
                                  Hardwired sleep value 0x00
@@ -1898,16 +1891,13 @@
                                  Hardwired sleep value 0x00
                                  Software default value 0x64"/>
               <node id="VThreshold1"    address="0x92"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x00"/>
               <node id="VThreshold2"    address="0x93"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x1a"/>
               <node id="CalPhase"       address="0x94"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x00"/>
               <node id="ContReg2"       address="0x95"   permission="rw"
                     description="Third control register
@@ -1951,45 +1941,35 @@
               <node id="ContReg1"     address="0x01"   permission="rw"
                     description="VFAT control register 1"/>
               <node id="IPreampIn"    address="0x02"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0xa8"/>
               <node id="IPreampFeed"  address="0x03"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x50"/>
               <node id="IPreampOut"   address="0x04"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x96"/>
               <node id="IShaper"      address="0x05"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x96"/>
               <node id="IShaperFeed"  address="0x06"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x64"/>
               <node id="IComp"        address="0x07"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x78"/>
-
               <node id="ChipID0"      address="0x08"   permission="r"
                     description="8 least significant bits in the chip ID"/>
               <node id="ChipID1"      address="0x09"   permission="r"
                     description="8 most significant bits in the chip ID"/>
-
               <node id="UpsetReg"     address="0x0a"   permission="r"
                     description=""/>
-
               <node id="HitCount0"    address="0x0b"   permission="r"
                     description=""/>
               <node id="HitCount1"    address="0x0c"   permission="r"
                     description=""/>
               <node id="HitCount2"    address="0x0d"   permission="r"
                     description=""/>
-
               <node id="ExtRegPointer"  address="0x0e"   permission="rw"
                     description="Pointer to one of the extended registers
                                  Hardwired sleep value 0x00
@@ -2029,16 +2009,13 @@
                                  Hardwired sleep value 0x00
                                  Software default value 0x64"/>
               <node id="VThreshold1"    address="0x92"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x00"/>
               <node id="VThreshold2"    address="0x93"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x1a"/>
               <node id="CalPhase"       address="0x94"   permission="rw"
-                    description="
-                                 Hardwired sleep value 0x00
+                    description="Hardwired sleep value 0x00
                                  Software default value 0x00"/>
               <node id="ContReg2"       address="0x95"   permission="rw"
                     description="Third control register
@@ -2051,13 +2028,11 @@
               <node id="Spare"          address="0x97"   permission="rw"
                     description="Spare register, not currently implemented"/>
             </node> <!-- end of VFAT -->
-
           </node> <!-- end VFATs -->
-
         </node> <!-- end of GEB -->
 
         <node id="FW_DATE" address="0xc000" permission="r"
-              description="OH firmware date"/>
+              description="OH firmware date (OBSOLETE)"/>
       </node> <!-- end OH${OH_IDX} block -->
     </node> <!-- end OptoHybrid block -->
 
