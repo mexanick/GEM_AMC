@@ -1107,7 +1107,8 @@
 
           <node id="CRC"  address="0x24" description="Counters related to the VFAT CRC values">
             <node id="VALID"      address="0x0" description="Counter for each VFAT number of data packets with valid CRC">
-              <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r" description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
+              <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
+                    description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
                 <node id="Reset"  address="0x0"  mask="0x1"  permission="w"
                       description="write any value to the register to reset the counter
@@ -1117,7 +1118,8 @@
 
             <node id="INCORRECT" address="0x18"
                   description="Counter for each VFAT number of data packets with incorrect CRC">
-              <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r" description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
+              <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
+                    description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
                 <node id="Reset"  address="0x0"  mask="0x1"  permission="w"
                       description="write any value to the register to reset the counter
@@ -1167,7 +1169,8 @@
             <node id="SLAVE"  address="0x8"
                   description="">
               <node id="Strobe"  address="0x0" description="">
-                <node id="I2C${I2C_IDX}"   address="0x00"  permission="r" description="Strobe counters for I2C${I2C_IDX}"
+                <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
+                      description="Strobe counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w" />
                 </node>
@@ -1205,7 +1208,8 @@
                 </node>
               </node>
               <node id="Ack"  address="0xe" description="">
-                <node id="I2C${I2C_IDX}"   address="0x00"  permission="r" description="Acknowledge counters for I2C${I2C_IDX}"
+                <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
+                      description="Acknowledge counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w" />
                 </node>
@@ -2041,26 +2045,31 @@
     </node> <!-- end OptoHybrid block -->
 
     <node id="GLIB_SYSTEM" address="0x910000"
-          description="Legacy system registers (taken from GLIB system core). These should be removed once the software is made compatible with the new system registers."
+          description="Legacy system registers (taken from GLIB system core).
+                       These should be removed once the software is made compatible with the new system registers."
           fw_is_module="true"
           fw_is_module_external="true">
 
-      <node id="SYSTEM"  address="0x00000000"  permission="r" description="GLIB system registers">
-        <node id="BOARD_ID" address="0x0" description="GLIB board ID code">
+      <node id="SYSTEM"  address="0x00000000"  permission="r"
+            description="GLIB system registers">
+        <node id="BOARD_ID" address="0x0"
+              description="GLIB board ID code">
           <node id="CHAR1"  mask="0xff000000"  permission="r" address="0x00000000"/>
           <node id="CHAR2"  mask="0x00ff0000"  permission="r" address="0x00000000"/>
           <node id="CHAR3"  mask="0x0000ff00"  permission="r" address="0x00000000"/>
           <node id="CHAR4"  mask="0x000000ff"  permission="r" address="0x00000000"/>
         </node> <!--end board_id -->
 
-        <node id="SYSTEM_ID"  address="0x1" permission="r" description="GLIB system ID code">
+        <node id="SYSTEM_ID"  address="0x1" permission="r"
+              description="GLIB system ID code">
           <node id="CHAR1"  mask="0xff000000"  permission="r" address="0x00000000"/>
           <node id="CHAR2"  mask="0x00ff0000"  permission="r" address="0x00000000"/>
           <node id="CHAR3"  mask="0x0000ff00"  permission="r" address="0x00000000"/>
           <node id="CHAR4"  mask="0x000000ff"  permission="r" address="0x00000000"/>
         </node> <!--end system_id -->
 
-        <node id="FIRMWARE"  address="0x2"  permission="r" description="GLIB firmware date (dd.mm.yy) and version number (x.y.z)">
+        <node id="FIRMWARE"  address="0x2"  permission="r"
+              description="GLIB firmware date (dd.mm.yy) and version number (x.y.z)">
           <node id="ID"     mask="0xffff0000"    permission="r" address="0x00000000"/>
           <node id="MAJOR"  mask="0xf0000000"    permission="r" address="0x00000000"/>
           <node id="MINOR"  mask="0x0f000000"    permission="r" address="0x00000000"/>
@@ -2071,9 +2080,11 @@
           <node id="DD"     mask="0x0000001f"    permission="r" address="0x00000000"/>
         </node> <!--end firmware_id -->
 
-        <node id="TEST"  address="0x0"     permission="r" description="Register for testing purposes only"/>
+        <node id="TEST"  address="0x0"     permission="r"
+              description="Register for testing purposes only"/>
 
-        <node id="CLK_CTRL"  address="0x0" description="Controls the external clocking circuitry">
+        <node id="CLK_CTRL"  address="0x0"
+              description="Controls the external clocking circuitry">
           <node id="PCIE_CLK_FSEL"	  mask="0x00000001" address="0x0" permission="r"
                 description="output multiplication factor:0->2.5x, 1->1.25x"/>
           <node id="PCIE_CLK_MR"	  mask="0x00000002" address="0x0" permission="r"
@@ -2139,7 +2150,8 @@
           <node id="ICAP_TRIGG"  mask="0x00000010" address="0x0"  permission="r"/>
         </node> <!--end ctrl_2-->
 
-        <node id="STATUS"  address="0x0" description="Status from various external components">
+        <node id="STATUS"  address="0x0"
+              description="Status from various external components">
           <node id="SFP1"
                 description="status bits for SFP cage 1">
             <node id="STATUS"      mask="0x00000007" address="0x0"  permission="r"
@@ -2319,7 +2331,8 @@
           <node id="STATS"  address="0x0"   permission="r" description=""/>
         </node> <!--end fmc1_phase_mon-->
 
-        <node id="MAC"  address="0x0"  permission="r" description="firmware version 5.3 and above has different values, as in the description">
+        <node id="MAC"  address="0x0"  permission="r"
+              description="firmware version 5.3 and above has different values, as in the description">
           <node id="IP_SOURCE"  address="0x0"  permission="r"  mask="0x0fff0000"
                 description=""/>
           <node id="UPPER"      address="0x0"  permission="r"  mask="0x0000ffff"
