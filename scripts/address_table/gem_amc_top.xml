@@ -20,17 +20,17 @@
           fw_reg_addr_lsb="0">
       <node id="CTRL" address="0x0"
             description="TTC control">
-        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w"
+        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="rw"
               description="TTC module reset"
               fw_write_pulse_signal="ttc_ctrl.reset_local"/>
-        <node id="MMCM_RESET" address="0x1" mask="0x40000000" permission="w"
+        <node id="MMCM_RESET" address="0x1" mask="0x40000000" permission="rw"
               description="TTC MMCM reset"
               fw_write_pulse_signal="ttc_ctrl.mmcm_reset"/>
-        <node id="CNT_RESET" address="0x2" mask="0x20000000" permission="w"
+        <node id="CNT_RESET" address="0x2" mask="0x20000000" permission="rw"
               description="TTC counter reset"
               fw_write_pulse_signal="ttc_ctrl.cnt_reset"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w"
+        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="rw"
               description="TTC MMCM phase shift trigger"
               fw_write_pulse_signal="ttc_ctrl.mmcm_phase_shift"/>
         <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw"
@@ -179,10 +179,10 @@
 
       <node id="CTRL" address="0x0"
             description="Trigger control">
-        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w"
+        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="rw"
               description="Trigger module reset"
               fw_write_pulse_signal="reset_local"/>
-        <node id="CNT_RESET" address="0x1" mask="0x40000000" permission="w"
+        <node id="CNT_RESET" address="0x1" mask="0x40000000" permission="rw"
               description="Trigger counter reset"
               fw_write_pulse_signal="reset_cnt"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
@@ -291,7 +291,7 @@
           fw_reg_addr_lsb="0">
 
       <node id="CTRL" address="0x100">
-        <node id="CNT_RESET" address="0x0" mask="0x40000000" permission="w"
+        <node id="CNT_RESET" address="0x0" mask="0x40000000" permission="rw"
               description="GEM system counters reset"
               fw_write_pulse_signal="reset_cnt"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
@@ -391,27 +391,27 @@
               description="Counters for the IPBus strobe requests">
           <node id="OptoHybrid_0"  address="0x0"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="OptoHybrid_1"  address="0x1"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="TRK_0"         address="0x2"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="TRK_1"         address="0x3"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="Counters"      address="0x4"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
         </node>
@@ -419,27 +419,27 @@
               description="Counters for the IPBus acknowledgements">
           <node id="OptoHybrid_0"  address="0x0"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="OptoHybrid_1"  address="0x1"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="TRK_0"         address="0x2"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="TRK_1"         address="0x3"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
           <node id="Counters"      address="0x4"  permission="r"
                 description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+            <node id="Reset"       address="0x0"  permission="w"
                   description=""/>
           </node>
         </node>
@@ -461,7 +461,7 @@
           fw_reg_addr_lsb="0">
 
       <node id="CTRL" address="0x0">
-        <node id="RESET" address="0x0" mask="0x00000001" permission="w"
+        <node id="RESET" address="0x0" permission="w"
               description="GEM system counters reset"
               fw_write_pulse_signal="reset_local"/>
       </node>
@@ -870,7 +870,7 @@
           fw_reg_addr_lsb="0">
       <node id="CTRL" address="0x0"
               description="OH Link control">
-        <node id="CNT_RESET" address="0x0" mask="0x80000000" permission="w"
+        <node id="CNT_RESET" address="0x0" mask="0x80000000" permission="rw"
               description="Counter reset"
               fw_write_pulse_signal="reset_local"/>
       </node>
@@ -974,7 +974,7 @@
           fw_reg_addr_lsb="0">
 
       <node id="SCA" address="0x0">
-        <node id="MODULE_RESET" address="0x0" mask="0x00000001" permission="w"
+        <node id="MODULE_RESET" address="0x0" permission="w"
               description="SCA controller reset (coming out of module reset it will also reset and reconfigure the SCA chip)"
               fw_write_pulse_signal="sca_reset"/>
 
@@ -1009,7 +1009,7 @@
         </node>
 
         <node id="MANUAL_CONTROL" address="0x1000">
-          <node id="FPGA_HARD_RESET" address="0x0" mask="0x00000001" permission="w"
+          <node id="FPGA_HARD_RESET" address="0x0" permission="w"
                 description="Writing to this register will trigger OH FPGA hard reset"
                 fw_write_pulse_signal="manual_hard_reset"/>
           <node id="SCA_CMD_CHANNEL" address="0x1" mask="0x000000ff" permission="rw"
@@ -1024,7 +1024,7 @@
           <node id="SCA_CMD_DATA" address="0x2" permission="rw"
                 description="Manual SCA command: data"
                 fw_signal="sca_user_command.data" fw_default="0x00000000"/>
-          <node id="SCA_CMD_EXECUTE" address="0x3" mask="0x00000001" permission="w"
+          <node id="SCA_CMD_EXECUTE" address="0x3" permission="w"
                 description="Manual SCA command: writing to this register will trigger the execution of the SCA command"
                 fw_write_pulse_signal="sca_user_command_en" fw_write_done_signal="sca_user_command_done"/>
           <node id="SCA_RPY_CHANNEL" address="0x4" mask="0x000000ff" permission="r"
@@ -1191,10 +1191,10 @@
         <node id="WRITE_DATA" address="0x2" permission="rw"
               description="GBTx register value to write"
               fw_signal="ic_write_data" fw_default="0x00"/>
-        <node id="EXECUTE_WRITE" address="0x3" mask="0x00000001" permission="w"
+        <node id="EXECUTE_WRITE" address="0x3" permission="w"
               description="writing any value here will execute a GBTx register write operation"
               fw_write_pulse_signal="ic_write_req" fw_write_done_signal="ic_write_done"/>
-        <node id="EXECUTE_READ" address="0x4" mask="0x00000001" permission="w"
+        <node id="EXECUTE_READ" address="0x4" permission="w"
               description="writing any value here will execute a GBTx register read operation"
               fw_write_pulse_signal="ic_read_req"/>
         <node id="GBTX_I2C_ADDR" address="0x5" mask="0x0000000f" permission="rw"
@@ -1224,7 +1224,7 @@
               <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
                     description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"
+                <node id="Reset"  address="0x0"  permission="w"
                       description="write any value to the register to reset the counter
                                    Use mask to only allow writing to the first bit"/>
               </node>
@@ -1235,7 +1235,7 @@
               <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
                     description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"
+                <node id="Reset"  address="0x0"  permission="w"
                       description="write any value to the register to reset the counter
                                    Use mask to only allow writing to the first bit"/>
               </node>
@@ -1248,37 +1248,37 @@
               <node id="Strobe"  address="0x0"
                     description="">
                 <node id="GTX"      address="0x0"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="ExtI2C"   address="0x1"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Scan"     address="0x2"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="DAC"      address="0x3"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
               </node>
               <node id="Ack"  address="0x4"
                     description="">
                 <node id="GTX"      address="0x0"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="ExtI2C"   address="0x1"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Scan"     address="0x2"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="DAC"      address="0x3"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
               </node>
             </node>
@@ -1290,39 +1290,39 @@
                 <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
                       description="Strobe counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w" />
+                  <node id="Reset"  address="0x0"  permission="w" />
                 </node>
 
                 <node id="ExtI2C"   address="0x6"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Scan"     address="0x7"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="T1"       address="0x8"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="DAC"       address="0x9"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="ADC"       address="0xa"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Clocking"  address="0xb"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Counters"  address="0xc"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="System"    address="0xd"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
               </node>
               <node id="Ack"  address="0xe"
@@ -1330,39 +1330,39 @@
                 <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
                       description="Acknowledge counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w" />
+                  <node id="Reset"  address="0x0"  permission="w" />
                 </node>
 
                 <node id="ExtI2C"   address="0x6"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Scan"     address="0x7"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="T1"       address="0x8"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="DAC"       address="0x9"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="ADC"       address="0xa"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Clocking"  address="0xb"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="Counters"  address="0xc"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
                 <node id="System"    address="0xd"  permission="r">
-                  <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                  <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
               </node>
             </node>
@@ -1373,96 +1373,96 @@
             <node id="GTX_TTC"    address="0x00"
                   description="T1 signals received from the AMC over the 8b10b fiber link">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
 
             <node id="GBT_TTC"    address="0x1b"
                   description="T1 signals received from the AMC over the GBT link">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
 
             <node id="INTERNAL"  address="0x04"
                   description="T1 signals generated by the OptoHybrid firmware">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
 
             <node id="EXTERNAL"  address="0x08"
                   description="T1 signals recieved from an external source">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
 
             <node id="LOOPBACK"  address="0x0c"
                   description="T1 signals sent in loopback mode">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
 
             <node id="SENT"      address="0x10"
                   description="T1 signals sent to the GEB (VFATs)">
               <node id="L1A"      address="0x0"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="CalPulse" address="0x1"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="Resync"   address="0x2"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
               <node id="BC0"      address="0x3"  permission="r">
-                <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="Reset"  address="0x0"  permission="w"/>
               </node>
             </node>
           </node>
@@ -1471,53 +1471,53 @@
                 description="Counters related to the OptoHybrid GTX optical links">
             <node id="TRK_ERR"   address="0x0"  permission="r"
                   description="Error counter on the tracking data optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
 
             <node id="TRG_ERR"   address="0x1"  permission="r"
                   description="Error counter on the trigger data optical link (OBSOLETE)">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
 
             <node id="DATA_Packets"   address="0x2"  permission="r"
                   description="Number of received data packets counter on the optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
           </node>
 
           <node id="QPLL_LOCK"           address="0x6B"  permission="rw">
-            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+            <node id="Reset"  address="0x0"  permission="w"/>
           </node>
           <node id="QPLL_FPGA_PLL_LOCK"  address="0x6C"  permission="rw">
-            <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+            <node id="Reset"  address="0x0"  permission="w"/>
           </node>
 
           <node id="GBT_LINK"  address="0x6D"
                 description="Counters related to the OptoHybrid GBT optical links">
             <node id="WB_STROBE"   address="0x0"  permission="r"
                   description="Error counter on the tracking data optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
 
             <node id="WB_ACK"   address="0x1"  permission="r"
                   description="Error counter on the trigger data optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
 
             <!-- GBT T1 counters are in the T1 counters block-->
             <!-- <node id="T1"   address="0x2"  permission="r" -->
             <!--       description="Error counter on the trigger data optical link"> -->
-            <!--   <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/> -->
+            <!--   <node id="Reset"  address="0x0"  permission="w"/> -->
             <!-- </node> -->
 
             <node id="TRK_ERR"   address="0x6"  permission="r"
                   description="Number of errors on the GBT optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
 
             <node id="DATA_Packets"   address="0x7"  permission="r"
                   description="Number of received data packets counter on the optical link">
-              <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="Reset"  address="0x0"  permission="w"/>
             </node>
           </node>
 
@@ -1525,7 +1525,7 @@
                 description="Rate counter registers">
             <node id="TIMER"  address="0x0"  permission="r"
                   description="Timer for the rate counter">
-              <node id="RESET"  address="0x0"  mask="0x1"  permission="w"/>
+              <node id="RESET"  address="0x0"  permission="w"/>
             </node>
 
             <node id="TRG_HITS"  address="0x1"
@@ -1533,7 +1533,7 @@
               <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
                     description="Trigger data hit counter for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
-                <node id="RESET"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="RESET"  address="0x0"  permission="w"/>
               </node>
             </node>
 
@@ -1542,14 +1542,14 @@
               <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
                     description="Tracking data hit counter for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
-                <node id="RESET"  address="0x0"  mask="0x1"  permission="w"/>
+                <node id="RESET"  address="0x0"  permission="w"/>
               </node>
             </node>
           </node>
 
           <node id="SEU"  address="0xa6"  permission="r"
                 description="Rate counter registers">
-            <node id="RESET"  address="0x0"  mask="0x1"  permission="w"/>
+            <node id="RESET"  address="0x0"  permission="w"/>
           </node>
         </node> <!-- end of COUNTERS -->
 
@@ -1560,7 +1560,7 @@
 	        description="Control on the OptoHybrid related to the VFATs">
             <node id="TRK_MASK"  address="0x0"  mask="0x00ffffff"  permission="rw"
                   description="Masks individual VFATs from sending tracking data packets"/>
-            <node id="RESET"  address="0x3"  mask="0x1"  permission="w"
+            <node id="RESET"  address="0x3"  permission="w"
                   description="Returns to a 0 state"/>
             <node id="SBIT_MASK"  address="0x4"  mask="0x00ffffff"  permission="rw"
 	          description="Mask to block individual VFATs from sending s-bits data"/>
@@ -1657,7 +1657,7 @@
         <node id="T1Controller"  address="0x3000"
               description="T1 controller provided on the OptoHybrid">
 
-          <node id="TOGGLE" address="0x0"  mask="0x1"  permission="w"
+          <node id="TOGGLE" address="0x0"  permission="w"
                 description="Toggle the T1 controller on/off"/>
           <node id="MODE"   address="0x1"  mask="0x7"  permission="rw"
                 description="3 bits to select the mode:
@@ -1773,7 +1773,7 @@
               description="Module to perform threshold and latency scans in the firmware">
           <node id="THLAT"  address="0x0000000"  permission="rw"
                 description="Control the onboard threshold/latency scan routine (per VFAT)">
-            <node id="START"  address="0x0"  mask="0x1"  permission="w"
+            <node id="START"  address="0x0"  permission="w"
                   description="Start the specified scan routine
                                Will also empty the results FIFO from the previous scan"/>
             <node id="MODE"  address="0x1"  mask="0xf"  permission="rw"
@@ -1829,7 +1829,7 @@
 
           <node id="ULTRA"  address="0xB000"  permission="rw"
                 description="Control the onboard ultra threshold/latency scan routine">
-            <node id="START"  address="0x0"  mask="0x1"  permission="w"
+            <node id="START"  address="0x0"  permission="w"
                   description="Start the specified scan routine
                                Will also empty the results FIFO from the previous scan"/>
             <node id="MODE"  address="0x1"  mask="0xf"  permission="rw"
@@ -1889,7 +1889,7 @@
 
           <node id="DAC"    address="0x2000"  permission="rw"
                 description="Control the onboard DAC scan routine">
-            <node id="START"    address="0x0"  mask="0x1"  permission="w"
+            <node id="START"    address="0x0"  permission="w"
                   description="Start the specified scan routine
                                Will also empty the results FIFO from the previous scan"/>
             <node id="MODE"     address="0x1"  mask="0xf"  permission="rw"
@@ -2050,7 +2050,7 @@
                                8 next bits are the VFAT2 id (0 to 23)
                                8 LSBits hold response from the VFAT2
                                If no data is present, an error is returned."/>
-            <node id="Reset"    address="0x102"  mask="0x1"  permission="w"
+            <node id="Reset"    address="0x102"  permission="w"
                   description="Reset the module"/>
             <node id="Running"  address="0x103"  mask="0x1"  permission="r"
                   description="0: no broadcast transaction in progress
