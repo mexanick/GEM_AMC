@@ -1929,7 +1929,8 @@
             <node id="Reset"    address="0x102"  mask="0x1"  permission="w"
                   description="Reset the module"/>
             <node id="Running"  address="0x103"  mask="0x1"  permission="r"
-                  description="Returns 1 while the broadcast is in progress"/>
+                  description="0: no broadcast transaction in progress
+                               1: broadcast transaction is in progress"/>
           </node> <!-- end of Broadcast -->
 
           <node id="VFATS"  address="0x100000"
