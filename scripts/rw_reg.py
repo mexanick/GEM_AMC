@@ -93,7 +93,7 @@ def makeTree(node,baseName,baseAddress,nodes,parentNode,vars,isGenerated,num_of_
         newNode.parent = parentNode
         newNode.level = parentNode.level+1
     for child in node:
-        makeTree(child,name,address,nodes,newNode,vars,False)
+        makeTree(child,name,address,nodes,newNode,vars,False,num_of_oh)
 
 
 def getAllChildren(node,kids=[]):
