@@ -5,7 +5,10 @@
 
     <!--TTC module -->
     <node id="TTC"  address="0x00300000"
-          description="TTC control and monitoring. It takes care of locking to the TTC clock coming from the backplane as well as decoding TTC commands and forwarding that to all other modules in the design. It also provides several control and monitoring registers (resets, command decoding configuration, clock and data status, bc0 status, command counters and a small spy buffer)"
+          description="TTC control and monitoring. It takes care of locking to the TTC clock coming from the
+                       backplane as well as decoding TTC commands and forwarding that to all other modules in
+                       the design. It also provides several control and monitoring registers (resets, command
+                       decoding configuration, clock and data status, bc0 status, command counters and a small spy buffer)"
           fw_is_module="true"
           fw_module_file="../common/hdl/ttc/ttc.vhd"
           fw_user_clock_signal="clk_40"
@@ -15,95 +18,132 @@
           fw_slave_bus_signal="ipb_miso_o"
           fw_reg_addr_msb="5"
           fw_reg_addr_lsb="0">
-      <node id="CTRL" address="0x0" description="TTC control">
-        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w" description="TTC module reset"
+      <node id="CTRL" address="0x0"
+            description="TTC control">
+        <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w"
+              description="TTC module reset"
               fw_write_pulse_signal="ttc_ctrl.reset_local"/>
-        <node id="MMCM_RESET" address="0x1" mask="0x40000000" permission="w" description="TTC MMCM reset"
+        <node id="MMCM_RESET" address="0x1" mask="0x40000000" permission="w"
+              description="TTC MMCM reset"
               fw_write_pulse_signal="ttc_ctrl.mmcm_reset"/>
-        <node id="CNT_RESET" address="0x2" mask="0x20000000" permission="w" description="TTC counter reset"
+        <node id="CNT_RESET" address="0x2" mask="0x20000000" permission="w"
+              description="TTC counter reset"
               fw_write_pulse_signal="ttc_ctrl.cnt_reset"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w" description="TTC MMCM phase shift trigger"
+        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w"
+              description="TTC MMCM phase shift trigger"
               fw_write_pulse_signal="ttc_ctrl.mmcm_phase_shift"/>
-        <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw" description="Enable L1As (L1As are blocked if this is 0)"
+        <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw"
+              description="Enable L1As (L1As are blocked if this is 0)"
               fw_signal="ttc_ctrl.l1a_enable" fw_default="0b1"
               sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x1" sw_ctrl_stop_set="0x0"/>
       </node>
-      <node id="CONFIG" address="0x5" description="TTC configuration -- used for setup TTC command decoding">
-        <node id="CMD_BC0" address="0x0" mask="0x000000ff" permission="rw" description="BC0 command code"
+      <node id="CONFIG" address="0x5"
+            description="TTC configuration -- used for setup TTC command decoding">
+        <node id="CMD_BC0" address="0x0" mask="0x000000ff" permission="rw"
+              description="BC0 command code"
               fw_signal="ttc_conf.cmd_bc0" fw_default="0x01"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_EC0" address="0x0" mask="0x0000ff00" permission="rw" description="EC0 command code"
+        <node id="CMD_EC0" address="0x0" mask="0x0000ff00" permission="rw"
+              description="EC0 command code"
               fw_signal="ttc_conf.cmd_ec0" fw_default="0x02"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_RESYNC" address="0x0" mask="0x00ff0000" permission="rw" description="Resync command code"
+        <node id="CMD_RESYNC" address="0x0" mask="0x00ff0000" permission="rw"
+              description="Resync command code"
               fw_signal="ttc_conf.cmd_resync" fw_default="0x04"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_OC0" address="0x0" mask="0xff000000" permission="rw" description="OC0 command code"
+        <node id="CMD_OC0" address="0x0" mask="0xff000000" permission="rw"
+              description="OC0 command code"
               fw_signal="ttc_conf.cmd_oc0" fw_default="0x08"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_HARD_RESET" address="0x1" mask="0x000000ff" permission="rw" description="Hard-reset command code"
+        <node id="CMD_HARD_RESET" address="0x1" mask="0x000000ff" permission="rw"
+              description="Hard-reset command code"
               fw_signal="ttc_conf.cmd_hard_reset" fw_default="0x10"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_CALPULSE" address="0x1" mask="0x0000ff00" permission="rw" description="Calibration pulse command code"
+        <node id="CMD_CALPULSE" address="0x1" mask="0x0000ff00" permission="rw"
+              description="Calibration pulse command code"
               fw_signal="ttc_conf.cmd_calpulse" fw_default="0x14"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_START" address="0x1" mask="0x00ff0000" permission="rw" description="START command code"
+        <node id="CMD_START" address="0x1" mask="0x00ff0000" permission="rw"
+              description="START command code"
               fw_signal="ttc_conf.cmd_start" fw_default="0x18"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_STOP" address="0x1" mask="0xff000000" permission="rw" description="STOP command code"
+        <node id="CMD_STOP" address="0x1" mask="0xff000000" permission="rw"
+              description="STOP command code"
               fw_signal="ttc_conf.cmd_stop" fw_default="0x1c"
               sw_ctrl_configure_confdb_check_set="true"/>
-        <node id="CMD_TEST_SYNC" address="0x2" mask="0x000000ff" permission="rw" description="Test-sync command code"
+        <node id="CMD_TEST_SYNC" address="0x2" mask="0x000000ff" permission="rw"
+              description="Test-sync command code"
               fw_signal="ttc_conf.cmd_test_sync" fw_default="0x20"
               sw_ctrl_configure_confdb_check_set="true"/>
       </node>
-      <node id="STATUS" address="0x8" description="TTC status">
-        <node id="MMCM_LOCKED" address="0x0" mask="0x00000001" permission="r" description="MMCM locked flag"
+      <node id="STATUS" address="0x8"
+            description="TTC status">
+        <node id="MMCM_LOCKED" address="0x0" mask="0x00000001" permission="r"
+              description="MMCM locked flag"
               fw_signal="ttc_status.mmcm_locked"
               sw_monitor_error_value="0"/>
-        <node id="TTC_SINGLE_ERROR_CNT" address="0x1" mask="0x0000ffff" permission="r" description="TTC stream single bit error count"
+        <node id="TTC_SINGLE_ERROR_CNT" address="0x1" mask="0x0000ffff" permission="r"
+              description="TTC stream single bit error count"
               fw_signal="ttc_status.single_err"
               sw_monitor_warn_min_threshold="1"/>
-        <node id="TTC_DOUBLE_ERROR_CNT" address="0x1" mask="0xffff0000" permission="r" description="TTC stream double bit error count"
+        <node id="TTC_DOUBLE_ERROR_CNT" address="0x1" mask="0xffff0000" permission="r"
+              description="TTC stream double bit error count"
               fw_signal="ttc_status.double_err"
               sw_monitor_error_min_threshold="1"/>
-        <node id="BC0" address="0x2" description="TTC status">
-          <node id="LOCKED" address="0x0" mask="0x00000001" permission="r" description="BC0 locked flag"
+        <node id="BC0" address="0x2"
+              description="TTC status">
+          <node id="LOCKED" address="0x0" mask="0x00000001" permission="r"
+                description="BC0 locked flag"
                 fw_signal="ttc_status.bc0_status.locked"
                 sw_monitor_error_value="0"/>
-          <node id="UNLOCK_CNT" address="0x1" mask="0x0000ffff" permission="r" description="BC0 unlock count"
+          <node id="UNLOCK_CNT" address="0x1" mask="0x0000ffff" permission="r"
+                description="BC0 unlock count"
                 fw_signal="ttc_status.bc0_status.unlocked_cnt"
                 sw_monitor_error_min_threshold="1"/>
-          <node id="OVERFLOW_CNT" address="0x2" mask="0x0000ffff" permission="r" description="BX counter overflow count (late or no BC0 received)"
+          <node id="OVERFLOW_CNT" address="0x2" mask="0x0000ffff" permission="r"
+                description="BX counter overflow count (late or no BC0 received)"
                 fw_signal="ttc_status.bc0_status.ovf_cnt"
                 sw_monitor_error_min_threshold="1"/>
-          <node id="UNDERFLOW_CNT" address="0x2" mask="0xffff0000" permission="r" description="BX counter underflow count (early BC0 received, one is normal after the TTC module reset, but this should be reset by control software before each run)"
+          <node id="UNDERFLOW_CNT" address="0x2" mask="0xffff0000" permission="r"
+                description="BX counter underflow count (early BC0 received, one is normal after the
+                             TTC module reset, but this should be reset by control software before each run)"
                 fw_signal="ttc_status.bc0_status.udf_cnt"
                 sw_monitor_error_min_threshold="1"/>
         </node>
       </node>
 
-      <node id="CMD_COUNTERS" address="0xd" description="TTC command counters">
-        <node id="L1A" address="0x0" permission="r" description="L1A count"
+      <node id="CMD_COUNTERS" address="0xd"
+            description="TTC command counters">
+        <node id="L1A" address="0x0" permission="r"
+              description="L1A count"
               fw_signal="ttc_cmds_cnt_arr(0)"/>
-        <node id="BC0" address="0x1" permission="r" description="BC0 count"
+        <node id="BC0" address="0x1" permission="r"
+              description="BC0 count"
               fw_signal="ttc_cmds_cnt_arr(1)"/>
-        <node id="EC0" address="0x2" permission="r" description="EC0 count"
+        <node id="EC0" address="0x2" permission="r"
+              description="EC0 count"
               fw_signal="ttc_cmds_cnt_arr(2)"/>
-        <node id="RESYNC" address="0x3" permission="r" description="Resync count"
+        <node id="RESYNC" address="0x3" permission="r"
+              description="Resync count"
               fw_signal="ttc_cmds_cnt_arr(3)"/>
-        <node id="OC0" address="0x4" permission="r" description="OC0 count"
+        <node id="OC0" address="0x4" permission="r"
+              description="OC0 count"
               fw_signal="ttc_cmds_cnt_arr(4)"/>
-        <node id="HARD_RESET" address="0x5" permission="r" description="Hard-reset count"
+        <node id="HARD_RESET" address="0x5" permission="r"
+              description="Hard-reset count"
               fw_signal="ttc_cmds_cnt_arr(5)"/>
-        <node id="CALPULSE" address="0x6" permission="r" description="Calibration pulse count"
+        <node id="CALPULSE" address="0x6" permission="r"
+              description="Calibration pulse count"
               fw_signal="ttc_cmds_cnt_arr(6)"/>
-        <node id="START" address="0x7" permission="r" description="START count"
+        <node id="START" address="0x7" permission="r"
+              description="START count"
               fw_signal="ttc_cmds_cnt_arr(7)"/>
-        <node id="STOP" address="0x8" permission="r" description="STOP count"
+        <node id="STOP" address="0x8" permission="r"
+              description="STOP count"
               fw_signal="ttc_cmds_cnt_arr(8)"/>
-        <node id="TEST_SYNC" address="0x9" permission="r" description="Test-sync count"
+        <node id="TEST_SYNC" address="0x9" permission="r"
+              description="Test-sync count"
               fw_signal="ttc_cmds_cnt_arr(9)"/>
       </node>
 
@@ -115,14 +155,18 @@
             description="L1A rate in Hz"
             fw_signal="l1a_rate"/>
 
-      <node id="TTC_SPY_BUFFER" address="0x19" permission="r" description="TTC Spy buffer -- this is filled with TTC commands (from LSB to MSB) and freezes until the user reads it out, once read out it resets and fills up again with new TTC commands received from that point on"
+      <node id="TTC_SPY_BUFFER" address="0x19" permission="r"
+            description="TTC Spy buffer -- this is filled with TTC commands (from LSB to MSB)
+                         and freezes until the user reads it out, once read out it resets and
+                         fills up again with new TTC commands received from that point on"
             fw_signal="ttc_spy_buffer" fw_read_pulse_signal="ttc_spy_reset"/>
     </node>
     <!--end TTC module -->
 
     <!--Trigger module -->
     <node id="TRIGGER"  address="0x00800000"
-          description="Trigger module handles everything related to sbit cluster data (link synchronization, monitoring, local triggering, matching to L1A and reporting data to DAQ)"
+          description="Trigger module handles everything related to sbit cluster data
+                       (link synchronization, monitoring, local triggering, matching to L1A and reporting data to DAQ)"
           fw_is_module="true"
           fw_module_file="../common/hdl/trigger/trigger.vhd"
           fw_user_clock_signal="ttc_clk_i.clk_40"
@@ -133,7 +177,8 @@
           fw_reg_addr_msb="12"
           fw_reg_addr_lsb="0">
 
-      <node id="CTRL" address="0x0" description="Trigger control">
+      <node id="CTRL" address="0x0"
+            description="Trigger control">
         <node id="MODULE_RESET" address="0x0" mask="0x80000000" permission="w"
               description="Trigger module reset"
               fw_write_pulse_signal="reset_local"/>
@@ -147,7 +192,8 @@
               fw_default="0x000000"/>
       </node>
 
-      <node id="STATUS" address="0x10" description="Trigger status">
+      <node id="STATUS" address="0x10"
+            description="Trigger status">
         <node id="OR_TRIGGER_RATE" address="0x0" permission="r"
               description="OR-Trigger rate (Hz) -- this trigger fires whenever there's at least one valid sbit cluster on any link"
               fw_signal="or_trigger_rate"
@@ -157,7 +203,8 @@
               fw_signal="or_trigger_cnt"/>
       </node>
 
-      <node id="OH${OH_IDX}" address="0x100" description="Trigger link for OH ${OH_IDX}"
+      <node id="OH${OH_IDX}" address="0x100"
+            description="Trigger link for OH ${OH_IDX}"
             generate="true" generate_size="12" generate_address_step="0x100" generate_idx_var="OH_IDX">
         <node id="TRIGGER_RATE" address="0x0" permission="r"
               description="Trigger rate (Hz) -- this trigger fires whenever there's at least one valid sbit cluster"
@@ -283,7 +330,8 @@
               description="Number of supported optohybrids"
               fw_signal="num_of_oh"/>
         <node id="USE_GBT" address="0x0" mask="0x00000100" permission="r"
-              description="If 1 then this firmware is using GBT links to communicate with optohybrids, if 0 then 8b10b links are used"
+              description="If 1 then this firmware is using GBT links to communicate with optohybrids,
+                           if 0 then 8b10b links are used"
               fw_signal="use_gbt"/>
         <node id="USE_TRIG_LINKS" address="0x0" mask="0x00000200" permission="r"
               description="If 1 then this firmware supports trigger links, if 0 then trigger links are disabled"
@@ -292,10 +340,12 @@
 
       <node id="GBT" address="0x100">
         <node id="TX_SYNC_PATTERN" address="0x0" mask="0x0000ffff" permission="rw"
-              description="GBT TX sync pattern (sent continuously after reset until a valid RX sync pattern is received for a certain number of clocks)"
+              description="GBT TX sync pattern (sent continuously after reset until a valid RX sync pattern
+                           is received for a certain number of clocks)"
               fw_signal="gbt_tx_sync_pattern" fw_default="0x76BC"/>
         <node id="RX_SYNC_PATTERN" address="0x1" permission="rw"
-              description="GBT RX sync pattern (TX sync pattern is sent continuously after reset until a valid RX sync pattern is received for a certain number of clocks)"
+              description="GBT RX sync pattern (TX sync pattern is sent continuously after reset until a valid RX sync pattern
+                           is received for a certain number of clocks)"
               fw_signal="gbt_rx_sync_pattern" fw_default="0x76BC76BC"/>
         <node id="RX_SYNC_COUNT_REQUIRED" address="0x2" mask="0x000000ff" permission="rw"
               description="GBT RX sync pattern has to be received for this number of clock cycles to consider the link synchronized"
@@ -304,21 +354,26 @@
 
       <node id="TESTS" address="0x200">
         <node id="GBT_LOOPBACK_EN" address="0x0" mask="0x00000001" permission="rw"
-              description="GBT Loopback test enable -- if this is true then all GBT links are redirected to the loopback test module and the test module is enabled (communication with optohybrid is not possible during the test)"
+              description="GBT Loopback test enable -- if this is true then all GBT links are redirected to the loopback test
+                           module and the test module is enabled (communication with optohybrid is not possible during the test)"
               fw_signal="loopback_gbt_test_en" fw_default="0b0"
               sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
         <node id="8B10B_LOOPBACK_EN" address="0x0" mask="0x00000002" permission="rw"
-              description="8b10b loopback test enable -- if this is true then all 8b10b DAQ/control links are redirected to the loopback test module and the test module is enabled (communication with optohybrid is not possible during the test)"
+              description="8b10b loopback test enable -- if this is true then all 8b10b DAQ/control links are redirected to the
+                           loopback test module and the test module is enabled (communication with optohybrid is not possible
+                           during the test)"
               fw_signal="loopback_8b10b_test_en" fw_default="0b0"
               sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
         <node id="8B10B_LOOPBACK_USE_TRIG_LINKS" address="0x0" mask="0x00000004" permission="rw"
-              description="If this bit is set then the 8b10b loopback test will also expect the DAQ TX data to be looped back to the trigger links and do the sync and count the errors on these links"
+              description="If this bit is set then the 8b10b loopback test will also expect the DAQ TX data to be looped back
+                           to the trigger links and do the sync and count the errors on these links"
               fw_signal="loopback_8b10b_use_trig" fw_default="0b0"
               sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
       </node>
 
       <node id="LEGACY_SYSTEM" address="0x10000"
-            description="Legacy system registers (taken from GLIB system core). These should be removed once the software is made compatible with the new system registers.">
+            description="Legacy system registers (taken from GLIB system core). These should be removed once the software is
+                         made compatible with the new system registers.">
 
         <node id="BOARD_ID" address="0x0" permission="r"
               description="GLIB Board ID code"
@@ -330,39 +385,62 @@
               description="GLIB firmware version + firmware date"
               fw_signal="legacy_fw_version"/>
 
-        <!--node id="IPBus"   address="0x10" description="counters for IPBus transactions">
-        <node id="Strobe"   address="0x0" description="Counters for the IPBus strobe requests">
-          <node id="OptoHybrid_0"  address="0x0"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+        <!--node id="IPBus"   address="0x10"
+                 description="counters for IPBus transactions">
+        <node id="Strobe"   address="0x0"
+              description="Counters for the IPBus strobe requests">
+          <node id="OptoHybrid_0"  address="0x0"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="OptoHybrid_1"  address="0x1"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="OptoHybrid_1"  address="0x1"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="TRK_0"         address="0x2"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="TRK_0"         address="0x2"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="TRK_1"         address="0x3"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="TRK_1"         address="0x3"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="Counters"      address="0x4"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="Counters"      address="0x4"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
         </node>
-        <node id="Ack"      address="0x5" description="Counters for the IPBus acknowledgements">
-          <node id="OptoHybrid_0"  address="0x0"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+        <node id="Ack"      address="0x5"
+              description="Counters for the IPBus acknowledgements">
+          <node id="OptoHybrid_0"  address="0x0"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="OptoHybrid_1"  address="0x1"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="OptoHybrid_1"  address="0x1"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="TRK_0"         address="0x2"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="TRK_0"         address="0x2"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="TRK_1"         address="0x3"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="TRK_1"         address="0x3"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
-          <node id="Counters"      address="0x4"  permission="r" description="">
-            <node id="Reset"       address="0x0"  mask="0x1"  permission="w" description=""/>
+          <node id="Counters"      address="0x4"  permission="r"
+                description="">
+            <node id="Reset"       address="0x0"  mask="0x1"  permission="w"
+                  description=""/>
           </node>
         </node>
         </node-->
@@ -388,10 +466,12 @@
               fw_write_pulse_signal="reset_local"/>
       </node>
 
-      <node id="GBT_LOOPBACK" address="0x1000" description="GBT loopback test submodule">
+      <node id="GBT_LOOPBACK" address="0x1000"
+              description="GBT loopback test submodule">
         <node id="CTRL" address="0x0">
 	  <node id="LOOP_THROUGH_OH" address="0x0" mask="0x00000001" permission="rw"
-		description="This flag is used to indicate if the loopback test goes through OH or not. If it's set to 1 then only elinks that go to OH FPGA are checked."
+		description="This flag is used to indicate if the loopback test goes through OH or not.
+                             If it's set to 1 then only elinks that go to OH FPGA are checked."
 		fw_signal="gbt_loop_through_oh" fw_default="0b0"/>
         </node>
         <node id="LINK_${GBT_IDX}"  address="0x10"
@@ -410,7 +490,8 @@
         </node>
       </node>
 
-      <node id="8b10b_LOOPBACK" address="0x2000" description="8b10b loopback test submodule">
+      <node id="8b10b_LOOPBACK" address="0x2000"
+            description="8b10b loopback test submodule">
         <node id="LINK_${OH_IDX}"  address="0x10"
               description="Link specific registers for 8b10b link ${OH_IDX}"
               generate="true" generate_size="12" generate_address_step="0x10" generate_idx_var="OH_IDX">
@@ -443,7 +524,8 @@
 
     <!--DAQ module -->
     <node id="DAQ"  address="0x00700000"
-          description="DAQ module buffers track data, builds events, analyses the data for consistency and ships off the events with all the needed headers and trailers to AMC13 over DAQLink"
+          description="DAQ module buffers track data, builds events, analyses the data for consistency
+                       and ships off the events with all the needed headers and trailers to AMC13 over DAQLink"
           fw_is_module="true"
           fw_module_file="../common/hdl/daq/daq.vhd"
           fw_user_clock_signal="ipb_clk_i"
@@ -454,7 +536,8 @@
           fw_reg_addr_msb="8"
           fw_reg_addr_lsb="0">
 
-      <node id="CONTROL"  address="0x0" description="DAQ Control">
+      <node id="CONTROL"  address="0x0"
+            description="DAQ Control">
         <node id="DAQ_ENABLE"         address="0x0" mask="0x00000001" permission="rw"
               description="If this is set to 0, there will be no data sent to AMC13 and TTS state will always be READY (0x8)"
               fw_signal="daq_enable" fw_default="0b0"/>
@@ -491,7 +574,8 @@
               fw_signal="dav_timeout" fw_default="0x3d090"/>
       </node>
 
-      <node id="STATUS"  address="0x1" description="DAQ global status registers">
+      <node id="STATUS"  address="0x1"
+            description="DAQ global status registers">
         <node id="DAQ_LINK_RDY"    address="0x0"  mask="0x00000001" permission="r"
               description="When this is 1, it means that AMC is in good communication
                            with AMC13. It must be 1 for AMC to be able to send data."
@@ -541,7 +625,8 @@
               fw_signal="tts_state"/>
       </node>
 
-      <node id="EXT_STATUS"  address="0x2" description="DAQ global extended status registers">
+      <node id="EXT_STATUS"  address="0x2"
+            description="DAQ global extended status registers">
         <node id="NOTINTABLE_ERR"  address="0x0"  mask="0x0000ffff" permission="r"
               description="This counter is counting DAQLink GTX/GTH not-in-table errors"
               fw_signal="daq_notintable_err_cnt"/>
@@ -549,7 +634,8 @@
               description="This counter is counting DAQLink GTX/GTH dispersion errors"
               fw_signal="daq_disper_err_cnt"/>
         <node id="L1AID"           address="0x2"  mask="0x00ffffff" permission="r"
-              description="Current L1A ID (similar to event number, but this may be a bit ahead of that if we're still waiting for data for unprocessed L1As)"
+              description="Current L1A ID (similar to event number, but this may be a bit ahead of
+                           that if we're still waiting for data for unprocessed L1As)"
               fw_signal="ttc_daq_cntrs_i.l1id"/>
         <node id="EVT_SENT"        address="0x3"  permission="r"
               description="Number of events shipped out to DAQLink"
@@ -592,7 +678,8 @@
               sw_monitor_warn_min_threshold="40000"/> <!-- currently running DAQ at 50MHz, which is 3.2Gbs, so warning at 2.5Gbs (could increase to 80MHz to get 5Gbs) -->
       </node>
 
-      <node id="EXT_CONTROL"  address="0xe" description="DAQ global extended configuration registers">
+      <node id="EXT_CONTROL"  address="0xe"
+            description="DAQ global extended configuration registers">
         <node id="RUN_TYPE"       address="0x1"  mask="0x0f000000" permission="rw"
               description="User settable run type that gets embedded into the AMC header"
               fw_signal="run_type" fw_default="0x0"/>
@@ -781,12 +868,15 @@
           fw_slave_bus_signal="ipb_miso_o"
           fw_reg_addr_msb="12"
           fw_reg_addr_lsb="0">
-      <node id="CTRL" address="0x0" description="OH Link control">
-        <node id="CNT_RESET" address="0x0" mask="0x80000000" permission="w" description="Counter reset"
+      <node id="CTRL" address="0x0"
+              description="OH Link control">
+        <node id="CNT_RESET" address="0x0" mask="0x80000000" permission="w"
+              description="Counter reset"
               fw_write_pulse_signal="reset_local"/>
       </node>
 
-      <node id="OH${OH_IDX}" address="0x100" description="Links for OH ${OH_IDX}"
+      <node id="OH${OH_IDX}" address="0x100"
+            description="Links for OH ${OH_IDX}"
             generate="true" generate_size="12" generate_address_step="0x100" generate_idx_var="OH_IDX">
         <node id="TRACK_LINK_ERROR_CNT" address="0x0" permission="r"
               description="Number of times this link didn't see the correct comma character at the correct time"
@@ -797,35 +887,43 @@
               fw_signal="evt_rcvd_cnt_arr(${OH_IDX})"/>
 
         <node id="TRACK_LINK_TX_SYNC_OVF_CNT" address="0x2" permission="r"
-              description="Number of overflow occurences in the track tx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of overflow occurences in the track tx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tk_tx_ovf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x3" permission="r"
-              description="Number of underflow occurences in the track tx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of underflow occurences in the track tx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tk_tx_unf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x4" permission="r"
-              description="Number of overflow occurences in the track rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of overflow occurences in the track rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tk_rx_ovf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x5" permission="r"
-              description="Number of underflow occurences in the track rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of underflow occurences in the track rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tk_rx_unf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x6" permission="r"
-              description="Number of overflow occurences in the trigger link0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of overflow occurences in the trigger link0 rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tr0_rx_ovf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x7" permission="r"
-              description="Number of underflow occurences in the trigger link0 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of underflow occurences in the trigger link0 rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tr0_rx_unf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x8" permission="r"
-              description="Number of overflow occurences in the trigger link1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of overflow occurences in the trigger link1 rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tr1_rx_ovf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
         <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x9" permission="r"
-              description="Number of underflow occurences in the trigger link1 rx synchronization FIFO (should be 0, otherwise there's something wrong with clocks)"
+              description="Number of underflow occurences in the trigger link1 rx synchronization FIFO
+                           (should be 0, otherwise there's something wrong with clocks)"
               fw_signal="sync_tr1_rx_unf_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1"/>
 
@@ -855,7 +953,8 @@
               sw_monitor_warn_min_threshold="1000"/>
 
         <node id="GBT_LINK_SYNC_DONE" address="0x10" mask="0x00000001" permission="r"
-              description="Indicates whether or not the sync procedure has been done on the GBT link for this OH (if GBT is not enabled, this will be always 0)"
+              description="Indicates whether or not the sync procedure has been done on the GBT link
+                           for this OH (if GBT is not enabled, this will be always 0)"
               fw_signal="gbt_rx_sync_done_arr_i(${OH_IDX})"/>
 
       </node>
@@ -1018,25 +1117,36 @@
                   fw_signal="jtag_shift_msb_first" fw_default="0b0"/>
             <node id="EXPERT" address="0x0">
               <node id="EXEC_ON_EVERY_TDO" address="0x0" mask="0x00000004" permission="rw"
-                    description="EXPERT ONLY: used to optimize firmware downloading, when set high the controller will execute JTAG_GO after every TDO shift (even if length is higher than 32)"
+                    description="EXPERT ONLY: used to optimize firmware downloading, when set high the controller will execute
+                                 JTAG_GO after every TDO shift (even if length is higher than 32)"
                     fw_signal="jtag_exec_on_every_tdo" fw_default="0b0"/>
               <node id="NO_SCA_LENGTH_UPDATE" address="0x0" mask="0x00000008" permission="rw"
-                    description="EXPERT ONLY: used to optimize firmware downloading, when set high the controller will assume that SCA already has the correct length and will not update it before each JTAG_GO"
+                    description="EXPERT ONLY: used to optimize firmware downloading, when set high the controller will
+                                 assume that SCA already has the correct length and will not update it before each JTAG_GO"
                     fw_signal="jtag_no_length_update" fw_default="0b0"/>
               <node id="SHIFT_TDO_ASYNC" address="0x0" mask="0x00000010" permission="rw"
-                    description="kindof expert: if this is set high then JTAG controller will acknowledge the TDO shift command immediately, but if the second command is received while it's still busy it won't assert jtag_shift_done_o until the previous command is done"
+                    description="kindof expert: if this is set high then JTAG controller will acknowledge the TDO shift
+                                 command immediately, but if the second command is received while it's still busy it
+                                 won't assert jtag_shift_done_o until the previous command is done"
                     fw_signal="jtag_shift_tdo_async" fw_default="0b0"/>
             </node>
           </node>
           <node id="NUM_BITS" address="0x1" mask="0x000007f" permission="rw"
-                description="Number of bits in the JTAG command (0 means 128). Once you shift this number of bits of TDO data, the JTAG command will be executed and TDI is available for reading"
+                description="Number of bits in the JTAG command (0 means 128). Once you shift this number of bits of
+                             TDO data, the JTAG command will be executed and TDI is available for reading"
                 fw_signal="jtag_cmd_length" fw_default="0b0000000"/>
           <node id="TMS" address="0x2" permission="w"
-                description="TMS bits to shift to the SCA chip. 32 bits are shifted with each write to this register. The write transaction completes once the bit shifting to the SCA is already done and confirmed by the SCA, so there's no need to sleep between the consecutive writes to this register."
+                description="TMS bits to shift to the SCA chip. 32 bits are shifted with each write to this register.
+                             The write transaction completes once the bit shifting to the SCA is already done and
+                             confirmed by the SCA, so there's no need to sleep between the consecutive writes to this register."
                 fw_signal="jtag_tms" fw_write_pulse_signal="jtag_shift_tms_en" fw_write_done_signal="jtag_shift_done"
                 fw_default="0x00000000"/>
           <node id="TDO" address="0x3" permission="w"
-                description="TDO bits to shift to the SCA chip. 32 bits are shifted with each write to this register. Once the number of bits shifted is equal to or greater than the NUM_BITS the JTAG command will be executed. The write transaction completes once the bit shifting to the SCA is already done and confirmed by the SCA, so there's no need to sleep between the consecutive writes to this register."
+                description="TDO bits to shift to the SCA chip. 32 bits are shifted with each write to this register.
+                             Once the number of bits shifted is equal to or greater than the NUM_BITS the JTAG command
+                             will be executed. The write transaction completes once the bit shifting to the SCA is
+                             already done and confirmed by the SCA, so there's no need to sleep between the consecutive
+                             writes to this register."
                 fw_signal="jtag_tdo" fw_write_pulse_signal="jtag_shift_tdo_en" fw_write_done_signal="jtag_shift_done"
                 fw_default="0x00000000"/>
           <node id="TDI" address="0x4" permission="r"
@@ -1075,7 +1185,8 @@
               description="GBTx register address to read or write"
               fw_signal="ic_address" fw_default="0x0000"/>
         <node id="READ_WRITE_LENGTH" address="0x1" mask="0x00000007" permission="rw"
-              description="Number of data bytes to be written or read e.g. if you set it to 4 then 4 consecutive GBTx registers will be written with the 4 bytes in WRITE_DATA register. Max is 4."
+              description="Number of data bytes to be written or read e.g. if you set it to 4 then 4 consecutive
+                           GBTx registers will be written with the 4 bytes in WRITE_DATA register. Max is 4."
               fw_signal="ic_rw_length" fw_default="0x01"/>
         <node id="WRITE_DATA" address="0x2" permission="rw"
               description="GBTx register value to write"
@@ -1099,14 +1210,17 @@
           fw_is_module="true"
           fw_is_module_external="true">
 
-      <node id="OH${OH_IDX}"  address="0x0" description="Optohybrid ${OH_IDX}"
+      <node id="OH${OH_IDX}"  address="0x0"
+            description="Optohybrid ${OH_IDX}"
             generate="true" generate_size="12" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
 
         <node id="COUNTERS"  address="0xa000"
               description="Counters provided on the OptoHybrid">
 
-          <node id="CRC"  address="0x24" description="Counters related to the VFAT CRC values">
-            <node id="VALID"      address="0x0" description="Counter for each VFAT number of data packets with valid CRC">
+          <node id="CRC"  address="0x24"
+                description="Counters related to the VFAT CRC values">
+            <node id="VALID"      address="0x0"
+                  description="Counter for each VFAT number of data packets with valid CRC">
               <node id="VFAT${VFAT_IDX}"   address="0x00"  permission="r"
                     description="CRC counters for the tracking data for VFAT${VFAT_IDX}"
                     generate="true" generate_size="24" generate_address_step="0x1" generate_idx_var="VFAT_IDX">
@@ -1128,9 +1242,11 @@
             </node>
           </node>
 
-          <node id="WB"  address="0x00" description="Counters related to the OptoHybrid wishbone">
+          <node id="WB"  address="0x00"
+                description="Counters related to the OptoHybrid wishbone">
             <node id="MASTER"  address="0x0">
-              <node id="Strobe"  address="0x0" description="">
+              <node id="Strobe"  address="0x0"
+                    description="">
                 <node id="GTX"      address="0x0"  permission="r">
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
                 </node>
@@ -1147,7 +1263,8 @@
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
                 </node>
               </node>
-              <node id="Ack"  address="0x4" description="">
+              <node id="Ack"  address="0x4"
+                    description="">
                 <node id="GTX"      address="0x0"  permission="r">
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
                 </node>
@@ -1168,7 +1285,8 @@
 
             <node id="SLAVE"  address="0x8"
                   description="">
-              <node id="Strobe"  address="0x0" description="">
+              <node id="Strobe"  address="0x0"
+                    description="">
                 <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
                       description="Strobe counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
@@ -1207,7 +1325,8 @@
                   <node id="Reset"  address="0x0"  mask="0x1"  permission="w"/>
                 </node>
               </node>
-              <node id="Ack"  address="0xe" description="">
+              <node id="Ack"  address="0xe"
+                    description="">
                 <node id="I2C${I2C_IDX}"   address="0x00"  permission="r"
                       description="Acknowledge counters for I2C${I2C_IDX}"
                       generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="I2C_IDX">
@@ -1599,7 +1718,8 @@
                 description="T1 controller reset"/>
         </node> <!-- end of T1CONTROLLER -->
 
-        <node id="ADC"  address="0x8000" description="ADC provided on the OptoHybrid">
+        <node id="ADC"  address="0x8000"
+              description="ADC provided on the OptoHybrid">
           <node id="TEMP"  address="0x0"  permission="r"
                 description="Returns the value from the ADC temperature">
             <node id="MAX"    address="0x20"  permission="r"
@@ -1940,7 +2060,8 @@
           <node id="VFATS"  address="0x100000"
                 description="VFAT registers controled by the AMC user registers">
 
-            <node id="VFAT${VFAT_IDX}"   address="0x0" description="VFAT #{VFAT_IDX} registers"
+            <node id="VFAT${VFAT_IDX}"   address="0x0"
+              description="VFAT #{VFAT_IDX} registers"
                   generate="true" generate_size="24" generate_address_step="0x100" generate_idx_var="VFAT_IDX">
               <node id="ContReg0"     address="0x00"   permission="rw"
                     description="VFAT control register 0
@@ -2264,7 +2385,8 @@
                 description="SPI interface: data from clock synthesizer to FPGA"/>
         </node>
 
-        <node id="I2C"  address="0x0" description="I2C interface">
+        <node id="I2C"  address="0x0"
+              description="I2C interface">
           <node id="SETTINGS"  address="0x0"  permission="r"
                 description="I2C interface: configuration (bus select, frequency, etc., only in bench mode)">
             <node id="ENABLE"      mask="0x00000800" address="0x0"  permission="r"
@@ -2313,12 +2435,14 @@
         </node>
 
         <node id="SFP_PHASE_MON">
-          <node id="CTRL"  address="0x0"  permission="r" description="">
+          <node id="CTRL"  address="0x0"  permission="r"
+              description="">
             <node id="LOWER"  mask="0x000000ff" address="0x0"  permission="r"/>
             <node id="UPPER"  mask="0x0000ff00" address="0x0"  permission="r"/>
           </node> <!--end sfp_phase_mon_ctrl-->
 
-          <node id="STATS"  address="0x0"   permission="r" description=""/>
+          <node id="STATS"  address="0x0"   permission="r"
+              description=""/>
         </node> <!--end sfp_phase_mon-->
 
         <node id="FMC1_PHASE_MON">
@@ -2328,7 +2452,8 @@
             <node id="UPPER"  mask="0x0000ff00" address="0x0"  permission="r"/>
           </node> <!--end fmc1_phase_mon_ctrl-->
 
-          <node id="STATS"  address="0x0"   permission="r" description=""/>
+          <node id="STATS"  address="0x0"   permission="r"
+              description=""/>
         </node> <!--end fmc1_phase_mon-->
 
         <node id="MAC"  address="0x0"  permission="r"
