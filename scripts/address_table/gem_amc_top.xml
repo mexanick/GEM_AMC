@@ -1251,6 +1251,10 @@
                   <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
+                <node id="GBT"      address="0x6D"  permission="r">
+                  <node id="Reset"  address="0x0"  permission="w"/>
+                </node>
+
                 <node id="ExtI2C"   address="0x1"  permission="r">
                   <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
@@ -1266,6 +1270,10 @@
               <node id="Ack"  address="0x4"
                     description="">
                 <node id="GTX"      address="0x0"  permission="r">
+                  <node id="Reset"  address="0x0"  permission="w"/>
+                </node>
+
+                <node id="GBT"      address="0x6A"  permission="r">
                   <node id="Reset"  address="0x0"  permission="w"/>
                 </node>
 
@@ -1494,15 +1502,17 @@
 
           <node id="GBT_LINK"  address="0x6D"
                 description="Counters related to the OptoHybrid GBT optical links">
-            <node id="WB_STROBE"   address="0x0"  permission="r"
-                  description="Error counter on the tracking data optical link">
-              <node id="Reset"  address="0x0"  permission="w"/>
-            </node>
 
-            <node id="WB_ACK"   address="0x1"  permission="r"
-                  description="Error counter on the trigger data optical link">
-              <node id="Reset"  address="0x0"  permission="w"/>
-            </node>
+            <!-- GBT WB counters are in the WB counters block-->
+            <!-- <node id="WB_STROBE"   address="0x0"  permission="r" -->
+            <!--       description="Error counter on the tracking data optical link"> -->
+            <!--   <node id="Reset"  address="0x0"  permission="w"/> -->
+            <!-- </node> -->
+
+            <!-- <node id="WB_ACK"   address="0x1"  permission="r" -->
+            <!--       description="Error counter on the trigger data optical link"> -->
+            <!--   <node id="Reset"  address="0x0"  permission="w"/> -->
+            <!-- </node> -->
 
             <!-- GBT T1 counters are in the T1 counters block-->
             <!-- <node id="T1"   address="0x2"  permission="r" -->
@@ -1999,7 +2009,7 @@
                     description="Registers for the individual VFAT channels
                                  Hardwired sleep value 0x00
                                  Software default value 0x00">
-                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"
+                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"  permission="rw"
                       description="Register for VFAT channel ${CHANNEL_IDX}"
                       generate="true" generate_size="128" generate_address_step="0x1" generate_idx_var="CHANNEL_IDX">
                   <!-- Due to RMW behaviour, don't allow masked registers in broadcast module-->
@@ -2057,7 +2067,7 @@
                                1: broadcast transaction is in progress"/>
           </node> <!-- end of Broadcast -->
 
-          <node id="VFATS"  address="0x100000"
+          <node id="VFATS"  address="0x0000"
                 description="VFAT registers controled by the AMC user registers">
 
             <node id="VFAT${VFAT_IDX}"   address="0x0"
@@ -2120,7 +2130,7 @@
                     description="Registers for the individual VFAT channels
                                  Hardwired sleep value 0x00
                                  Software default value 0x00">
-                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"
+                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"  permission="rw"
                       description="Register for VFAT channel ${CHANNEL_IDX}"
                       generate="true" generate_size="128" generate_address_step="0x1" generate_idx_var="CHANNEL_IDX">
                   <node id="PULSE"  address="0x00"  mask="0x40"  permission="rw"
@@ -2159,9 +2169,6 @@
             </node> <!-- end of VFAT -->
           </node> <!-- end VFATs -->
         </node> <!-- end of GEB -->
-
-        <node id="FW_DATE" address="0xc000" permission="r"
-              description="OH firmware date (OBSOLETE)"/>
       </node> <!-- end OH${OH_IDX} block -->
     </node> <!-- end OptoHybrid block -->
 
