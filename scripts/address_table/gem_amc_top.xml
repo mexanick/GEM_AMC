@@ -1735,51 +1735,151 @@
         <node id="ADC"  address="0x8000"
               description="ADC provided on the OptoHybrid">
           <node id="TEMP"  address="0x0"  permission="r"
-                description="Returns the value from the ADC temperature">
+                description="Returns the value from the ADC temperature
+                             The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 0.49 C">
             <node id="MAX"    address="0x20"  permission="r"
-                  description="Returns the maximum seen temperature value"/>
+                  description="Returns the maximum seen temperature value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 0.49 C"/>
             <node id="MIN"    address="0x24"  permission="r"
-                  description="Returns the minimum seen temperature value"/>
+                  description="Returns the minimum seen temperature value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 0.49 C"/>
           </node>
           <node id="VCCINT"  address="0x1"  permission="r"
-                description="Returns the value from the ADC VCC int">
+                description="Returns the value from the ADC VCC int
+                             The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV">
             <node id="MAX"    address="0x20"  permission="r"
-                  description="Returns the maximum seen VCC int value"/>
+                  description="Returns the maximum seen VCC int value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV"/>
             <node id="MIN"    address="0x24"  permission="r"
-                  description="Returns the minimum seen VCC int value"/>
+                  description="Returns the minimum seen VCC int value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV"/>
           </node>
           <node id="VCCAUX"  address="0x2"  permission="r"
-                description="Returns the value from the ADC VCC aux">
+                description="Returns the value from the ADC VCC aux
+                             The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV">
             <node id="MAX"    address="0x20"  permission="r"
-                  description="Returns the maximum seen VCC aux value"/>
+                  description="Returns the maximum seen VCC aux value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV"/>
             <node id="MIN"    address="0x24"  permission="r"
-                  description="Returns the minimum seen VCC aux value"/>
+                  description="Returns the minimum seen VCC aux value
+                               The 10 MSBs correspond to the ADC transfer function. 1 LSB corresponds to 2.93 mV"/>
           </node>
           <node id="VPVN"  address="0x3"  permission="r"
-                description="Returns the value from the ADC VPVN"/>
+                description="Returns the value from the ADC VPVN
+                             The 10 MSBs correspond to the ADC transfer function"/>
+          <node id="VREFP"  address="0x4"  permission="r"
+                description="The result of a conversion on the reference input VREFP is stored in this register. The
+                             10 MSBs correspond to the ADC transfer function shown in Figure 6. The supply sensor
+                             is used when measuring VREFP .This channel is also used during a calibration (see System
+                             Monitor Calibration, page 31)."/>
+          <node id="VREFN"  address="0x5"  permission="r"
+                description="The result of a conversion on the reference input VREFN is stored in this register. The
+                             10 MSBs correspond to the ADC transfer function shown in Figure 6. The supply sensor
+                             is used when measuring VREFP . This channel is also used during a calibration (see System
+                             Monitor Calibration, page 31)."/>
+          <node id="SUPPLY_OFFSET"  address="0x8"  permission="r"
+                description="The calibration coefficient for the supply sensor offset is stored at this location (see System
+                             Monitor Calibration, page 31)
+                             The offset correction factor is a 10-bit, two’s complement number, MSB justified.">
+            <node id="MAGNITUDE"  address="0x0"  mask="0x7fc0" permission="r"
+                  description="These nine bits store the magnitude information for the gain correction factor.
+                               1 LSB corresponds to 3 mV"/>
+            <node id="SIGN"  address="0x0"  mask="0x8000" permission="r"
+                  description="If this bit is a logic 1, then the correction factor is positive, corresponding to MAGNITUDE.
+                               If it is 0, then the correction factor is negative, corresponding to -(!(MAGNITUDE)+1)"/>
+          </node>
+          <node id="ADC_OFFSET"  address="0x9"  permission="r"
+                description="The calibration coefficient for the ADC offset calibration is stored at this location (see
+                             System Monitor Calibration, page 31)
+                             The offset correction factor is a 10-bit, two’s complement number, MSB justified.">
+            <node id="MAGNITUDE"  address="0x0"  mask="0x7fc0" permission="r"
+                  description="These nine bits store the magnitude information for the gain correction factor.
+                               1 LSB corresponds to 3 mV"/>
+            <node id="SIGN"  address="0x0"  mask="0x8000" permission="r"
+                  description="If this bit is a logic 1, then the correction factor is positive, corresponding to MAGNITUDE.
+                               If it is 0, then the correction factor is negative, corresponding to -(!(MAGNITUDE)+1)"/>
+          </node>
+          <node id="ADC_GAIN_ERROR"  address="0xa"  permission="r"
+                description="The gain error for the ADC offset calibration is stored at this location (see
+                             System Monitor Calibration, page 31).">
+            <node id="MAGNITUDE"  address="0x0"  mask="0x1f" permission="r"
+                  description="These five bits store the magnitude information for the gain correction factor."/>
+            <node id="SIGN"  address="0x0"  mask="0x20" permission="r"
+                  description="If this bit is a logic 1, then the correction factor is positive, corresponding to MAGNITUDE.
+                               If it is 0, then the correction factor is negative, corresponding to -(!(MAGNITUDE)+1)"/>
+          </node>
           <node id="VAUX"  address="0x10"
                 description="Returns the value from the ADC for VAUX[0:15]">
             <node id="VAL_${VAUX_IDX}"  address="0x0"  permission="r"
-                  description="Returns the value from the ADC VAUX channel ${VAUX_IDX}"
+                  description="Returns the value from the ADC VAUX channel ${VAUX_IDX}
+                               The 10 MSBs correspond to the ADC transfer function, 1 LSB corresponds to 0.977 mV"
                   generate="true" generate_size="16" generate_address_step="0x1" generate_idx_var="VAUX_IDX"/>
           </node>
+          <node id="FLAG"  address="0x3f"  permission="r"
+                description="This register contains general status information - see Figure 8.">
+            <node id="OT"  address="0x0"   mask="0x008" permission="r"
+                  description="This bit reflects the status of the Over Temperature logic output"/>
+            <node id="DIS"  address="0x0"  mask="0x100" permission="r"
+                  description="When this bit is a logic 1, the System Monitor is disabled by connecting the supplies and
+                               reference inputs to AGND"/>
+            <node id="REF"  address="0x0"  mask="0x200" permission="r"
+                  description="When this bit is a logic 1, the System Monitor ADC is using the internal voltage reference.
+                               When it is a logic 0, then the external reference is being used"/>
+          </node>
           <node id="CONTROL"     address="0x40"
-                description="Returns the value from the ADC control registers">
-            <node id="CONTROL_REGISTER_${CTRL_IDX}"  address="0x0"  permission="r"
-                  description="Returns the value from the ADC control register ${CTRL_IDX}"
-                  generate="true" generate_size="3" generate_address_step="0x1" generate_idx_var="CTRL_IDX"/>
-          </node>
-          <node id="TEST"        address="0x43"
-                description="Returns the value from the ADC test registers">
-            <node id="TEST_REGISTER_${TEST_IDX}"  address="0x0"  permission="r"
-                  description="Returns the value from the ADC control register ${TEST_IDX}"
-                  generate="true" generate_size="5" generate_address_step="0x1" generate_idx_var="TEST_IDX"/>
-          </node>
-          <node id="SEQUENCER"   address="0x48"
-                description="Returns the value from the ADC sequencer">
-            <node id="SEQ_${SEQ_IDX}"  address="0x0"  permission="r"
-                  description="Returns the value from the ADC sequencer register ${SEQ_IDX}"
-                  generate="true" generate_size="7" generate_address_step="0x1" generate_idx_var="SEQ_IDX"/>
+                description="These are System Monitor control registers (see page 17).">
+            <node id="CONF_REG"  address="0x0"  permission="rw"
+                  description="Controls the ADC configuration registers (see Figure 9 and Tables 6 to 11).">
+              <node id="CH0"  address="0x0"  mask="0x01" permission="rw"/>
+              <node id="CH1"  address="0x0"  mask="0x02" permission="rw"/>
+              <node id="CH2"  address="0x0"  mask="0x04" permission="rw"/>
+              <node id="CH3"  address="0x0"  mask="0x08" permission="rw"/>
+              <node id="CH4"  address="0x0"  mask="0x10" permission="rw"/>
+
+              <node id="ACQ"                  address="0x0"  mask="0x100" permission="rw"/>
+              <node id="CONTINUOUS_OR_EVENT"  address="0x0"  mask="0x200" permission="rw"/>
+              <node id="BIPOLAR_OR_UNIPOLAR"  address="0x0"  mask="0x400" permission="rw"/>
+
+              <node id="AVG0"  address="0x0"  mask="0x1000" permission="rw"/>
+              <node id="AVG1"  address="0x0"  mask="0x2000" permission="rw"/>
+              <node id="CAVG"  address="0x0"  mask="0x8000" permission="rw"/>
+
+              <node id="OT  " address="0x1" mask="0x01" permission="rw"/>
+              <node id="ALM0" address="0x1" mask="0x02" permission="rw"/>
+              <node id="ALM1" address="0x1" mask="0x04" permission="rw"/>
+              <node id="ALM2" address="0x1" mask="0x08" permission="rw"/>
+              <node id="CAL0" address="0x1" mask="0x10" permission="rw"/>
+              <node id="CAL1" address="0x1" mask="0x20" permission="rw"/>
+              <node id="CAL2" address="0x1" mask="0x40" permission="rw"/>
+              <node id="CAL3" address="0x1" mask="0x80" permission="rw"/>
+              <node id="SEQ0" address="0x1" mask="0x1000" permission="rw"/>
+              <node id="SEQ1" address="0x1" mask="0x2000" permission="rw"/>
+
+              <node id="CD7" address="0x2" mask="0x8000" permission="rw"/>
+              <node id="CD6" address="0x2" mask="0x4000" permission="rw"/>
+              <node id="CD5" address="0x2" mask="0x2000" permission="rw"/>
+              <node id="CD4" address="0x2" mask="0x1000" permission="rw"/>
+              <node id="CD3" address="0x2" mask="0x0800" permission="rw"/>
+              <node id="CD2" address="0x2" mask="0x0400" permission="rw"/>
+              <node id="CD1" address="0x2" mask="0x0200" permission="rw"/>
+              <node id="CD0" address="0x2" mask="0x0100" permission="rw"/>
+            </node>
+
+            <node id="SEQUENCER"   address="0x8"
+                  description="These registers are used to program the Channel Sequencer functionality
+                               (see Channel Sequencer, page 25)">
+              <node id="SEQ_${SEQ_IDX}"  address="0x0"  permission="rw"
+                    description="Controls the ADC sequencer register ${SEQ_IDX}"
+                    generate="true" generate_size="7" generate_address_step="0x1" generate_idx_var="SEQ_IDX"/>
+            </node>
+            <node id="ALARMS"   address="0x10"
+                  description="These registers are used to program the alarm thresholds for the automatic alarms on the
+                               internally monitored channels, temperature, VCCINT , and VCCAUX (see Automatic Alarms,
+                               page 29)">
+              <node id="ALARM_${ALARM_IDX}"  address="0x0"  permission="rw"
+                    description="Controls the ADC alarm register ${ALARM_IDX}"
+                    generate="true" generate_size="7" generate_address_step="0x1" generate_idx_var="ALARM_IDX"/>
+            </node>
           </node>
         </node>
 
