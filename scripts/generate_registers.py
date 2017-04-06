@@ -623,13 +623,13 @@ def printNodeToUHALFile(node, file, level, baseAddress, baseName, addrOffset, nu
     file.write('<node id="%s" ' % name)
     if node.address is not None:
         if baseName is None and level == 1:
-            file.write('address="%s" ' % hexPadded32((node.address - baseAddress) + addrOffset))
+            file.write('address="%s" ' % hex((node.address - baseAddress) + addrOffset))
         else:
-            file.write('address="%s" ' % hexPadded32(node.address - baseAddress))
+            file.write('address="%s" ' % hex(node.address - baseAddress))
     if node.permission is not None:
         file.write('permission="%s" ' % node.permission)
     if node.mask is not None:
-        file.write('mask="%s"' % hexPadded32(node.mask))
+        file.write('mask="%s"' % hex(node.mask))
     if node.mode is not None:
         file.write('mode="%s"' % node.mode)
 
