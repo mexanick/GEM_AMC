@@ -1872,13 +1872,26 @@
                     description="Controls the ADC sequencer register ${SEQ_IDX}"
                     generate="true" generate_size="7" generate_address_step="0x1" generate_idx_var="SEQ_IDX"/>
             </node>
-            <node id="ALARMS"   address="0x10"
+            <node id="ALARM_THRESHOLDS"   address="0x10"
                   description="These registers are used to program the alarm thresholds for the automatic alarms on the
                                internally monitored channels, temperature, VCCINT , and VCCAUX (see Automatic Alarms,
                                page 29)">
-              <node id="ALARM_${ALARM_IDX}"  address="0x0"  permission="rw"
-                    description="Controls the ADC alarm register ${ALARM_IDX}"
-                    generate="true" generate_size="7" generate_address_step="0x1" generate_idx_var="ALARM_IDX"/>
+              <node id="TEMP"    address="0x0"  permission="rw">
+                <node id="UPPER" address="0x0"  permission="rw"/>
+                <node id="LOWER" address="0x4"  permission="rw"/>
+              </node>
+              <node id="VCCINT"  address="0x1"  permission="rw">
+                <node id="UPPER" address="0x0"  permission="rw"/>
+                <node id="LOWER" address="0x4"  permission="rw"/>
+              </node>
+              <node id="VCCAUX"  address="0x2"  permission="rw">
+                <node id="UPPER" address="0x0"  permission="rw"/>
+                <node id="LOWER" address="0x4"  permission="rw"/>
+              </node>
+              <node id="OT"      address="0x3"  permission="rw">
+                <node id="UPPER" address="0x0"  permission="rw"/>
+                <node id="LOWER" address="0x4"  permission="rw"/>
+              </node>
             </node>
           </node>
         </node>
