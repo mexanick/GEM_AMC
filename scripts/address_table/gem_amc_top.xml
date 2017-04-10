@@ -2184,7 +2184,6 @@
                                1: broadcast transaction is in progress"/>
           </node> <!-- end of Broadcast -->
 
-          <!--node id="VFATS"  address="0x0000"-->
           <node id="VFATS"  address="0x100000"
                 description="VFAT registers controled by the AMC user registers">
 
