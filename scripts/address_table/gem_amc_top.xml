@@ -30,7 +30,7 @@
               description="TTC counter reset"
               fw_write_pulse_signal="ttc_ctrl.cnt_reset"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w"
+        <node id="MMCM_PHASE_SHIFT" address="0x3" permission="w"
               description="TTC MMCM phase shift trigger"
               fw_write_pulse_signal="ttc_ctrl.mmcm_phase_shift"/>
         <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw"
