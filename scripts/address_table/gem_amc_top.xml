@@ -30,7 +30,7 @@
               description="TTC counter reset"
               fw_write_pulse_signal="ttc_ctrl.cnt_reset"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
-        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="rw"
+        <node id="MMCM_PHASE_SHIFT" address="0x3" mask="0x10000000" permission="w"
               description="TTC MMCM phase shift trigger"
               fw_write_pulse_signal="ttc_ctrl.mmcm_phase_shift"/>
         <node id="L1A_ENABLE" address="0x4" mask="0x00000001" permission="rw"
@@ -1780,7 +1780,7 @@
           <node id="SUPPLY_OFFSET"  address="0x8"  permission="r"
                 description="The calibration coefficient for the supply sensor offset is stored at this location (see System
                              Monitor Calibration, page 31)
-                             The offset correction factor is a 10-bit, two’s complement number, MSB justified.">
+                             The offset correction factor is a 10-bit, two's complement number, MSB justified.">
             <node id="MAGNITUDE"  address="0x0"  mask="0x7fc0" permission="r"
                   description="These nine bits store the magnitude information for the gain correction factor.
                                1 LSB corresponds to 3 mV"/>
@@ -1791,7 +1791,7 @@
           <node id="ADC_OFFSET"  address="0x9"  permission="r"
                 description="The calibration coefficient for the ADC offset calibration is stored at this location (see
                              System Monitor Calibration, page 31)
-                             The offset correction factor is a 10-bit, two’s complement number, MSB justified.">
+                             The offset correction factor is a 10-bit, two's complement number, MSB justified.">
             <node id="MAGNITUDE"  address="0x0"  mask="0x7fc0" permission="r"
                   description="These nine bits store the magnitude information for the gain correction factor.
                                1 LSB corresponds to 3 mV"/>

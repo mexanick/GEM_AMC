@@ -221,13 +221,16 @@ def findRegisters(node, baseName, baseAddress, modules, currentModule, vars, isG
         if node.get('address') is not None:
             address = baseAddress + parseInt(node.get('address'))
 
-        if node.get('address') is not None and node.get('permission') is not None and node.get('mask') is not None:
+        if node.get('address') is not None and node.get('permission') is not None: #and node.get('mask') is not None:
             reg = Register()
             reg.name = name
             reg.address = address
             reg.description = substituteVars(node.get('description'), vars)
             reg.permission = node.get('permission')
-            reg.mask = parseInt(node.get('mask'))
+            if node.get('mask') is None:
+                reg.mask = 0xffffffff; # default to full 32bit mask if not specified
+            else:
+                reg.mask = parseInt(node.get('mask'))
             msb, lsb = getLowHighFromBitmask(reg.mask)
             reg.msb = msb
             reg.lsb = lsb
