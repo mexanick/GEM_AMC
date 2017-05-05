@@ -10,10 +10,21 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20161111";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170504";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 7;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 9;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 1;
+    
+    ------ Change log ------
+    -- 1.8.6 no gbt sync procedure with oh
+    -- 1.8.7 advanced ILA trigger for gbt link
+    -- 1.8.8 tied unused 8b10b or gbt links to 0
+    -- 1.8.9 disable automatic phase shifting, just use unknown phase from 160MHz ref clock, also use bufg for the MMCM feedback clock
+    -- 1.8.9 special version with 8b10b main link moved to OH2 and longer IPBusBridge timeout (comms with OH are perfect, but can't read VFATs at all)
+    -- 1.9.0 fixed TX phase alignment, removed MMCM reset (was driven by the GTH startup FSM and messing things up).
+    --       if 0 shifts are applied it's known to result in bad phase, so for now just made that if this happens, 
+    --       then lock is never asserted, which will prevent GTH startup from completing and will be clearly visible during FPGA programming.
+    -- 1.9.1 using TTC 120MHz as the GBT common RX clock instead of recovered clock from the main link (so all links should work even if link 1 is not connected) 
 
     --======================--
     --==      General     ==--
@@ -153,7 +164,7 @@ package gem_pkg is
     --====================--
     
     type t_data_link is record
-        clk        : std_logic;
+        clk             : std_logic;
         data_en    : std_logic;
         data       : std_logic_vector(15 downto 0);
     end record;

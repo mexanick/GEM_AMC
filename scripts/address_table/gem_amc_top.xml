@@ -11,7 +11,7 @@
                        decoding configuration, clock and data status, bc0 status, command counters and a small spy buffer)"
           fw_is_module="true"
           fw_module_file="../common/hdl/ttc/ttc.vhd"
-          fw_user_clock_signal="clk_40"
+          fw_user_clock_signal="ttc_clks_i.clk_40"
           fw_bus_clock_signal="ipb_clk_i"
           fw_bus_reset_signal="ipb_reset_i"
           fw_master_bus_signal="ipb_mosi_i"
@@ -83,6 +83,9 @@
               description="MMCM locked flag"
               fw_signal="ttc_status.mmcm_locked"
               sw_monitor_error_value="0"/>
+        <node id="MMCM_UNLOCK_CNT" address="0x0" mask="0xffff0000" permission="r" description="MMCM unlock counter"
+              fw_signal="mmcm_unlock_cnt"
+              sw_monitor_warn_min_threshold="1"/>
         <node id="TTC_SINGLE_ERROR_CNT" address="0x1" mask="0x0000ffff" permission="r"
               description="TTC stream single bit error count"
               fw_signal="ttc_status.single_err"
@@ -336,20 +339,6 @@
         <node id="USE_TRIG_LINKS" address="0x0" mask="0x00000200" permission="r"
               description="If 1 then this firmware supports trigger links, if 0 then trigger links are disabled"
               fw_signal="use_trig_links"/>
-      </node>
-
-      <node id="GBT" address="0x100">
-        <node id="TX_SYNC_PATTERN" address="0x0" mask="0x0000ffff" permission="rw"
-              description="GBT TX sync pattern (sent continuously after reset until a valid RX sync pattern
-                           is received for a certain number of clocks)"
-              fw_signal="gbt_tx_sync_pattern" fw_default="0x76BC"/>
-        <node id="RX_SYNC_PATTERN" address="0x1" permission="rw"
-              description="GBT RX sync pattern (TX sync pattern is sent continuously after reset until a valid RX sync pattern
-                           is received for a certain number of clocks)"
-              fw_signal="gbt_rx_sync_pattern" fw_default="0x76BC76BC"/>
-        <node id="RX_SYNC_COUNT_REQUIRED" address="0x2" mask="0x000000ff" permission="rw"
-              description="GBT RX sync pattern has to be received for this number of clock cycles to consider the link synchronized"
-              fw_signal="gbt_rx_sync_count_req" fw_default="0x3"/>
       </node>
 
       <node id="TESTS" address="0x200">
@@ -951,11 +940,6 @@
               description="Number of dispersion errors in the trigger link1 rx"
               fw_signal="tr1_disperr_arr(${OH_IDX})"
               sw_monitor_warn_min_threshold="1000"/>
-
-        <node id="GBT_LINK_SYNC_DONE" address="0x10" mask="0x00000001" permission="r"
-              description="Indicates whether or not the sync procedure has been done on the GBT link
-                           for this OH (if GBT is not enabled, this will be always 0)"
-              fw_signal="gbt_rx_sync_done_arr_i(${OH_IDX})"/>
 
       </node>
     </node>
