@@ -9,8 +9,8 @@ ADDRESS_TABLE_TOP = './address_table/gem_amc_top.xml'
 CONSTANTS_FILE = '../common/hdl/pkg/registers.vhd'
 BASH_STATUS_SCRIPT_FILE ='./ctp7_bash_scripts/generated/ctp7_status.sh'
 BASH_REG_READ_SCRIPT_FILE='./ctp7_bash_scripts/generated/reg_read.sh'
-UHAL_ADDRESS_TABLE_FILE_CTP7='./address_table/uhal_gem_amc_ctp7.xml'
-UHAL_ADDRESS_TABLE_FILE_GLIB='./address_table/uhal_gem_amc_glib.xml'
+UHAL_ADDRESS_TABLE_FILE_CTP7='./address_table/uhal_gem_amc_ctp7'
+UHAL_ADDRESS_TABLE_FILE_GLIB='./address_table/uhal_gem_amc_glib'
 
 TOP_NODE_NAME = 'GEM_AMC'
 VHDL_REG_CONSTANT_PREFIX = 'REG_'
@@ -136,6 +136,7 @@ def main():
 
         if len(sys.argv) > 2:
             num_of_oh = parseInt(sys.argv[2])
+            print('Generating address table with num_of_oh = %d'%(num_of_oh))
         elif board_type == 'ctp7':
             num_of_oh = 4
         elif board_type == 'glib':
@@ -168,9 +169,9 @@ def main():
     if board_type == 'ctp7':
         writeStatusBashScript(modules, BASH_STATUS_SCRIPT_FILE)
         #writeRegReadBashScript(modules, BASH_REG_READ_SCRIPT_FILE)
-        writeUHalAddressTable(modules, UHAL_ADDRESS_TABLE_FILE_CTP7, 0)
+        writeUHalAddressTable(modules, UHAL_ADDRESS_TABLE_FILE_CTP7, 0, num_of_oh)
     elif board_type == 'glib':
-        writeUHalAddressTable(modules, UHAL_ADDRESS_TABLE_FILE_GLIB, GLIB_IPB_BASE_ADDRESS)
+        writeUHalAddressTable(modules, UHAL_ADDRESS_TABLE_FILE_GLIB, GLIB_IPB_BASE_ADDRESS, num_of_oh)
 
 def findRegisters(node, baseName, baseAddress, modules, currentModule, vars, isGenerated, num_of_oh):
     if (isGenerated == None or isGenerated == False) and node.get('generate') is not None and node.get('generate') == 'true':
@@ -220,13 +221,16 @@ def findRegisters(node, baseName, baseAddress, modules, currentModule, vars, isG
         if node.get('address') is not None:
             address = baseAddress + parseInt(node.get('address'))
 
-        if node.get('address') is not None and node.get('permission') is not None and node.get('mask') is not None:
+        if node.get('address') is not None and node.get('permission') is not None: #and node.get('mask') is not None:
             reg = Register()
             reg.name = name
             reg.address = address
             reg.description = substituteVars(node.get('description'), vars)
             reg.permission = node.get('permission')
-            reg.mask = parseInt(node.get('mask'))
+            if node.get('mask') is None:
+                reg.mask = 0xffffffff; # default to full 32bit mask if not specified
+            else:
+                reg.mask = parseInt(node.get('mask'))
             msb, lsb = getLowHighFromBitmask(reg.mask)
             reg.msb = msb
             reg.lsb = lsb
@@ -558,41 +562,84 @@ def writeStatusBashScript(modules, filename):
 
     f.close()
 
-def writeUHalAddressTable(modules, filename, addrOffset):
+def writeUHalAddressTable(modules, filename, addrOffset, num_of_oh = None):
     print('Writing uHAL address table XML')
 
-    rw_reg.parseXML(ADDRESS_TABLE_TOP)
+    rw_reg.parseXML(ADDRESS_TABLE_TOP, num_of_oh)
     top = rw_reg.getNode('GEM_AMC')
-    f = open(filename, 'w')
+
+    # AMC specific nodes
+    f = open("%s_amc.xml"%(filename), 'w')
     f.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
     f.write('<node id="top">\n')
     printNodeToUHALFile(top, f, 1, 0, None, addrOffset)
     f.write('</node>\n')
     f.close()
 
-def printNodeToUHALFile(node, file, level, baseAddress, baseName, addrOffset):
-    for i in range(level):
-        file.write('  ')
+    # OH specific nodes
+    for oh in range(num_of_oh):
+        f = open("%s_link%02d.xml"%(filename,oh), 'w')
+        f.write('<?xml version="1.0" encoding="ISO-8859-1"?>\n')
+        f.write('<node id="top">\n')
+        printNodeToUHALFile(top, f, 1, 0, None, addrOffset, oh)
+        f.write('</node>\n')
+        f.close()
+        pass
+    pass
+
+def printNodeToUHALFile(node, file, level, baseAddress, baseName, addrOffset, num_of_oh=None):
+    amcTopNodesToSkip = ["GEM_AMC.OH"]
+
+    ohTopNodesToSkip = [
+        "GEM_AMC.TTC",
+        "GEM_AMC.TRIGGER.CTRL",
+        "GEM_AMC.TRIGGER.STATUS",
+        "GEM_AMC.GEM_SYSTEM",
+        "GEM_AMC.GEM_TESTS",
+        "GEM_AMC.DAQ",
+        "GEM_AMC.OH_LINKS.CTRL",
+        "GEM_AMC.SLOW_CONTROL",
+        "GEM_AMC.GLIB_SYSTEM",
+        ]
+
     name = node.name
     if baseName is not None:
         name = name.replace(baseName + ".", "")
+
+    if (num_of_oh == None and "%s.%s"%(baseName,name) in amcTopNodesToSkip):
+        # only for writing the AMC specific file
+        print 'Not writing node "%s" to AMC uHAL address table file'%(name)
+        return
+
+    if num_of_oh in range(0,12):
+        # only for writing the OH specific file
+        if "%s.%s"%(baseName,name) in ohTopNodesToSkip:
+            print 'Not writing node "%s" to OH uHAL address table file'%(name)
+            return
+        if name in ["OH%d"%(oh) for oh in range(0,12) if oh != num_of_oh]:
+            print 'Not writing node "%s" to OH%d uHAL address table file'%(name,num_of_oh)
+            return
+    for i in range(level):
+        file.write('  ')
+        pass
+
     file.write('<node id="%s" ' % name)
     if node.address is not None:
         if baseName is None and level == 1:
-            file.write('address="%s" ' % hexPadded32((node.address - baseAddress) + addrOffset))
+            file.write('address="%s" ' % hex((node.address - baseAddress) + addrOffset))
         else:
-            file.write('address="%s" ' % hexPadded32(node.address - baseAddress))
+            file.write('address="%s" ' % hex(node.address - baseAddress))
     if node.permission is not None:
         file.write('permission="%s" ' % node.permission)
     if node.mask is not None:
-        file.write('mask="%s"' % hexPadded32(node.mask))
+        file.write('mask="%s"' % hex(node.mask))
     if node.mode is not None:
         file.write('mode="%s"' % node.mode)
 
     if len(node.children) > 0:
         file.write('>\n')
         for child in node.children:
-            printNodeToUHALFile(child, file, level + 1, node.address, node.name, addrOffset)
+            printNodeToUHALFile(child, file, level + 1, node.address, node.name, addrOffset, num_of_oh)
         for i in range(level):
             file.write('  ')
         file.write('</node>\n')
