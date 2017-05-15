@@ -38,7 +38,7 @@ entity sca_controller is
         
         -- ADC monitoring
         adc_monitoring_off_i    : in  std_logic;
-        adc_readings_o          : out t_sca_adc_value_arr(SCA_MONITOR_ADC_CHANNELS'range);
+        adc_readings_o          : out t_sca_adc_value_arr;
         
         -- JTAG
         -- General use: first of all make sure jtag_enabled_i is high and set the number of bits for the JTAG command in jtag_cmd_length_i, then shift the TMS and TDO bits by setting the data

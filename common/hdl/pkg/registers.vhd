@@ -8,9 +8,10 @@ package registers is
     --       >>> TTC Module <<<    base address: 0x00300000
     --
     -- TTC control and monitoring. It takes care of locking to the TTC clock
-    -- coming from the backplane as well as decoding TTC commands and forwarding
-    -- that to all other modules in the design. It also provides several control
-    -- and monitoring registers (resets, command decoding configuration, clock and
+    -- coming from the                        backplane as well as decoding TTC
+    -- commands and forwarding that to all other modules in
+    -- the design. It also provides several control and monitoring registers
+    -- (resets, command                        decoding configuration, clock and
     -- data status, bc0 status, command counters and a small spy buffer)
     --============================================================================
 
@@ -18,16 +19,20 @@ package registers is
     constant REG_TTC_ADDRESS_MSB : integer := 5;
     constant REG_TTC_ADDRESS_LSB : integer := 0;
     constant REG_TTC_CTRL_MODULE_RESET_ADDR    : std_logic_vector(5 downto 0) := "00" & x"0";
-    constant REG_TTC_CTRL_MODULE_RESET_BIT    : integer := 31;
+    constant REG_TTC_CTRL_MODULE_RESET_MSB    : integer := 31;
+    constant REG_TTC_CTRL_MODULE_RESET_LSB     : integer := 0;
 
     constant REG_TTC_CTRL_MMCM_RESET_ADDR    : std_logic_vector(5 downto 0) := "00" & x"1";
-    constant REG_TTC_CTRL_MMCM_RESET_BIT    : integer := 30;
+    constant REG_TTC_CTRL_MMCM_RESET_MSB    : integer := 31;
+    constant REG_TTC_CTRL_MMCM_RESET_LSB     : integer := 0;
 
     constant REG_TTC_CTRL_CNT_RESET_ADDR    : std_logic_vector(5 downto 0) := "00" & x"2";
-    constant REG_TTC_CTRL_CNT_RESET_BIT    : integer := 29;
+    constant REG_TTC_CTRL_CNT_RESET_MSB    : integer := 31;
+    constant REG_TTC_CTRL_CNT_RESET_LSB     : integer := 0;
 
     constant REG_TTC_CTRL_MMCM_PHASE_SHIFT_ADDR    : std_logic_vector(5 downto 0) := "00" & x"3";
-    constant REG_TTC_CTRL_MMCM_PHASE_SHIFT_BIT    : integer := 28;
+    constant REG_TTC_CTRL_MMCM_PHASE_SHIFT_MSB    : integer := 31;
+    constant REG_TTC_CTRL_MMCM_PHASE_SHIFT_LSB     : integer := 0;
 
     constant REG_TTC_CTRL_L1A_ENABLE_ADDR    : std_logic_vector(5 downto 0) := "00" & x"4";
     constant REG_TTC_CTRL_L1A_ENABLE_BIT    : integer := 0;
@@ -164,8 +169,8 @@ package registers is
     --============================================================================
     --       >>> TRIGGER Module <<<    base address: 0x00800000
     --
-    -- Trigger module handles everything related to sbit cluster data (link
-    -- synchronization, monitoring, local triggering, matching to L1A and
+    -- Trigger module handles everything related to sbit cluster data
+    -- (link synchronization, monitoring, local triggering, matching to L1A and
     -- reporting data to DAQ)
     --============================================================================
 
@@ -173,10 +178,12 @@ package registers is
     constant REG_TRIGGER_ADDRESS_MSB : integer := 12;
     constant REG_TRIGGER_ADDRESS_LSB : integer := 0;
     constant REG_TRIGGER_CTRL_MODULE_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"000";
-    constant REG_TRIGGER_CTRL_MODULE_RESET_BIT    : integer := 31;
+    constant REG_TRIGGER_CTRL_MODULE_RESET_MSB    : integer := 31;
+    constant REG_TRIGGER_CTRL_MODULE_RESET_LSB     : integer := 0;
 
     constant REG_TRIGGER_CTRL_CNT_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"001";
-    constant REG_TRIGGER_CTRL_CNT_RESET_BIT    : integer := 30;
+    constant REG_TRIGGER_CTRL_CNT_RESET_MSB    : integer := 31;
+    constant REG_TRIGGER_CTRL_CNT_RESET_LSB     : integer := 0;
 
     constant REG_TRIGGER_CTRL_OH_KILL_MASK_ADDR    : std_logic_vector(12 downto 0) := '0' & x"002";
     constant REG_TRIGGER_CTRL_OH_KILL_MASK_MSB    : integer := 23;
@@ -2167,7 +2174,8 @@ package registers is
     constant REG_GEM_SYSTEM_CONFIG_USE_TRIG_LINKS_BIT    : integer := 9;
 
     constant REG_GEM_SYSTEM_CTRL_CNT_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0100";
-    constant REG_GEM_SYSTEM_CTRL_CNT_RESET_BIT    : integer := 30;
+    constant REG_GEM_SYSTEM_CTRL_CNT_RESET_MSB    : integer := 31;
+    constant REG_GEM_SYSTEM_CTRL_CNT_RESET_LSB     : integer := 0;
 
     constant REG_GEM_SYSTEM_TESTS_GBT_LOOPBACK_EN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0200";
     constant REG_GEM_SYSTEM_TESTS_GBT_LOOPBACK_EN_BIT    : integer := 0;
@@ -2204,7 +2212,8 @@ package registers is
     constant REG_GEM_TESTS_ADDRESS_MSB : integer := 16;
     constant REG_GEM_TESTS_ADDRESS_LSB : integer := 0;
     constant REG_GEM_TESTS_CTRL_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
-    constant REG_GEM_TESTS_CTRL_RESET_BIT    : integer := 0;
+    constant REG_GEM_TESTS_CTRL_RESET_MSB    : integer := 31;
+    constant REG_GEM_TESTS_CTRL_RESET_LSB     : integer := 0;
 
     constant REG_GEM_TESTS_GBT_LOOPBACK_CTRL_LOOP_THROUGH_OH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1000";
     constant REG_GEM_TESTS_GBT_LOOPBACK_CTRL_LOOP_THROUGH_OH_BIT    : integer := 0;
@@ -2911,8 +2920,8 @@ package registers is
     --       >>> DAQ Module <<<    base address: 0x00700000
     --
     -- DAQ module buffers track data, builds events, analyses the data for
-    -- consistency and ships off the events with all the needed headers and
-    -- trailers to AMC13 over DAQLink
+    -- consistency                        and ships off the events with all the
+    -- needed headers and trailers to AMC13 over DAQLink
     --============================================================================
 
     constant REG_DAQ_NUM_REGS : integer := 206;
@@ -4663,7 +4672,8 @@ package registers is
     constant REG_OH_LINKS_ADDRESS_MSB : integer := 12;
     constant REG_OH_LINKS_ADDRESS_LSB : integer := 0;
     constant REG_OH_LINKS_CTRL_CNT_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"000";
-    constant REG_OH_LINKS_CTRL_CNT_RESET_BIT    : integer := 31;
+    constant REG_OH_LINKS_CTRL_CNT_RESET_MSB    : integer := 31;
+    constant REG_OH_LINKS_CTRL_CNT_RESET_LSB     : integer := 0;
 
     constant REG_OH_LINKS_OH0_TRACK_LINK_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"100";
     constant REG_OH_LINKS_OH0_TRACK_LINK_ERROR_CNT_MSB    : integer := 31;
@@ -5441,238 +5451,1298 @@ package registers is
     -- communication)
     --============================================================================
 
-    constant REG_SLOW_CONTROL_NUM_REGS : integer := 41;
+    constant REG_SLOW_CONTROL_NUM_REGS : integer := 177;
     constant REG_SLOW_CONTROL_ADDRESS_MSB : integer := 16;
     constant REG_SLOW_CONTROL_ADDRESS_LSB : integer := 0;
-    constant REG_SLOW_CONTROL_SCA_MODULE_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
-    constant REG_SLOW_CONTROL_SCA_MODULE_RESET_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
+    constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_READY_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0001";
-    constant REG_SLOW_CONTROL_SCA_STATUS_READY_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_CTRL_OH_FPGA_HARD_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0001";
+    constant REG_SLOW_CONTROL_SCA_CTRL_OH_FPGA_HARD_RESET_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_CTRL_OH_FPGA_HARD_RESET_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0001";
-    constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_BIT    : integer := 1;
+    constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0002";
+    constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_DEFAULT : std_logic := '1';
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_RX_ERR_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0002";
-    constant REG_SLOW_CONTROL_SCA_STATUS_RX_ERR_CNT_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_STATUS_RX_ERR_CNT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_STATUS_READY_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0100";
+    constant REG_SLOW_CONTROL_SCA_STATUS_READY_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_STATUS_READY_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_SEQ_NUM_ERR_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0002";
-    constant REG_SLOW_CONTROL_SCA_STATUS_SEQ_NUM_ERR_CNT_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_STATUS_SEQ_NUM_ERR_CNT_LSB     : integer := 16;
+    constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0101";
+    constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_CRC_ERR_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0003";
-    constant REG_SLOW_CONTROL_SCA_STATUS_CRC_ERR_CNT_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_STATUS_CRC_ERR_CNT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1000";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_TIMEOUT_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0003";
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_TIMEOUT_CNT_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_TIMEOUT_CNT_LSB     : integer := 16;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_CHANNEL_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_CHANNEL_DEFAULT : std_logic_vector(7 downto 0) := x"00";
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_FAIL_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0004";
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_FAIL_CNT_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_FAIL_CNT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_COMMAND_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_COMMAND_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_COMMAND_LSB     : integer := 8;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_COMMAND_DEFAULT : std_logic_vector(15 downto 8) := x"00";
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_LAST_SCA_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0004";
-    constant REG_SLOW_CONTROL_SCA_STATUS_LAST_SCA_ERROR_MSB    : integer := 22;
-    constant REG_SLOW_CONTROL_SCA_STATUS_LAST_SCA_ERROR_LSB     : integer := 16;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_LENGTH_LSB     : integer := 16;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_LENGTH_DEFAULT : std_logic_vector(23 downto 16) := x"00";
 
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_DONE_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0005";
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_DONE_CNT_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_STATUS_TRANSACTION_DONE_CNT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1002";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_DATA_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_DATA_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_FPGA_HARD_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1000";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_FPGA_HARD_RESET_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_EXECUTE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1003";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_EXECUTE_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_SCA_CMD_EXECUTE_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_CHANNEL_MSB    : integer := 7;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_CHANNEL_LSB     : integer := 0;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_CHANNEL_DEFAULT : std_logic_vector(7 downto 0) := x"00";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_CHANNEL_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_COMMAND_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_COMMAND_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_COMMAND_LSB     : integer := 8;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_COMMAND_DEFAULT : std_logic_vector(15 downto 8) := x"00";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_ERROR_LSB     : integer := 8;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1001";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_LENGTH_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_LENGTH_LSB     : integer := 16;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_LENGTH_DEFAULT : std_logic_vector(23 downto 16) := x"00";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_LENGTH_LSB     : integer := 16;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1002";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_DATA_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_DATA_LSB     : integer := 0;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_DATA_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1005";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH0_SCA_RPY_DATA_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_EXECUTE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1003";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_CMD_EXECUTE_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1006";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_CHANNEL_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_CHANNEL_MSB    : integer := 7;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_CHANNEL_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1006";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_ERROR_LSB     : integer := 8;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_ERROR_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_ERROR_LSB     : integer := 8;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1006";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_LENGTH_LSB     : integer := 16;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1004";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_LENGTH_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_LENGTH_LSB     : integer := 16;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1007";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH1_SCA_RPY_DATA_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1005";
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_DATA_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_RPY_DATA_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1008";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1008";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1008";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1009";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH2_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100b";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH3_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100c";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100c";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100c";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100d";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH4_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100e";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100e";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100e";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"100f";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH5_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1010";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1010";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1010";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1011";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH6_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1012";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1012";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1012";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1013";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH7_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1014";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1014";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1014";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1015";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH8_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1016";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1016";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1016";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1017";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH9_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1018";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1018";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1018";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1019";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH10_SCA_RPY_DATA_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_CHANNEL_ADDR    : std_logic_vector(16 downto 0) := '0' & x"101a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_CHANNEL_MSB    : integer := 7;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_CHANNEL_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"101a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_ERROR_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_ERROR_LSB     : integer := 8;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_LENGTH_ADDR    : std_logic_vector(16 downto 0) := '0' & x"101a";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_LENGTH_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_LENGTH_LSB     : integer := 16;
+
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_DATA_ADDR    : std_logic_vector(16 downto 0) := '0' & x"101b";
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_DATA_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_SCA_REPLY_OH11_SCA_RPY_DATA_LSB     : integer := 0;
 
     constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2000";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_BIT    : integer := 28;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_DEFAULT : std_logic := '0';
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_MONITORING_OFF_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVCCN_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVCCN_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVCCN_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVTTN_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_AVTTN_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_AVTTN_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2002";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V0_INT_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V0_INT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2002";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V0_INT_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2002";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8F_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8F_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2002";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8F_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2003";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V5_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V5_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2003";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V5_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2003";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_2V5_IO_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_2V5_IO_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2003";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_2V5_IO_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2004";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_3V0_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_3V0_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2004";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_3V0_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2004";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_1V8_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2004";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_1V8_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2005";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI2_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI2_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2005";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI2_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2005";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI1_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_VTRX_RSSI1_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2005";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_VTRX_RSSI1_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2006";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_SCA_TEMP_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_SCA_TEMP_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2006";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_SCA_TEMP_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2006";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP1_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP1_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2006";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP1_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2007";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP2_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP2_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2007";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP2_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2007";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP3_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP3_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2007";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP3_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2008";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP4_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP4_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2008";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP4_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2008";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP5_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP5_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2008";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP5_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2009";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP6_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP6_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2009";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP6_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2009";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP7_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP7_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2009";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP7_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"200a";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP8_MSB    : integer := 11;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP8_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"200a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP8_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"200a";
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP9_MSB    : integer := 23;
-    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_BOARD_TEMP9_LSB     : integer := 12;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"200a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH0_BOARD_TEMP9_LSB     : integer := 12;
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_BIT    : integer := 0;
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_DEFAULT : std_logic := '0';
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2010";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVCCN_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2010";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2011";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2011";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2012";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2012";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2013";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2013";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2014";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2014";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2015";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2015";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2016";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2016";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2017";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2017";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2018";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2018";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2019";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2019";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH1_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"201f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"201f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2020";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2020";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2021";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2021";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2022";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2022";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2023";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2023";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2024";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2024";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2025";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2025";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2026";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2026";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2027";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2027";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2028";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2028";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH2_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"202e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"202e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"202f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"202f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2030";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2030";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2031";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2031";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2032";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2032";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2033";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2033";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2034";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2034";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2035";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2035";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2036";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2036";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2037";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2037";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH3_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"203f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2040";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2040";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2041";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2041";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2042";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2042";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2043";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2043";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2044";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2044";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2045";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2045";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2046";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2046";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH4_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"204f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2050";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2050";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2051";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2051";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2052";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2052";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2053";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2053";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2054";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2054";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2055";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2055";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH5_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"205f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2060";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2060";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2061";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2061";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2062";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2062";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2063";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2063";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2064";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2064";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH6_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"206f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2070";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2070";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2071";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2071";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2072";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2072";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2073";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2073";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH7_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2079";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2079";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"207f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2080";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2080";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2081";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2081";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2082";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2082";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH8_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2088";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2088";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2089";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2089";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"208f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2090";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2090";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2091";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2091";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH9_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2097";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2097";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2098";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2098";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2099";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2099";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209a";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209b";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209c";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209d";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209e";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"209f";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a0";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a0";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH10_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVCCN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a6";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVCCN_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVCCN_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVTTN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a6";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVTTN_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_AVTTN_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V0_INT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a7";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V0_INT_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V0_INT_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8F_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a7";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8F_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8F_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a8";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V5_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_2V5_IO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a8";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_2V5_IO_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_2V5_IO_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_3V0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a9";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_3V0_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_3V0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a9";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_1V8_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20aa";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20aa";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_VTRX_RSSI1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_SCA_TEMP_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ab";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_SCA_TEMP_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_SCA_TEMP_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ab";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP1_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP1_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ac";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP2_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ac";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP3_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP3_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ad";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP4_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ad";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP5_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP5_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ae";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP6_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20ae";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP7_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP7_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20af";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP8_MSB    : integer := 11;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20af";
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP9_MSB    : integer := 23;
+    constant REG_SLOW_CONTROL_SCA_ADC_MONITORING_OH11_BOARD_TEMP9_LSB     : integer := 12;
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_MASK_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2500";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_MASK_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_MASK_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_ENABLE_MASK_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2501";
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_BIT    : integer := 1;
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_SHIFT_MSB_DEFAULT : std_logic := '0';
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2501";
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_BIT    : integer := 2;
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_EXEC_ON_EVERY_TDO_DEFAULT : std_logic := '0';
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2501";
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_BIT    : integer := 3;
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_NO_SCA_LENGTH_UPDATE_DEFAULT : std_logic := '0';
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2501";
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_BIT    : integer := 4;
     constant REG_SLOW_CONTROL_SCA_JTAG_CTRL_EXPERT_SHIFT_TDO_ASYNC_DEFAULT : std_logic := '0';
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2101";
+    constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2502";
     constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_MSB    : integer := 6;
     constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_LSB     : integer := 0;
     constant REG_SLOW_CONTROL_SCA_JTAG_NUM_BITS_DEFAULT : std_logic_vector(6 downto 0) := "000" & x"0";
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_TMS_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2102";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TMS_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2503";
     constant REG_SLOW_CONTROL_SCA_JTAG_TMS_MSB    : integer := 31;
     constant REG_SLOW_CONTROL_SCA_JTAG_TMS_LSB     : integer := 0;
     constant REG_SLOW_CONTROL_SCA_JTAG_TMS_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_TDO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2103";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDO_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2504";
     constant REG_SLOW_CONTROL_SCA_JTAG_TDO_MSB    : integer := 31;
     constant REG_SLOW_CONTROL_SCA_JTAG_TDO_LSB     : integer := 0;
     constant REG_SLOW_CONTROL_SCA_JTAG_TDO_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
-    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2104";
-    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2505";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH0_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH0_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3000";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_0_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_0_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2506";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH1_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH1_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3001";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_1_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_1_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2507";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH2_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH2_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3002";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_2_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_TX_LAST_CMD_2_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2508";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH3_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH3_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3003";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_0_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_0_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2509";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH4_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH4_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3004";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_1_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_1_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250a";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH5_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH5_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3005";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_2_MSB    : integer := 31;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RAW_RX_LAST_RPY_2_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250b";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH6_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH6_LSB     : integer := 0;
 
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RX_LAST_CALC_CRC_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3006";
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RX_LAST_CALC_CRC_MSB    : integer := 15;
-    constant REG_SLOW_CONTROL_SCA_DEBUG_RX_LAST_CALC_CRC_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250c";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH7_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH7_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250d";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH8_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250e";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH9_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH9_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH10_ADDR    : std_logic_vector(16 downto 0) := '0' & x"250f";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH10_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH10_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH11_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2510";
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH11_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_JTAG_TDI_OH11_LSB     : integer := 0;
 
     constant REG_SLOW_CONTROL_IC_ADDRESS_ADDR    : std_logic_vector(16 downto 0) := '1' & x"0000";
     constant REG_SLOW_CONTROL_IC_ADDRESS_MSB    : integer := 15;
@@ -5690,10 +6760,12 @@ package registers is
     constant REG_SLOW_CONTROL_IC_WRITE_DATA_DEFAULT : std_logic_vector(31 downto 0) := x"00000000";
 
     constant REG_SLOW_CONTROL_IC_EXECUTE_WRITE_ADDR    : std_logic_vector(16 downto 0) := '1' & x"0003";
-    constant REG_SLOW_CONTROL_IC_EXECUTE_WRITE_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_IC_EXECUTE_WRITE_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_IC_EXECUTE_WRITE_LSB     : integer := 0;
 
     constant REG_SLOW_CONTROL_IC_EXECUTE_READ_ADDR    : std_logic_vector(16 downto 0) := '1' & x"0004";
-    constant REG_SLOW_CONTROL_IC_EXECUTE_READ_BIT    : integer := 0;
+    constant REG_SLOW_CONTROL_IC_EXECUTE_READ_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_IC_EXECUTE_READ_LSB     : integer := 0;
 
     constant REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_ADDR    : std_logic_vector(16 downto 0) := '1' & x"0005";
     constant REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_MSB    : integer := 3;

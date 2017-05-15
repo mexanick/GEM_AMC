@@ -29,3 +29,4 @@ Slow control added:
          if 0 shifts are applied it's known to result in bad phase, so for now just made that if this happens, 
          then lock is never asserted, which will prevent GTH startup from completing and will be clearly visible during FPGA programming.
 -- 1.9.1 using TTC 120MHz as the GBT common RX clock instead of recovered clock from the main link (so all links should work even if link 1 is not connected) 
+-- 1.9.2 separate SCA controlers for each channel implemented. There's also inbuilt ability to broadcast JTAG and custom SCA commands to any set of selected channels
