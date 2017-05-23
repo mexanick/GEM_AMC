@@ -1719,6 +1719,18 @@
         <node id="STATUS" address="0x100" >
           <node id="READY" address="0x0" permission="r" mask="0xffffffff"/>
           <node id="CRITICAL_ERROR" address="0x1" permission="r" mask="0xffffffff"/>
+          <node id="NOT_READY_CNT_OH0" address="0x2" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH1" address="0x3" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH2" address="0x4" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH3" address="0x5" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH4" address="0x6" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH5" address="0x7" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH6" address="0x8" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH7" address="0x9" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH8" address="0xa" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH9" address="0xb" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH10" address="0xc" permission="r" mask="0xffff"/>
+          <node id="NOT_READY_CNT_OH11" address="0xd" permission="r" mask="0xffff"/>
         </node>
         <node id="MANUAL_CONTROL" address="0x1000" >
           <node id="LINK_ENABLE_MASK" address="0x0" permission="rw" mask="0xffffffff"/>

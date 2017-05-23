@@ -5451,7 +5451,7 @@ package registers is
     -- communication)
     --============================================================================
 
-    constant REG_SLOW_CONTROL_NUM_REGS : integer := 177;
+    constant REG_SLOW_CONTROL_NUM_REGS : integer := 189;
     constant REG_SLOW_CONTROL_ADDRESS_MSB : integer := 16;
     constant REG_SLOW_CONTROL_ADDRESS_LSB : integer := 0;
     constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
@@ -5473,6 +5473,54 @@ package registers is
     constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0101";
     constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_MSB    : integer := 31;
     constant REG_SLOW_CONTROL_SCA_STATUS_CRITICAL_ERROR_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH0_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0102";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH0_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH0_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH1_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0103";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH1_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH1_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH2_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0104";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH2_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH2_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH3_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0105";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH3_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH3_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH4_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0106";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH4_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH4_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH5_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0107";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH5_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH5_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH6_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0108";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH6_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH6_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH7_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0109";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH7_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH7_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH8_ADDR    : std_logic_vector(16 downto 0) := '0' & x"010a";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH8_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH8_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH9_ADDR    : std_logic_vector(16 downto 0) := '0' & x"010b";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH9_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH9_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH10_ADDR    : std_logic_vector(16 downto 0) := '0' & x"010c";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH10_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH10_LSB     : integer := 0;
+
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH11_ADDR    : std_logic_vector(16 downto 0) := '0' & x"010d";
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH11_MSB    : integer := 15;
+    constant REG_SLOW_CONTROL_SCA_STATUS_NOT_READY_CNT_OH11_LSB     : integer := 0;
 
     constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1000";
     constant REG_SLOW_CONTROL_SCA_MANUAL_CONTROL_LINK_ENABLE_MASK_MSB    : integer := 31;

@@ -977,6 +977,11 @@
           <node id="CRITICAL_ERROR" address="0x1" mask="0xffffffff" permission="r"
                 description="Bits in this register indicate that the SCA controller for the corresponding link has encountered a critical error (needs reset)"
                 fw_signal="sca_critical_error_arr"/>
+          <node id="NOT_READY_CNT_OH${OH_IDX}" address="0x2" mask="0x0000ffff" permission="r" 
+                description="Counts the number of times that the SCA controller READY signal went to 0 since last SCA reset"
+                generate="true" generate_size="12" generate_address_step="0x00000001" generate_idx_var="OH_IDX"
+                fw_signal="sca_not_ready_cnt_arr(${OH_IDX})"/>
+
           <!--node id="RX_ERR_CNT" address="0x1" mask="0x0000ffff" permission="r"
                 description="Number of RX errors"
                 fw_signal="sca_rx_err_cnt"/>
