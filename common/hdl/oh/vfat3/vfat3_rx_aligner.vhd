@@ -97,7 +97,8 @@ begin
                         do_pattern_search <= '0';
                     end if;
                     for i in 1 to 7 loop
-                        if (prev_word(i - 1 downto 0) & data_i(7 downto i) = SYNC_ACK_WORD) then
+--                        if (prev_word(i - 1 downto 0) & data_i(7 downto i) = SYNC_ACK_WORD) then
+                        if (data_i(7 - i downto 0) & prev_word(7 downto 8 - i) = SYNC_ACK_WORD) then
                             num_bitslips <= i;
                             do_pattern_search <= '0';
                         end if;

@@ -13,7 +13,7 @@ package gem_pkg is
     constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170816";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 4;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -34,7 +34,8 @@ package gem_pkg is
     -- 3.0.0 First version for v3 electronics  
     -- 3.0.1 Sketched all main VFAT3 TX and RX blocks, but no slow control yet. Implemented TX and RX SYNC and SYNC verify procedures, sync error counts and RX bitslipping
     -- 3.0.2 First implementation of VFAT3 slow control 
-    -- 3.0.3 Added a selector (controled through VIO) for debug GBT link and debug VFAT link (on OH #0 only)  
+    -- 3.0.3 Added a selector (controled through VIO) for debug GBT link and debug VFAT link (on OH #0 only)
+    -- 3.0.4 Changed RX bitslipping proceduce -- now looking for low bits (instead of high bits) in the top (instead of bottom) of the previous word
 
     --======================--
     --==      General     ==--
