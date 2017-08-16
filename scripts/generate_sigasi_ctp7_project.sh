@@ -18,7 +18,7 @@ source /opt/Xilinx/Vivado/2016.3/settings64.sh
 vivado -mode batch -source $HOME/programs/dev/sigasi/SigasiProjectCreator/convertVivadoProjectToCsv.tcl $SCRIPTS_DIR/../ctp7/work_dir/gem_amc.xpr
 
 #generate the sigasi project
-$HOME/programs/dev/sigasi/SigasiProjectCreator/convertCsvFileToTree.py gem_ctp7 vivado_files.csv
+python2 $HOME/programs/dev/sigasi/SigasiProjectCreator/convertCsvFileToTree.py gem_ctp7 vivado_files.csv
 
 #remove all IP files
 sed -i "/\/ip\//d" .library_mapping.xml

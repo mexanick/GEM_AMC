@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170530";
-    constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 9;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 4;
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170816";
+    constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -28,7 +28,13 @@ package gem_pkg is
     -- 1.9.2 separate SCA controlers for each channel implemented. There's also inbuilt ability to broadcast JTAG and custom SCA commands to any set of selected channels
     -- 1.9.3 Added SCA not ready counters (since last SCA reset). This will show if the SCA communication is stable (once established). 
     --       If yes, we could add an automatic SCA reset + configure after each time the SCA ready goes high after being low.
-    -- 1.9.4 Swapped calpulse and bc0 bits in the GBT link because the OH was reading them backwards. Also re-enabled forwarding of resync and calpulse to OH. 
+    -- 1.9.4 Swapped calpulse and bc0 bits in the GBT link because the OH was reading them backwards. Also re-enabled forwarding of resync and calpulse to OH.
+    
+    --=== v3 branch ===--
+    -- 3.0.0 First version for v3 electronics  
+    -- 3.0.1 Sketched all main VFAT3 TX and RX blocks, but no slow control yet. Implemented TX and RX SYNC and SYNC verify procedures, sync error counts and RX bitslipping
+    -- 3.0.2 First implementation of VFAT3 slow control 
+    -- 3.0.3 Added a selector (controled through VIO) for debug GBT link and debug VFAT link (on OH #0 only)  
 
     --======================--
     --==      General     ==--
@@ -54,11 +60,19 @@ package gem_pkg is
   
     type t_std32_array is array(integer range <>) of std_logic_vector(31 downto 0);
         
-    type t_std16_array is array(integer range <>) of std_logic_vector(15 downto 0);
-
     type t_std24_array is array(integer range <>) of std_logic_vector(23 downto 0);
 
+    type t_std16_array is array(integer range <>) of std_logic_vector(15 downto 0);
+
+    type t_std14_array is array(integer range <>) of std_logic_vector(13 downto 0);
+
+    type t_std10_array is array(integer range <>) of std_logic_vector(9 downto 0);
+
+    type t_std8_array is array(integer range <>) of std_logic_vector(7 downto 0);
+
     type t_std4_array is array(integer range <>) of std_logic_vector(3 downto 0);
+
+    type t_std3_array is array(integer range <>) of std_logic_vector(2 downto 0);
 
     type t_std2_array is array(integer range <>) of std_logic_vector(1 downto 0);
 
@@ -67,6 +81,12 @@ package gem_pkg is
     --============--   
 
     type t_gbt_frame_array is array(integer range <>) of std_logic_vector(83 downto 0);
+
+    --=============--
+    --==  VFAT3  ==--
+    --=============--
+    
+    type t_vfat3_elinks_arr is array(integer range<>) of t_std8_array(23 downto 0);   
 
     --========================--
     --== GTH/GTX link types ==--
@@ -93,26 +113,7 @@ package gem_pkg is
     type t_gt_8b10b_tx_data_arr is array(integer range <>) of t_gt_8b10b_tx_data;
     type t_gt_8b10b_rx_data_arr is array(integer range <>) of t_gt_8b10b_rx_data;
 
-    type t_gbt_mgt_tx_links is record
-        tx0data          : std_logic_vector(39 downto 0); -- main GBT link for OH v2b 
-        tx1data          : std_logic_vector(39 downto 0); -- this will only be used in OH v3 (for now this will just have a dummy load if CFG_USE_3x_GBTs is set to true)
-        tx2data          : std_logic_vector(39 downto 0); -- this will only be used in OH v3 (for now this will just have a dummy load if CFG_USE_3x_GBTs is set to true)
-    end record;
-
-    type t_gbt_mgt_rx_links is record
-        rx0clk           : std_logic;
-        rx1clk           : std_logic;
-        rx2clk           : std_logic;
-        rx0data          : std_logic_vector(39 downto 0); -- main GBT link for OH v2b 
-        rx1data          : std_logic_vector(39 downto 0); -- this will only be used in OH v3 (for now this will just have a dummy load if CFG_USE_3x_GBTs is set to true)
-        rx2data          : std_logic_vector(39 downto 0); -- this will only be used in OH v3 (for now this will just have a dummy load if CFG_USE_3x_GBTs is set to true)
-    end record;
-
-    type t_gbt_mgt_rx_links_arr  is array(integer range <>) of t_gbt_mgt_rx_links;
-    type t_gbt_mgt_tx_links_arr  is array(integer range <>) of t_gbt_mgt_tx_links;
-
-    type t_gt_gbt_tx_data_arr is array(integer range <>) of std_logic_vector(39 downto 0);
-    type t_gt_gbt_rx_data_arr is array(integer range <>) of std_logic_vector(39 downto 0);
+    type t_gt_gbt_data_arr is array(integer range <>) of std_logic_vector(39 downto 0);
 
     --========================--
     --== SBit cluster data  ==--
@@ -168,7 +169,7 @@ package gem_pkg is
     --====================--
     
     type t_data_link is record
-        clk             : std_logic;
+        clk        : std_logic;
         data_en    : std_logic;
         data       : std_logic_vector(15 downto 0);
     end record;

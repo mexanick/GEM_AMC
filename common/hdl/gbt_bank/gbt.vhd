@@ -45,8 +45,6 @@ entity gbt is
         tx_ready_arr_i              : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_we_arr_i                 : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_data_arr_i               : in  t_gbt_frame_array(NUM_LINKS - 1 downto 0);
-        tx_sca_data_arr_i           : in  t_std2_array(NUM_LINKS - 1 downto 0);
-        tx_ic_data_arr_i            : in  t_std2_array(NUM_LINKS - 1 downto 0);
         tx_gearbox_aligned_arr_o    : out std_logic_vector(NUM_LINKS - 1 downto 0);
         tx_gearbox_align_done_arr_o : out std_logic_vector(NUM_LINKS - 1 downto 0);
 
@@ -63,16 +61,14 @@ entity gbt is
         rx_header_locked_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_data_valid_arr_o         : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_data_arr_o               : out t_gbt_frame_array(NUM_LINKS - 1 downto 0);
-        rx_sca_data_arr_o           : out t_std2_array(NUM_LINKS - 1 downto 0);
-        rx_ic_data_arr_o            : out t_std2_array(NUM_LINKS - 1 downto 0);
         
         --========--              
         --   MGT  --              
         --========-- 
         
         mgt_rx_rdy_arr_i            : in  std_logic_vector(NUM_LINKS - 1 downto 0);
-        mgt_tx_data_arr_o           : out t_gt_gbt_tx_data_arr(NUM_LINKS - 1 downto 0);
-        mgt_rx_data_arr_i           : in  t_gt_gbt_rx_data_arr(NUM_LINKS - 1 downto 0)
+        mgt_tx_data_arr_o           : out t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0);
+        mgt_rx_data_arr_i           : in  t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0)
         
     );
 end gbt;
@@ -135,7 +131,7 @@ architecture gbt_arch of gbt is
     signal rxHeaderLocked_from_gbtRx : std_logic_vector(NUM_LINKS - 1 downto 0);
 
     signal rx_common_word_clk        : std_logic;
-    signal mgt_sync_rx_data_arr      : t_gt_gbt_rx_data_arr(NUM_LINKS - 1 downto 0);
+    signal mgt_sync_rx_data_arr      : t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0);
     signal mgt_sync_rx_valid_arr     : std_logic_vector(NUM_LINKS - 1 downto 0);
    
     signal rx_data_arr               : t_gbt_frame_array(NUM_LINKS - 1 downto 0);
@@ -240,7 +236,7 @@ begin                                   --========####   Architecture Body   ###
 				
 				mgt_tx_data_arr_o(i)         <= tx_wordNbit_from_gbtTx(i);
 				
-				tx_data_arr(i)              <= tx_ic_data_arr_i(i) & tx_sca_data_arr_i(i) & tx_data_arr_i(i)(79 downto 0);
+				tx_data_arr(i)              <= tx_data_arr_i(i)(83 downto 0);
 				
 			end generate;
 	end generate;   
@@ -286,8 +282,6 @@ begin                                   --========####   Architecture Body   ###
             rxReady_from_mgt(i)                       <= mgt_rx_rdy_arr_i(i);
 			rx_bitslip_nbr_arr_o(i)                   <= rxBitSlipNbr_from_gbtRx(i);                         
 			rx_header_locked_arr_o(i)                 <= rxHeaderLocked_from_gbtRx(i);
-            rx_sca_data_arr_o(i)                      <= rx_data_arr(i)(81 downto 80);
-            rx_ic_data_arr_o(i)                       <= rx_data_arr(i)(83 downto 82);			
 	 
 		end generate;
 	end generate;

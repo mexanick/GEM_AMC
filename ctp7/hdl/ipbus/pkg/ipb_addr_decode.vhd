@@ -8,7 +8,7 @@ package ipb_addr_decode is
     type t_integer_arr is array (natural range <>) of integer;
     type t_ipb_slv is record
         oh_reg           : t_integer_arr(0 to 15);
-        oh_evt           : t_integer_arr(0 to 15);
+        vfat3            : integer;
         oh_links         : integer;
         daq              : integer;
         ttc              : integer;
@@ -18,18 +18,18 @@ package ipb_addr_decode is
         slow_control     : integer;
     end record;
 
-    constant C_NUM_IPB_SLAVES : integer := 39;
+    constant C_NUM_IPB_SLAVES : integer := 24;
 
     -- IPbus slave index definition
-    constant C_IPB_SLV : t_ipb_slv := (oh_reg => (0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30),
-        oh_evt => (1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31),
-        ttc => 32,
-        oh_links => 33,
-        daq => 34,
-        trigger => 35,
-        system => 36,
-        test => 37,
-        slow_control => 38);
+    constant C_IPB_SLV : t_ipb_slv := (oh_reg => (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+        vfat3 => 16,
+        ttc => 17,
+        oh_links => 18,
+        daq => 19,
+        trigger => 20,
+        system => 21,
+        test => 22,
+        slow_control => 23);
 
     function ipb_addr_sel(signal addr : in std_logic_vector(31 downto 0)) return integer;
     
@@ -56,40 +56,30 @@ package body ipb_addr_decode is
 
 	  -- OH register access request forwarding (minimal change from GLIB, but limited to 16 OHs): [26:22] - OH number, [21:18] - OH module, [17:2] - address within module
 	  -- One exception is the VFAT 
-    elsif std_match(addr, "--------010-0000----------------") then sel := C_IPB_SLV.oh_reg(0);
-    elsif std_match(addr, "--------010-0001----------------") then sel := C_IPB_SLV.oh_reg(1);
-    elsif std_match(addr, "--------010-0010----------------") then sel := C_IPB_SLV.oh_reg(2);
-    elsif std_match(addr, "--------010-0011----------------") then sel := C_IPB_SLV.oh_reg(3);
-    elsif std_match(addr, "--------010-0100----------------") then sel := C_IPB_SLV.oh_reg(4);
-    elsif std_match(addr, "--------010-0101----------------") then sel := C_IPB_SLV.oh_reg(5);
-    elsif std_match(addr, "--------010-0110----------------") then sel := C_IPB_SLV.oh_reg(6);
-    elsif std_match(addr, "--------010-0111----------------") then sel := C_IPB_SLV.oh_reg(7);
-    elsif std_match(addr, "--------010-1000----------------") then sel := C_IPB_SLV.oh_reg(8);
-    elsif std_match(addr, "--------010-1001----------------") then sel := C_IPB_SLV.oh_reg(9);
-    elsif std_match(addr, "--------010-1010----------------") then sel := C_IPB_SLV.oh_reg(10);
-    elsif std_match(addr, "--------010-1011----------------") then sel := C_IPB_SLV.oh_reg(11);
-    elsif std_match(addr, "--------010-1100----------------") then sel := C_IPB_SLV.oh_reg(12);
-    elsif std_match(addr, "--------010-1101----------------") then sel := C_IPB_SLV.oh_reg(13);
-    elsif std_match(addr, "--------010-1110----------------") then sel := C_IPB_SLV.oh_reg(14);
-    elsif std_match(addr, "--------010-1111----------------") then sel := C_IPB_SLV.oh_reg(15);
+    elsif std_match(addr, "--------01000000----------------") then sel := C_IPB_SLV.oh_reg(0);
+    elsif std_match(addr, "--------01000001----------------") then sel := C_IPB_SLV.oh_reg(1);
+    elsif std_match(addr, "--------01000010----------------") then sel := C_IPB_SLV.oh_reg(2);
+    elsif std_match(addr, "--------01000011----------------") then sel := C_IPB_SLV.oh_reg(3);
+    elsif std_match(addr, "--------01000100----------------") then sel := C_IPB_SLV.oh_reg(4);
+    elsif std_match(addr, "--------01000101----------------") then sel := C_IPB_SLV.oh_reg(5);
+    elsif std_match(addr, "--------01000110----------------") then sel := C_IPB_SLV.oh_reg(6);
+    elsif std_match(addr, "--------01000111----------------") then sel := C_IPB_SLV.oh_reg(7);
+    elsif std_match(addr, "--------01001000----------------") then sel := C_IPB_SLV.oh_reg(8);
+    elsif std_match(addr, "--------01001001----------------") then sel := C_IPB_SLV.oh_reg(9);
+    elsif std_match(addr, "--------01001010----------------") then sel := C_IPB_SLV.oh_reg(10);
+    elsif std_match(addr, "--------01001011----------------") then sel := C_IPB_SLV.oh_reg(11);
+    elsif std_match(addr, "--------01001100----------------") then sel := C_IPB_SLV.oh_reg(12);
+    elsif std_match(addr, "--------01001101----------------") then sel := C_IPB_SLV.oh_reg(13);
+    elsif std_match(addr, "--------01001110----------------") then sel := C_IPB_SLV.oh_reg(14);
+    elsif std_match(addr, "--------01001111----------------") then sel := C_IPB_SLV.oh_reg(15);
 
-    -- VFAT register forwarding
-    elsif std_match(addr, "--------01010000000-------------") then sel := C_IPB_SLV.oh_evt(0);
-    elsif std_match(addr, "--------01010001000-------------") then sel := C_IPB_SLV.oh_evt(1);
-    elsif std_match(addr, "--------01010010000-------------") then sel := C_IPB_SLV.oh_evt(2);
-    elsif std_match(addr, "--------01010011000-------------") then sel := C_IPB_SLV.oh_evt(3);
-    elsif std_match(addr, "--------01010100000-------------") then sel := C_IPB_SLV.oh_evt(4);
-    elsif std_match(addr, "--------01010101000-------------") then sel := C_IPB_SLV.oh_evt(5);
-    elsif std_match(addr, "--------01010110000-------------") then sel := C_IPB_SLV.oh_evt(6);
-    elsif std_match(addr, "--------01010111000-------------") then sel := C_IPB_SLV.oh_evt(7);
-    elsif std_match(addr, "--------01011000000-------------") then sel := C_IPB_SLV.oh_evt(8);
-    elsif std_match(addr, "--------01011001000-------------") then sel := C_IPB_SLV.oh_evt(9);
-    elsif std_match(addr, "--------01011010000-------------") then sel := C_IPB_SLV.oh_evt(10);
-    elsif std_match(addr, "--------01011011000-------------") then sel := C_IPB_SLV.oh_evt(11);
-    elsif std_match(addr, "--------01011100000-------------") then sel := C_IPB_SLV.oh_evt(12);
-    elsif std_match(addr, "--------01011101000-------------") then sel := C_IPB_SLV.oh_evt(13);
-    elsif std_match(addr, "--------01011110000-------------") then sel := C_IPB_SLV.oh_evt(14);
-    elsif std_match(addr, "--------01011111000-------------") then sel := C_IPB_SLV.oh_evt(15);
+    -- VFAT3 register forwarding
+    -- bits [19:16] = OH index (0xf means write broadcast), and bits [15:11] = VFAT3 index (0x1f means write broadcast), for the rest of the bits we use this mapping:
+    -- ipbus addr = 0x0xx is translated to VFAT3 addresses 0x00xx  
+    -- ipbus addr = 0x1xx is translated to VFAT3 addresses 0x10xx  
+    -- ipbus addr = 0x2xx is translated to VFAT3 addresses 0x20xx  
+    -- ipbus addr = 0x300 is translated to VFAT3 address   0xffff
+    elsif std_match(addr, "--------0101--------------------") then sel := C_IPB_SLV.vfat3;
 
     -- other AMC modules
     elsif std_match(addr, "--------01100000000-------------") then sel := C_IPB_SLV.oh_links;

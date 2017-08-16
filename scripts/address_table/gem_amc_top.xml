@@ -332,13 +332,22 @@
         <node id="NUM_OF_OH" address="0x0" mask="0x0000001f" permission="r"
               description="Number of supported optohybrids"
               fw_signal="num_of_oh"/>
-        <node id="USE_GBT" address="0x0" mask="0x00000100" permission="r"
-              description="If 1 then this firmware is using GBT links to communicate with optohybrids,
-                           if 0 then 8b10b links are used"
-              fw_signal="use_gbt"/>
         <node id="USE_TRIG_LINKS" address="0x0" mask="0x00000200" permission="r"
               description="If 1 then this firmware supports trigger links, if 0 then trigger links are disabled"
               fw_signal="use_trig_links"/>
+      </node>
+
+      <node id="VFAT3" address="0x10">
+        <node id="LINK_RESET" address="0x0" permission="w"
+              description="Reset the links to VFAT3s and redo VFAT3 sync procedure"
+              fw_write_pulse_signal="vfat3_link_reset"
+              sw_ctrl_configure_set="0x1"/>
+        <node id="USE_OH_VFAT3_SLOTS" address="0x1" mask="0x00000001" permission="rw"
+              description="When this is set to 1 then VFAT3 connectors mounted on the Optohybrid v3a will be used instead of GEB VFAT3 slots 0 and 1"
+              fw_signal="use_oh_vfat3_connectors" fw_default="0b0"/>
+        <node id="VFAT3_RUN_MODE" address="0x1" mask="0x00000002" permission="rw"
+              description="When this is set to 1 then VFAT3s will be set to run mode, otherwise they will be set to slow-control-only mode"
+              fw_signal="vfat3_run_mode" fw_default="0b0"/>
       </node>
 
       <node id="TESTS" address="0x200">
@@ -346,17 +355,6 @@
               description="GBT Loopback test enable -- if this is true then all GBT links are redirected to the loopback test
                            module and the test module is enabled (communication with optohybrid is not possible during the test)"
               fw_signal="loopback_gbt_test_en" fw_default="0b0"
-              sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
-        <node id="8B10B_LOOPBACK_EN" address="0x0" mask="0x00000002" permission="rw"
-              description="8b10b loopback test enable -- if this is true then all 8b10b DAQ/control links are redirected to the
-                           loopback test module and the test module is enabled (communication with optohybrid is not possible
-                           during the test)"
-              fw_signal="loopback_8b10b_test_en" fw_default="0b0"
-              sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
-        <node id="8B10B_LOOPBACK_USE_TRIG_LINKS" address="0x0" mask="0x00000004" permission="rw"
-              description="If this bit is set then the 8b10b loopback test will also expect the DAQ TX data to be looped back
-                           to the trigger links and do the sync and count the errors on these links"
-              fw_signal="loopback_8b10b_use_trig" fw_default="0b0"
               sw_ctrl_configure_set="0x0" sw_ctrl_start_set="0x0"/>
       </node>
 
@@ -465,7 +463,7 @@
         </node>
         <node id="LINK_${GBT_IDX}"  address="0x10"
               description="Link specific registers for GBT ${GBT_IDX}"
-              generate="true" generate_size="36" generate_address_step="0x10" generate_idx_var="GBT_IDX">
+              generate="true" generate_size="6" generate_address_step="0x10" generate_idx_var="GBT_IDX">
 
           <node id="SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
                 description="Indicates whether or not the sync has been acquired between TX and RX"
@@ -476,36 +474,6 @@
           <node id="ERROR_CNT" permission="r" address="0x2"
                 description="Number of errors found in the received loopback data"
                 fw_signal="gbt_loop_error_cnt_arr(${GBT_IDX})"/>
-        </node>
-      </node>
-
-      <node id="8b10b_LOOPBACK" address="0x2000"
-            description="8b10b loopback test submodule">
-        <node id="LINK_${OH_IDX}"  address="0x10"
-              description="Link specific registers for 8b10b link ${OH_IDX}"
-              generate="true" generate_size="12" generate_address_step="0x10" generate_idx_var="OH_IDX">
-
-          <node id="DAQ_SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
-                description="Indicates whether or not the sync has been acquired between the DAQ TX and DAQ RX"
-                fw_signal="daq_8b10b_loop_sync_done_arr(${OH_IDX})"/>
-          <node id="TRIG0_SYNC_DONE" mask="0x00000002" permission="r" address="0x0"
-                description="Indicates whether or not the sync has been acquired between the DAQ TX and TRIG0 RX"
-                fw_signal="trig0_8b10b_loop_sync_done_arr(${OH_IDX})"/>
-          <node id="TRIG1_SYNC_DONE" mask="0x00000004" permission="r" address="0x0"
-                description="Indicates whether or not the sync has been acquired between the DAQ TX and TRIG1 RX"
-                fw_signal="trig1_8b10b_loop_sync_done_arr(${OH_IDX})"/>
-          <node id="MEGA_WORD_CNT" permission="r" address="0x1"
-                description="Number of generated data words received by the loopback RX"
-                fw_signal="all_8b10b_loop_mega_word_cnt_arr(${OH_IDX})"/>
-          <node id="DAQ_ERROR_CNT" permission="r" address="0x2"
-                description="Number of errors found in the received loopback data on the DAQ RX link"
-                fw_signal="daq_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
-          <node id="TRIG0_ERROR_CNT" permission="r" address="0x3"
-                description="Number of errors found in the received loopback data on the TRIG0 RX link"
-                fw_signal="trig0_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
-          <node id="TRIG1_ERROR_CNT" permission="r" address="0x4"
-                description="Number of errors found in the received loopback data on the TRIG1 RX link"
-                fw_signal="trig1_8b10b_loop_error_cnt_arr(${OH_IDX})"/>
         </node>
       </node>
 

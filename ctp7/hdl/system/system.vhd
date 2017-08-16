@@ -80,8 +80,8 @@ entity system is
 
     gth_tx_data_arr_i           : in  t_gt_8b10b_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);  
     gth_rx_data_arr_o           : out t_gt_8b10b_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
-    gth_gbt_tx_data_arr_i       : in  t_gt_gbt_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);  
-    gth_gbt_rx_data_arr_o       : out t_gt_gbt_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
+    gth_gbt_tx_data_arr_i       : in  t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);  
+    gth_gbt_rx_data_arr_o       : out t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
 
     gth_gbt_common_rxusrclk_o   : out std_logic;
 
@@ -231,8 +231,8 @@ architecture system_arch of system is
   signal s_gth_tx_data_arr     : t_gt_8b10b_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
   signal s_gth_rx_data_arr     : t_gt_8b10b_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
 
-  signal s_gth_gbt_tx_data_arr : t_gt_gbt_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
-  signal s_gth_gbt_rx_data_arr : t_gt_gbt_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
+  signal s_gth_gbt_tx_data_arr : t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
+  signal s_gth_gbt_rx_data_arr : t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
   
   signal s_clk_gth_tx_usrclk_arr : std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);
   signal s_clk_gth_rx_usrclk_arr : std_logic_vector(g_NUM_OF_GTH_GTs-1 downto 0);

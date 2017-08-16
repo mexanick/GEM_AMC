@@ -100,8 +100,8 @@ entity gth_wrapper is
     gth_tx_data_arr_i : in  t_gt_8b10b_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
     gth_rx_data_arr_o : out t_gt_8b10b_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
 
-    gth_gbt_tx_data_arr_i : in  t_gt_gbt_tx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
-    gth_gbt_rx_data_arr_o : out t_gt_gbt_rx_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
+    gth_gbt_tx_data_arr_i : in  t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
+    gth_gbt_rx_data_arr_o : out t_gt_gbt_data_arr(g_NUM_OF_GTH_GTs-1 downto 0);
     
     gth_gbt_common_rxusrclk_o : out std_logic;
     gth_gbt_common_txoutclk_o : out std_logic
