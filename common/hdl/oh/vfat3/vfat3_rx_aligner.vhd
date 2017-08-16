@@ -110,13 +110,13 @@ begin
 
     -- bitslipping
     aligned_data <= data_i                                      when num_bitslips = 0 else
-                    prev_word(0 downto 0) & data_i (7 downto 1) when num_bitslips = 1 else
-                    prev_word(1 downto 0) & data_i (7 downto 2) when num_bitslips = 2 else
-                    prev_word(2 downto 0) & data_i (7 downto 3) when num_bitslips = 3 else
-                    prev_word(3 downto 0) & data_i (7 downto 4) when num_bitslips = 4 else
-                    prev_word(4 downto 0) & data_i (7 downto 5) when num_bitslips = 5 else
-                    prev_word(5 downto 0) & data_i (7 downto 6) when num_bitslips = 6 else
-                    prev_word(6 downto 0) & data_i (7 downto 7) when num_bitslips = 7;
+                    data_i (6 downto 0) & prev_word(7 downto 7) when num_bitslips = 1 else
+                    data_i (5 downto 0) & prev_word(7 downto 6) when num_bitslips = 2 else
+                    data_i (4 downto 0) & prev_word(7 downto 5) when num_bitslips = 3 else
+                    data_i (3 downto 0) & prev_word(7 downto 4) when num_bitslips = 4 else
+                    data_i (2 downto 0) & prev_word(7 downto 3) when num_bitslips = 5 else
+                    data_i (1 downto 0) & prev_word(7 downto 2) when num_bitslips = 6 else
+                    data_i (0 downto 0) & prev_word(7 downto 1) when num_bitslips = 7;
                     
     -- sync checking
     process(ttc_clk_i.clk_40)
