@@ -79,6 +79,8 @@ begin
                 num_bitslips <= 0;
                 sync_ok <= '0';
             else
+                prev_word <= data_i;
+                
                 if (do_pattern_search = '0' and sync_i <= '1') then
                     do_pattern_search <= '1';
                 end if;
