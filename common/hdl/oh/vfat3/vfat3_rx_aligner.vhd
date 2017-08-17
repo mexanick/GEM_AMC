@@ -40,8 +40,8 @@ end vfat3_rx_aligner;
 
 architecture vfat3_rx_aligner_arch of vfat3_rx_aligner is
     
-    constant SYNC_ACK_WORD          : std_logic_vector(7 downto 0) := x"af";
-    constant SYNC_VERIFY_WORD       : std_logic_vector(7 downto 0) := x"fa";
+    constant SYNC_ACK_WORD          : std_logic_vector(7 downto 0) := x"3a";
+    constant SYNC_VERIFY_WORD       : std_logic_vector(7 downto 0) := x"fe";
     
     constant SYNC_VERIFY_TIMEOUT    : unsigned(11 downto 0) := x"5dc";  -- half of an orbit, kind of randomly chosen high value, should be adjusted once fiber propagation delay is known
     constant SYNC_VERIFY_ERR_BAD_CNT: unsigned(7 downto 0) := x"64";    -- number of sync verify errors in a row that will deassert sync_ok
@@ -70,14 +70,6 @@ begin
     data_o <= aligned_data;
     sync_verify_err_cnt_o <= std_logic_vector(sync_verify_err_cnt);
     
-    -- previous word
-    process(ttc_clk_i.clk_40)
-    begin
-        if (rising_edge(ttc_clk_i.clk_40)) then
-            prev_word <= data_i;
-        end if;
-    end process;
-
     -- pattern search
     process(ttc_clk_i.clk_40)
     begin
@@ -97,8 +89,7 @@ begin
                         do_pattern_search <= '0';
                     end if;
                     for i in 1 to 7 loop
---                        if (prev_word(i - 1 downto 0) & data_i(7 downto i) = SYNC_ACK_WORD) then
-                        if (data_i(7 - i downto 0) & prev_word(7 downto 8 - i) = SYNC_ACK_WORD) then
+                        if (prev_word(i - 1 downto 0) & data_i(7 downto i) = SYNC_ACK_WORD) then
                             num_bitslips <= i;
                             do_pattern_search <= '0';
                         end if;
@@ -110,13 +101,13 @@ begin
 
     -- bitslipping
     aligned_data <= data_i                                      when num_bitslips = 0 else
-                    data_i (6 downto 0) & prev_word(7 downto 7) when num_bitslips = 1 else
-                    data_i (5 downto 0) & prev_word(7 downto 6) when num_bitslips = 2 else
-                    data_i (4 downto 0) & prev_word(7 downto 5) when num_bitslips = 3 else
-                    data_i (3 downto 0) & prev_word(7 downto 4) when num_bitslips = 4 else
-                    data_i (2 downto 0) & prev_word(7 downto 3) when num_bitslips = 5 else
-                    data_i (1 downto 0) & prev_word(7 downto 2) when num_bitslips = 6 else
-                    data_i (0 downto 0) & prev_word(7 downto 1) when num_bitslips = 7;
+                    prev_word(0 downto 0) & data_i (7 downto 1) when num_bitslips = 1 else
+                    prev_word(1 downto 0) & data_i (7 downto 2) when num_bitslips = 2 else
+                    prev_word(2 downto 0) & data_i (7 downto 3) when num_bitslips = 3 else
+                    prev_word(3 downto 0) & data_i (7 downto 4) when num_bitslips = 4 else
+                    prev_word(4 downto 0) & data_i (7 downto 5) when num_bitslips = 5 else
+                    prev_word(5 downto 0) & data_i (7 downto 6) when num_bitslips = 6 else
+                    prev_word(6 downto 0) & data_i (7 downto 7) when num_bitslips = 7;
                     
     -- sync checking
     process(ttc_clk_i.clk_40)

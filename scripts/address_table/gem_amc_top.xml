@@ -285,7 +285,7 @@
           description="This module is controlling GEM AMC System wide settings"
           fw_is_module="true"
           fw_module_file="../common/hdl/misc/gem_system_regs.vhd"
-          fw_user_clock_signal="ipb_clk_i"
+          fw_user_clock_signal="ttc_clks_i.clk_40"
           fw_bus_clock_signal="ipb_clk_i"
           fw_bus_reset_signal="ipb_reset_i"
           fw_master_bus_signal="ipb_mosi_i"
