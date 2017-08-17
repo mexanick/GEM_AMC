@@ -75,10 +75,10 @@ package body ipb_addr_decode is
 
     -- VFAT3 register forwarding
     -- bits [19:16] = OH index (0xf means write broadcast), and bits [15:11] = VFAT3 index (0x1f means write broadcast), for the rest of the bits we use this mapping:
-    -- ipbus addr = 0x0xx is translated to VFAT3 addresses 0x00xx  
-    -- ipbus addr = 0x1xx is translated to VFAT3 addresses 0x10xx  
-    -- ipbus addr = 0x2xx is translated to VFAT3 addresses 0x20xx  
-    -- ipbus addr = 0x300 is translated to VFAT3 address   0xffff
+    -- ipbus addr = 0x0xx is translated to VFAT3 addresses 0x000000xx  
+    -- ipbus addr = 0x1xx is translated to VFAT3 addresses 0x000100xx  
+    -- ipbus addr = 0x2xx is translated to VFAT3 addresses 0x000200xx  
+    -- ipbus addr = 0x300 is translated to VFAT3 address   0x0000ffff
     elsif std_match(addr, "--------0101--------------------") then sel := C_IPB_SLV.vfat3;
 
     -- other AMC modules

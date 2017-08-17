@@ -139,19 +139,22 @@ begin
                         if (ipb_mosi_i.ipb_strobe = '1') then
                             tx_command_en <= '1';
                             -- since VFAT3 is using 16 bits for register addressing, but only a few registers need more than 8 bits, we are using this remapping:
-                            -- ipbus addr = 0x0xx is translated to VFAT3 addresses 0x00xx  
-                            -- ipbus addr = 0x1xx is translated to VFAT3 addresses 0x10xx  
-                            -- ipbus addr = 0x2xx is translated to VFAT3 addresses 0x20xx  
-                            -- ipbus addr = 0x300 is translated to VFAT3 address   0xffff
-                            tx_reg_addr(31 downto 16) <= (others => '0');
-                            if (ipb_mosi_i.ipb_addr(9 downto 8) = "01") then
-                                tx_reg_addr(15 downto 8) <= x"10";
+                            -- ipbus addr = 0x0xx is translated to VFAT3 addresses 0x000000xx  
+                            -- ipbus addr = 0x1xx is translated to VFAT3 addresses 0x000100xx  
+                            -- ipbus addr = 0x2xx is translated to VFAT3 addresses 0x000200xx  
+                            -- ipbus addr = 0x300 is translated to VFAT3 address   0x0000ffff
+                            tx_reg_addr(31 downto 20) <= (others => '0');
+                            if (ipb_mosi_i.ipb_addr(9 downto 8) = "00") then
+                                tx_reg_addr(19 downto 8) <= x"000";
+                                tx_reg_addr(7 downto 0) <= ipb_mosi_i.ipb_addr(7 downto 0);
+                            elsif (ipb_mosi_i.ipb_addr(9 downto 8) = "01") then
+                                tx_reg_addr(19 downto 8) <= x"100";
                                 tx_reg_addr(7 downto 0) <= ipb_mosi_i.ipb_addr(7 downto 0);
                             elsif (ipb_mosi_i.ipb_addr(9 downto 8) = "10") then
-                                tx_reg_addr(15 downto 8) <= x"20";
+                                tx_reg_addr(19 downto 8) <= x"200";
                                 tx_reg_addr(7 downto 0) <= ipb_mosi_i.ipb_addr(7 downto 0);
-                            elsif (ipb_mosi_i.ipb_addr(9 downto 8) = "10") then
-                                tx_reg_addr(15 downto 0) <= x"ffff";
+                            elsif (ipb_mosi_i.ipb_addr(9 downto 8) = "11") then
+                                tx_reg_addr(19 downto 0) <= x"0ffff";
                             end if;
                             
                             tx_is_write  <= ipb_mosi_i.ipb_write;

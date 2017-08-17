@@ -13,7 +13,7 @@ package gem_pkg is
     constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170817";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 7;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 8;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -39,6 +39,7 @@ package gem_pkg is
     -- 3.0.5 Revert back to the original bitshifting procedure.. duh.. but update the rx VFAT3 words to the correct ones, not the ones listed in the JINST paper...
     -- 3.0.6 Added missing assignment to prev_word in vfat3_rx_aligner... :)
     -- 3.0.7 Removed double assignment to sync_ok signal, plus added some extra probes to debug the rx_aligner
+    -- 3.0.8 Fixed a mistake in VFAT register addressing
 
     --======================--
     --==      General     ==--

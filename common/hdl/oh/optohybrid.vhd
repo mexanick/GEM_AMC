@@ -91,9 +91,7 @@ architecture optohybrid_arch of optohybrid is
         probe6 : in std_logic_vector(7 DOWNTO 0); 
         probe7 : in std_logic;
         probe8 : in std_logic_vector(2 DOWNTO 0);
-        probe9 : in std_logic_vector(7 DOWNTO 0);
-        probe10 : in std_logic_vector(3 DOWNTO 0);
-        probe11 : in std_logic_vector(7 DOWNTO 0)
+        probe9 : in std_logic_vector(7 DOWNTO 0)
     );
     end component;
     
@@ -132,11 +130,6 @@ architecture optohybrid_arch of optohybrid is
     signal dbg_vfat3_sync_ok            : std_logic;
     signal dbg_vfat3_rx_num_bitslips    : std_logic_vector(2 downto 0);
     signal dbg_vfat3_rx_sync_err_cnt    : std_logic_vector(7 downto 0);
-
-    signal dbg_vfat3_rx_good_cont       : std_logic_vector(3 downto 0);
-    signal dbg_vfat3_rx_bad_cont        : std_logic_vector(7 downto 0);
-    signal vfat3_rx_good_cont           : t_std4_array(23 downto 0);
-    signal vfat3_rx_bad_cont           : t_std8_array(23 downto 0);
     
 begin
 
@@ -206,9 +199,7 @@ begin
                 sync_ok_o             => vfat3_sync_ok(i),
                 num_bitslips_o        => vfat3_rx_num_bitslips(i),
                 sync_verify_err_cnt_o => vfat3_rx_sync_err_cnt(i),
-                data_o                => vfat3_rx_aligned_data(i),
-                dbg_sync_verify_good_cnt_cont => vfat3_rx_good_cont(i),
-                dbg_sync_verify_bad_cnt_cont  => vfat3_rx_bad_cont(i)
+                data_o                => vfat3_rx_aligned_data(i)
             );
     
         i_vfat3_rx_link : entity work.vfat3_rx_link
@@ -328,9 +319,6 @@ begin
         dbg_vfat3_sync_ok           <= vfat3_sync_ok(to_integer(unsigned(debug_vfat_select_i)));
         dbg_vfat3_rx_num_bitslips   <= vfat3_rx_num_bitslips(to_integer(unsigned(debug_vfat_select_i)));
         dbg_vfat3_rx_sync_err_cnt   <= vfat3_rx_sync_err_cnt(to_integer(unsigned(debug_vfat_select_i)));
-
-        dbg_vfat3_rx_good_cont      <= vfat3_rx_good_cont(to_integer(unsigned(debug_vfat_select_i)));
-        dbg_vfat3_rx_bad_cont       <= vfat3_rx_bad_cont(to_integer(unsigned(debug_vfat_select_i)));
         
         i_vfat_ila : ila_vfat3
             port map(
@@ -344,9 +332,7 @@ begin
                 probe6 => dbg_vfat3_rx_aligned_data,
                 probe7 => dbg_vfat3_sync_ok,
                 probe8 => dbg_vfat3_rx_num_bitslips,
-                probe9 => dbg_vfat3_rx_sync_err_cnt,
-                probe10 => dbg_vfat3_rx_good_cont,
-                probe11 => dbg_vfat3_rx_bad_cont
+                probe9 => dbg_vfat3_rx_sync_err_cnt
             );
 
     end generate;     
