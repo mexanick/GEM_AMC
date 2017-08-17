@@ -52,7 +52,7 @@ architecture vfat3_sc_tx_arch of vfat3_sc_tx is
     -- fsm signals
     signal state            : state_t;
     signal set_bit_cnt      : integer range 0 to 8;
-    signal word_pos         : integer range 0 to 79;
+    signal word_pos         : integer range 0 to 112;
 
     -- frame data
     signal frame_data       : std_logic_vector(111 downto 0);
@@ -96,9 +96,9 @@ begin
                     when IDLE =>
                         if (command_en_i = '1') then
                             if (is_write_i = '1') then
-                                frame_length <= 128;
+                                frame_length <= 112;
                             else
-                                frame_length <= 96;
+                                frame_length <= 80;
                             end if;
                             frame_data <= reg_value_i &
                                           reg_addr_i &
