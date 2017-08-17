@@ -34,7 +34,11 @@ entity vfat3_rx_aligner is
         sync_ok_o               : out std_logic;
         num_bitslips_o          : out std_logic_vector(2 downto 0);
         sync_verify_err_cnt_o   : out std_logic_vector(7 downto 0);
-        data_o                  : out std_logic_vector(7 downto 0)
+        data_o                  : out std_logic_vector(7 downto 0);
+        
+        -- debug
+        dbg_sync_verify_good_cnt_cont : out std_logic_vector(3 downto 0);
+        dbg_sync_verify_bad_cnt_cont  : out std_logic_vector(7 downto 0)
     );
 end vfat3_rx_aligner;
 
@@ -70,6 +74,9 @@ begin
     data_o <= aligned_data;
     sync_verify_err_cnt_o <= std_logic_vector(sync_verify_err_cnt);
     
+    dbg_sync_verify_good_cnt_cont <= std_logic_vector(sync_verify_good_cnt_cont);
+    dbg_sync_verify_bad_cnt_cont <= std_logic_vector(sync_verify_err_cnt_cont);
+    
     -- pattern search
     process(ttc_clk_i.clk_40)
     begin
@@ -77,7 +84,6 @@ begin
             if (reset_i = '1') then
                 do_pattern_search <= '1';
                 num_bitslips <= 0;
-                sync_ok <= '0';
             else
                 prev_word <= data_i;
                 
