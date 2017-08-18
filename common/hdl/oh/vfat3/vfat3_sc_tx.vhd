@@ -153,7 +153,7 @@ begin
 
                             if (word_pos = frame_length - 1) then
                                 state <= CRC;
-                                word_pos <= 0;
+                                word_pos <= 15;
                             else
                                 word_pos <= word_pos + 1;
                                 -- calculate CRC one bit in ahead to have it ready on state = CRC (first bit is done in state = SOF)
@@ -168,23 +168,24 @@ begin
                         data_en_o <= '1';
 
                     -- sending the CRC
+                    -- NOTE: CRC is sent MSB and INVERTED!!!
                     when CRC =>
                         -- if there are 5 set bits in a row, then we will stuff a zero which will get ignored on the other side
                         if (set_bit_cnt < 5) then
-                            serial_data <= calc_crc(word_pos);
+                            serial_data <= not calc_crc(word_pos);
                             
-                            if (calc_crc(word_pos) = '1') then
+                            if ((not calc_crc(word_pos)) = '1') then
                                 set_bit_cnt <= set_bit_cnt + 1; 
                             else
                                 set_bit_cnt <= 0;
                             end if;
                                                         
-                            if (word_pos = 15) then
+                            if (word_pos = 0) then
                                 state <= EOF;
                                 word_pos <= 0;
                                 calc_crc_o <= calc_crc;
                             else
-                                word_pos <= word_pos + 1;
+                                word_pos <= word_pos - 1;
                             end if;
                         else
                             serial_data <= '0';
