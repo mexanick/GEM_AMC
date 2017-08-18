@@ -179,7 +179,7 @@ begin
                                 set_bit_cnt <= 0;
                             end if;
                                                         
-                            if (word_pos = 0) then
+                            if (word_pos = 15) then
                                 state <= EOF;
                                 word_pos <= 0;
                                 calc_crc_o <= calc_crc;
