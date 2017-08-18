@@ -72,6 +72,22 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
         );
     end component;
 
+	component ila_vfat3_slow_control
+		port(
+			clk    : in std_logic;
+			probe0 : in std_logic;
+			probe1 : in std_logic;
+			probe2 : in std_logic;
+			probe3 : in std_logic;
+			probe4 : in std_logic;
+			probe5 : in std_logic;
+			probe6 : in std_logic;
+			probe7 : in std_logic_vector(7 DOWNTO 0);
+			probe8 : in std_logic_vector(3 DOWNTO 0);
+			probe9 : in std_logic_vector(4 DOWNTO 0)
+		);
+	end component;
+
     type state_t is (IDLE, RSPD, RST);
         
     signal state                : state_t;
@@ -281,5 +297,20 @@ begin
             probe_in5 => tx_raw_last_packet_last,
             probe_in6 => rx_raw_last_reply_last
         );
+    
+    i_vfat3_sc_ila : ila_vfat3_slow_control
+    	port map(
+    		clk    => ttc_clk_i.clk_40,
+    		probe0 => tx_reset,
+    		probe1 => rx_reset,
+    		probe2 => tx_din,
+    		probe3 => tx_en,
+    		probe4 => rx_data,
+    		probe5 => rx_data_en,
+    		probe6 => tx_is_write,
+    		probe7 => std_logic_vector(transaction_id),
+    		probe8 => tx_oh_idx,
+    		probe9 => tx_vfat_idx
+    	);
     
 end vfat3_slow_control_arch;

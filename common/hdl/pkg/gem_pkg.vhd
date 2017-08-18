@@ -13,7 +13,7 @@ package gem_pkg is
     constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170818";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 11;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 12;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -43,6 +43,7 @@ package gem_pkg is
     -- 3.0.9  Fixed read and write frame lengths in the slow control TX FSM
     -- 3.0.10 Fix CRC word count issue in vfat3_sc_tx 
     -- 3.0.11 Fixed tx CRC - it has to be sent MSB and INVERTED!!
+    -- 3.0.12 Added more debugging in VFAT3 slow control, and updated VFAT3 SC RX with a more robust start-of-frame detection
 
     --======================--
     --==      General     ==--

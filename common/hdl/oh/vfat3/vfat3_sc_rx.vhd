@@ -60,6 +60,7 @@ architecture vfat3_sc_rx_arch of vfat3_sc_rx is
     signal set_bit_cnt      : integer range 0 to 11;
     signal packet_pos       : integer range 0 to 104;
     signal min_length       : integer range 0 to 96; -- expected length of the packet
+    signal had_first_zero	: std_logic;
 
     -- errors
     signal crc_err          : std_logic; 
@@ -110,6 +111,7 @@ begin
                 crc_err <= '0';
                 bitstuff_err <= '0';
                 packet_err <= '0';
+                packet <= (others => '0');
             else
                 crc_err <= '0';
                 bitstuff_err <= '0';
@@ -124,7 +126,7 @@ begin
     
                         -- waiting for a start of frame
                         when IDLE =>
-                            if ((set_bit_cnt = 6) and (data_i = '0')) then -- start of frame received (6 set bits followed by a 0)
+                            if ((had_first_zero = '1') and (set_bit_cnt = 6) and (data_i = '0')) then -- start of frame received (6 set bits followed by a 0)
                                 state <= RECEIVING;
                             end if;
                             
@@ -217,11 +219,13 @@ begin
     begin
         if (rising_edge(clk_40_i)) then
             if (reset_i = '1') then
-                set_bit_cnt <= 0;
+            	set_bit_cnt <= 0;
+            	had_first_zero <= '0';
             else
                 if (data_en_i = '1') then
                     if (data_i = '0') then
-                        set_bit_cnt <= 0;
+                    	set_bit_cnt <= 0;
+                    	had_first_zero <= '1';
                     elsif (set_bit_cnt < 10) then
                         set_bit_cnt <= set_bit_cnt + 1;
                     end if;
