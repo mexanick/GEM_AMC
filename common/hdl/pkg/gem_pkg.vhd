@@ -44,7 +44,8 @@ package gem_pkg is
     -- 3.0.10 Fix CRC word count issue in vfat3_sc_tx 
     -- 3.0.11 Fixed tx CRC - it has to be sent MSB and INVERTED!!
     -- 3.0.12 Added more debugging in VFAT3 slow control, and updated VFAT3 SC RX with a more robust start-of-frame detection
-    -- 3.0.13 Fixed slow_ctrl_data_en_o flag bug in vfat3_rx_link.vhd - this was getting stuck high after the first SC character.. duh.. 
+    -- 3.0.13 Fixed slow_ctrl_data_en_o flag bug in vfat3_rx_link.vhd - this was getting stuck high after the first SC character.. duh..
+    -- 3.0.14 Delay tx_command_en and transfer from ipb_clk to ttc40 domain
 
     --======================--
     --==      General     ==--

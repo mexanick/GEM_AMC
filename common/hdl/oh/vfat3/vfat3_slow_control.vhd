@@ -103,10 +103,12 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
 
     signal tx_din               : std_logic := '0';
     signal tx_en                : std_logic := '0';
+    signal tx_busy				: std_logic := '0';
     signal tx_is_write          : std_logic := '0';
     signal tx_reg_addr          : std_logic_vector(31 downto 0) := (others => '0');
     signal tx_reg_value         : std_logic_vector(31 downto 0) := (others => '0');
     signal tx_command_en        : std_logic := '0';
+    signal tx_command_en_sync   : std_logic := '0';
     signal tx_oh_idx            : std_logic_vector(3 downto 0);
     signal tx_vfat_idx          : std_logic_vector(4 downto 0);
 
@@ -188,12 +190,22 @@ begin
                             rx_reset <= '1';
                             
                             state <= RSPD;
+                        else
+                        	
+                        	tx_command_en <= '0';
+                        	state <= IDLE;
+                            tx_reset <= '1';
+                            rx_reset <= '1';
+                                                    	
                         end if;
                         
                     -- waiting for a VFAT3 response and replying to IPbus
                     when RSPD =>
-                        
-                        tx_command_en <= '0';
+                    	
+                    	if (tx_busy = '1') then
+                    		tx_command_en <= '0';
+                    	end if;
+                    	
                         if (ipb_mosi_i.ipb_strobe = '0') then
                             state <= IDLE;     
                             tx_reset <= '1';
@@ -216,6 +228,7 @@ begin
                         state <= IDLE;
                         tx_reset <= '1';
                         rx_reset <= '1';
+                        tx_command_en <= '0';
                         
                         -- debug: grab the last crc and packet data before reset
                         tx_calc_crc_last <= tx_calc_crc;
@@ -240,6 +253,16 @@ begin
         end if;        
     end process;
 
+	i_vfat3_sc_tx_cmd_en_sync : entity work.synchronizer
+		generic map(
+			N_STAGES => 2
+		)
+		port map(
+			async_i => tx_command_en,
+			clk_i   => ttc_clk_i.clk_40,
+			sync_o  => tx_command_en_sync
+		);
+
     i_vfat3_sc_tx : entity work.vfat3_sc_tx
         port map(
             reset_i           => reset_i or tx_reset,
@@ -250,8 +273,8 @@ begin
             is_write_i        => tx_is_write,
             reg_addr_i        => tx_reg_addr,
             reg_value_i       => tx_reg_value,
-            command_en_i      => tx_command_en,
-            busy_o            => open,
+            command_en_i      => tx_command_en_sync,
+            busy_o            => tx_busy,
             calc_crc_o        => tx_calc_crc,
             raw_last_packet_o => tx_raw_last_packet
         );
