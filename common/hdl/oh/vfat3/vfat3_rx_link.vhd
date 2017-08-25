@@ -50,6 +50,6 @@ begin
     daq_data_en_o <= '0';
     daq_crc_error_o <= '0';
     slow_ctrl_data_o <= '1' when data_i = VFAT3_SC1_WORD else '0';
-    slow_ctrl_data_en_o <= '1' when data_i = VFAT3_SC1_WORD or data_i = VFAT3_SC0_WORD;
+    slow_ctrl_data_en_o <= '1' when data_i = VFAT3_SC1_WORD or data_i = VFAT3_SC0_WORD else '0';
 
 end vfat3_rx_link_arch;

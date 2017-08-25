@@ -1206,6 +1206,46 @@
             <node id="VFAT${OH_IDX}"  address="0x0"
                   description="VFAT ${OH_IDX}"
                   generate="true" generate_size="24" generate_address_step="0x00000800" generate_idx_var="OH_IDX">
+
+              <node id="VFATChannels"  address="0x0"
+                    description="Registers for the individual VFAT channels
+                                 Hardwired sleep value 0x00
+                                 Software default value 0x00">
+                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"  permission="rw"
+                      description="Register for VFAT channel ${CHANNEL_IDX}"
+                      generate="true" generate_size="128" generate_address_step="0x1" generate_idx_var="CHANNEL_IDX">
+                </node>
+              </node> <!-- end of VFATChannels -->
+
+              <node id="CFG_CTR_${CFG_REG_IDX}"  address="0x81"  permission="rw"
+                    description="VFAT control register number ${CFG_REG_IDX}"
+                    generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="CFG_REG_IDX">
+              </node>
+
+              <node id="CFG_GLOBAL_THRESHOLD"  address="0x87"  permission="rw"
+                    description="VFAT global threshold register">
+              </node>
+
+              <node id="CFG_GLOBAL_HYST"  address="0x88"  permission="rw"
+                    description="VFAT global hysteresis register">
+              </node>
+
+              <node id="CFG_GLOBAL_LATENCY"  address="0x89"  permission="rw"
+                    description="VFAT global latency register">
+              </node>
+              
+              <!-- add the some regs here, like bias, etc.. -->
+
+              <node id="CFG_MODE"  address="0x300"  permission="rw"
+                    description="VFAT mode register">
+              </node>
+
+              <node id="CFG_HW_ID"  address="0x300"  permission="rw"
+                    description="VFAT mode register">
+              </node>
+
+
+            </node>
         </node>
 
 

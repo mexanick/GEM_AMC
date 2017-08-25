@@ -84,7 +84,11 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
 			probe6 : in std_logic;
 			probe7 : in std_logic_vector(7 DOWNTO 0);
 			probe8 : in std_logic_vector(3 DOWNTO 0);
-			probe9 : in std_logic_vector(4 DOWNTO 0)
+			probe9 : in std_logic_vector(4 DOWNTO 0);
+			probe10 : in std_logic;
+			probe11 : in std_logic;
+			probe12 : in std_logic_vector(1 DOWNTO 0);
+			probe13 : in std_logic
 		);
 	end component;
 
@@ -298,19 +302,23 @@ begin
             probe_in6 => rx_raw_last_reply_last
         );
     
-    i_vfat3_sc_ila : ila_vfat3_slow_control
-    	port map(
-    		clk    => ttc_clk_i.clk_40,
-    		probe0 => tx_reset,
-    		probe1 => rx_reset,
-    		probe2 => tx_din,
-    		probe3 => tx_en,
-    		probe4 => rx_data,
-    		probe5 => rx_data_en,
-    		probe6 => tx_is_write,
-    		probe7 => std_logic_vector(transaction_id),
-    		probe8 => tx_oh_idx,
-    		probe9 => tx_vfat_idx
-    	);
+--    i_vfat3_sc_ila : ila_vfat3_slow_control
+--    	port map(
+--    		clk    => ttc_clk_i.clk_40,
+--    		probe0 => tx_reset,
+--    		probe1 => rx_reset,
+--    		probe2 => tx_din,
+--    		probe3 => tx_en,
+--    		probe4 => rx_data,
+--    		probe5 => rx_data_en,
+--    		probe6 => tx_is_write,
+--    		probe7 => std_logic_vector(transaction_id),
+--    		probe8 => tx_oh_idx,
+--    		probe9 => tx_vfat_idx,
+--    		probe10 => rx_valid,
+--    		probe11 => rx_error,
+--    		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
+--    		probe13 => ipb_mosi_i.ipb_strobe
+--    	);
     
 end vfat3_slow_control_arch;
