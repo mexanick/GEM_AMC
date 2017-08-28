@@ -141,7 +141,7 @@ begin
            ipb_clk_i              => ipb_clk_i,
            ipb_mosi_i             => ipb_mosi_i,
            ipb_miso_o             => ipb_miso_o,
-           usr_clk_i              => ipb_clk_i,
+           usr_clk_i              => ttc_clks_i.clk_40,
            regs_read_arr_i        => regs_read_arr,
            regs_write_arr_o       => regs_write_arr,
            read_pulse_arr_o       => regs_read_pulse_arr,
