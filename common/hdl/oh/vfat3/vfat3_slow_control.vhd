@@ -113,7 +113,9 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
     signal tx_vfat_idx          : std_logic_vector(4 downto 0);
 
     signal rx_valid             : std_logic;
+    signal rx_valid_sync        : std_logic;
     signal rx_error             : std_logic;
+    signal rx_error_sync        : std_logic;
     signal rx_reg_value         : std_logic_vector(31 downto 0) := (others => '0');
     signal rx_data              : std_logic;
     signal rx_data_en           : std_logic;
@@ -157,6 +159,8 @@ begin
                 case state is
                     when IDLE =>    
                     
+                    	ipb_miso_o <= (ipb_err => '0', ipb_ack => '0', ipb_rdata => (others => '0'));
+                    	
                         -- waiting for a request from IPbus
                         if (ipb_mosi_i.ipb_strobe = '1') then
                             tx_command_en <= '1';
@@ -210,10 +214,10 @@ begin
                             state <= IDLE;     
                             tx_reset <= '1';
                             rx_reset <= '1';
-                        elsif (rx_valid = '1') then
+                        elsif (rx_valid_sync = '1') then
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '0', ipb_rdata => rx_reg_value);
                             state <= RST;
-                        elsif (rx_error = '1') then
+                        elsif (rx_error_sync = '1') then
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => rx_reg_value);
                             state <= RST;
                         end if;
@@ -223,19 +227,22 @@ begin
                         
                     -- closing the transaction and returning to idle
                     when RST =>
-                        
-                        ipb_miso_o.ipb_ack <= '0';
-                        state <= IDLE;
-                        tx_reset <= '1';
-                        rx_reset <= '1';
-                        tx_command_en <= '0';
-                        
-                        -- debug: grab the last crc and packet data before reset
-                        tx_calc_crc_last <= tx_calc_crc;
-                        rx_calc_crc_last <= rx_calc_crc;
-                        tx_raw_last_packet_last <= tx_raw_last_packet;
-                        rx_raw_last_reply_last <= rx_raw_last_reply;
-                        
+                    	
+                    	if (ipb_mosi_i.ipb_strobe = '0') then 
+	                        ipb_miso_o.ipb_ack <= '0';
+	                        ipb_miso_o.ipb_err <= '0';
+	                        state <= IDLE;
+	                        tx_reset <= '1';
+	                        rx_reset <= '1';
+	                        tx_command_en <= '0';
+	                        
+	                        -- debug: grab the last crc and packet data before reset
+	                        tx_calc_crc_last <= tx_calc_crc;
+	                        rx_calc_crc_last <= rx_calc_crc;
+	                        tx_raw_last_packet_last <= tx_raw_last_packet;
+	                        rx_raw_last_reply_last <= rx_raw_last_reply;
+                    	end if;
+                    
                     -- who knows what might happen :)
                     when others =>
                         
@@ -263,6 +270,26 @@ begin
 			sync_o  => tx_command_en_sync
 		);
 
+	i_vfat3_sc_rx_valid_sync : entity work.synchronizer
+		generic map(
+			N_STAGES => 2
+		)
+		port map(
+			async_i => rx_valid,
+			clk_i   => ipb_clk_i,
+			sync_o  => rx_valid_sync
+		);
+
+	i_vfat3_sc_rx_error_sync : entity work.synchronizer
+		generic map(
+			N_STAGES => 2
+		)
+		port map(
+			async_i => rx_error,
+			clk_i   => ipb_clk_i,
+			sync_o  => rx_error_sync
+		);
+		
     i_vfat3_sc_tx : entity work.vfat3_sc_tx
         port map(
             reset_i           => reset_i or tx_reset,
@@ -325,23 +352,23 @@ begin
             probe_in6 => rx_raw_last_reply_last
         );
     
---    i_vfat3_sc_ila : ila_vfat3_slow_control
---    	port map(
---    		clk    => ttc_clk_i.clk_40,
---    		probe0 => tx_reset,
---    		probe1 => rx_reset,
---    		probe2 => tx_din,
---    		probe3 => tx_en,
---    		probe4 => rx_data,
---    		probe5 => rx_data_en,
---    		probe6 => tx_is_write,
---    		probe7 => std_logic_vector(transaction_id),
---    		probe8 => tx_oh_idx,
---    		probe9 => tx_vfat_idx,
---    		probe10 => rx_valid,
---    		probe11 => rx_error,
---    		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
---    		probe13 => ipb_mosi_i.ipb_strobe
---    	);
+    i_vfat3_sc_ila : ila_vfat3_slow_control
+    	port map(
+    		clk    => ttc_clk_i.clk_40,
+    		probe0 => tx_reset,
+    		probe1 => rx_reset,
+    		probe2 => tx_din,
+    		probe3 => tx_en,
+    		probe4 => rx_data,
+    		probe5 => rx_data_en,
+    		probe6 => tx_is_write,
+    		probe7 => std_logic_vector(transaction_id),
+    		probe8 => tx_oh_idx,
+    		probe9 => tx_vfat_idx,
+    		probe10 => rx_valid_sync,
+    		probe11 => rx_error_sync,
+    		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
+    		probe13 => ipb_mosi_i.ipb_strobe
+    	);
     
 end vfat3_slow_control_arch;

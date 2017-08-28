@@ -347,39 +347,39 @@ begin
 
   -- ================================= DEBUG ====================================
 
---  ila_axi_ipbus_bridge_inst : ila_axi_ipbus_bridge
---    port map (
---      clk         => S_AXI_ACLK,
---      probe0      => S_AXI_ARESETN,
---      probe1      => "000000" & S_AXI_AWADDR,
---      probe2      => S_AXI_AWPROT,
---      probe3      => S_AXI_AWVALID,
---      probe4      => S_AXI_WDATA,
---      probe5      => S_AXI_WSTRB,
---      probe6      => S_AXI_WVALID,
---      probe7      => S_AXI_BREADY,
---      probe8      => "000000" & S_AXI_ARADDR,
---      probe9      => S_AXI_ARPROT,
---      probe10     => S_AXI_ARVALID,
---      probe11     => S_AXI_RREADY,
---      probe12     => x"00000000",
---      probe13     => axi_awready,
---      probe14     => axi_wready,
---      probe15     => axi_bresp,
---      probe16     => axi_bvalid,
---      probe17     => x"00000000",
---      probe18     => axi_arready,
---      probe19     => axi_rdata,
---      probe20     => axi_rresp,
---      probe21     => axi_rvalid,
---      probe22     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_addr,
---      probe23     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_wdata,
---      probe24     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_strobe,
---      probe25     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_write,
---      probe26     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_rdata,
---      probe27     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_ack,
---      probe28     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_err,
---      probe29     => std_logic_vector(to_unsigned(ipb_slv_select, 8))
---    );
+  ila_axi_ipbus_bridge_inst : ila_axi_ipbus_bridge
+    port map (
+      clk         => S_AXI_ACLK,
+      probe0      => S_AXI_ARESETN,
+      probe1      => "000000" & S_AXI_AWADDR,
+      probe2      => S_AXI_AWPROT,
+      probe3      => S_AXI_AWVALID,
+      probe4      => S_AXI_WDATA,
+      probe5      => S_AXI_WSTRB,
+      probe6      => S_AXI_WVALID,
+      probe7      => S_AXI_BREADY,
+      probe8      => "000000" & S_AXI_ARADDR,
+      probe9      => S_AXI_ARPROT,
+      probe10     => S_AXI_ARVALID,
+      probe11     => S_AXI_RREADY,
+      probe12     => x"00000000",
+      probe13     => axi_awready,
+      probe14     => axi_wready,
+      probe15     => axi_bresp,
+      probe16     => axi_bvalid,
+      probe17     => x"00000000",
+      probe18     => axi_arready,
+      probe19     => axi_rdata,
+      probe20     => axi_rresp,
+      probe21     => axi_rvalid,
+      probe22     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_addr,
+      probe23     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_wdata,
+      probe24     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_strobe,
+      probe25     => ipb_mosi(C_IPB_SLV.oh_reg(0)).ipb_write,
+      probe26     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_rdata,
+      probe27     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_ack,
+      probe28     => ipb_miso_i(C_IPB_SLV.oh_reg(0)).ipb_err,
+      probe29     => std_logic_vector(to_unsigned(ipb_slv_select, 8))
+    );
 
 end arch_imp;
