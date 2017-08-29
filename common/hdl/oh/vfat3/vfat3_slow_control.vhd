@@ -91,7 +91,8 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
 			probe13 : in std_logic;
 			probe14 : in std_logic;
 			probe15 : in std_logic;
-			probe16 : in std_logic_vector(11 downto 0)			
+            probe16 : in std_logic_vector(11 downto 0); 
+            probe17 : in std_logic_vector(31 downto 0) 
 		);
 	end component;
 	
@@ -382,7 +383,8 @@ begin
     		probe13 => ipb_mosi_i.ipb_strobe,
     		probe14 => tx_command_en,
     		probe15 => tx_command_en_sync,
-    		probe16 => std_logic_vector(transaction_timer)
+    		probe16 => std_logic_vector(transaction_timer),
+    		probe17 => rx_reg_value
     	);
     
 end vfat3_slow_control_arch;

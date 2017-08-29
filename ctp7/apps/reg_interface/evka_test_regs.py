@@ -78,11 +78,12 @@ def regTest(regAddress, initValue, regMask, doInitWrite, numIterations, doRandom
         if value != initValue & regMask:
             if value == 0xdeaddead & regMask:
                 busErrors += 1
+                printRed("Bus error.. :/ got this value here: " + hex(value))
             else:
                 valueErrors += 1
                 printRed("Value error. Expected " + hex(initValue & regMask) + ", got " + hex(value) + " in iteration #" + str(i))
-                # value = rReg(regAddress) & regMask
-                # printRed("Repeated read gave this value = " + hex(value))
+                value = rReg(regAddress) & regMask
+                printRed("Repeated read gave this value = " + hex(value))
 
     totalTime = clock() - timeStart
         

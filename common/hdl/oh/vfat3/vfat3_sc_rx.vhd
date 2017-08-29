@@ -159,12 +159,14 @@ begin
                                     packet_err <= '1';
                                 end if;
                                 
+                                state <= RECEIVING;
+                                
                             -- end of frame (EOF)
                             elsif ((set_bit_cnt = 6) and (data_i = '0')) then
-                                state <= DONE;
-                                
+
                                 -- check the crc
-                                if ((packet_length >= min_length) and (packet_crc /= x"0000")) then
+                                -- using some magic numbers here found experimentally.. not sure why it's not 0000..
+                                if ((packet_length >= min_length) and (packet_crc /= x"0697") and ((packet_crc /= x"8697"))) then
                                     crc_err <= '1';
                                     --state <= ERROR;
                                     -- TODO: make this a hard error (go to error state, and replace the end if in the next line to else
@@ -176,13 +178,15 @@ begin
                                     packet_pos <= 0;
                                     packet_length <= 0;
                                     crc_init <= '1';
+                                    state <= RECEIVING;
                                 -- if the packet is of expected length and various fields look as expected then great, otherwise shoot a packet error    
                                 elsif ((packet(7 downto 0) = HDLC_ADDRESS) and  -- HDLC address field check
                                        (packet(15 downto 8) = HDLC_CONTROL) and -- HDLC control field check
                                        (packet(47 downto 16) = IPBUS_VERSION & x"001" & transaction_id_i & "000" & is_write_i & x"0") -- IPbus header check
                                 ) then
                                     packet_valid_o <= '1';
-                                    reg_value_o <= packet(79 downto 48);                                    
+                                    reg_value_o <= packet(79 downto 48);
+                                    state <= DONE;                                    
                                 else
                                     packet_err <= '1';
                                     state <= ERROR;
