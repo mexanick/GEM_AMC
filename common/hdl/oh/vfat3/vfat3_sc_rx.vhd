@@ -19,6 +19,7 @@ entity vfat3_sc_rx is
     port(
         -- reset
         reset_i                 : in  std_logic;
+        fsm_reset_i				: in  std_logic; -- resets only the FSM, and not the error counters
 
         -- clocks
         clk_40_i                : in  std_logic;
@@ -102,7 +103,7 @@ begin
     process(clk_40_i)
     begin
         if (rising_edge(clk_40_i)) then
-            if (reset_i = '1') then
+            if ((reset_i = '1') or (fsm_reset_i = '1')) then
                 state <= IDLE;
                 packet_valid_o <= '0';
                 packet_pos <= 0;
@@ -163,17 +164,22 @@ begin
                                 state <= DONE;
                                 
                                 -- check the crc
-                                if (packet_crc /= x"0000") then
+                                if ((packet_length >= min_length) and (packet_crc /= x"0000")) then
                                     crc_err <= '1';
                                     --state <= ERROR;
                                     -- TODO: make this a hard error (go to error state, and replace the end if in the next line to else
                                 end if;
                                     
-                                -- if the packet is of expected length and various fields look as expected then great, otherwise shoot a packet error
-                                if ((packet_length >= min_length) and
-                                    (packet(7 downto 0) = HDLC_ADDRESS) and  -- HDLC address field check
-                                    (packet(15 downto 8) = HDLC_CONTROL) and -- HDLC control field check
-                                    (packet(47 downto 16) = IPBUS_VERSION & x"001" & transaction_id_i & "000" & is_write_i & x"0") -- IPbus header check
+                                -- VFAT3 sometimes spits out garbage before sending the packet e.g. it may send out two frame separators in a row at the beginning
+                                -- in this case, just start over
+                                if (packet_length < min_length) then
+                                    packet_pos <= 0;
+                                    packet_length <= 0;
+                                    crc_init <= '1';
+                                -- if the packet is of expected length and various fields look as expected then great, otherwise shoot a packet error    
+                                elsif ((packet(7 downto 0) = HDLC_ADDRESS) and  -- HDLC address field check
+                                       (packet(15 downto 8) = HDLC_CONTROL) and -- HDLC control field check
+                                       (packet(47 downto 16) = IPBUS_VERSION & x"001" & transaction_id_i & "000" & is_write_i & x"0") -- IPbus header check
                                 ) then
                                     packet_valid_o <= '1';
                                     reg_value_o <= packet(79 downto 48);                                    
@@ -218,7 +224,7 @@ begin
     process(clk_40_i)
     begin
         if (rising_edge(clk_40_i)) then
-            if (reset_i = '1') then
+            if ((reset_i = '1') or (fsm_reset_i = '1')) then
             	set_bit_cnt <= 0;
             	had_first_zero <= '0';
             else

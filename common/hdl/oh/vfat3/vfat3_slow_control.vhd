@@ -88,10 +88,15 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
 			probe10 : in std_logic;
 			probe11 : in std_logic;
 			probe12 : in std_logic_vector(1 DOWNTO 0);
-			probe13 : in std_logic
+			probe13 : in std_logic;
+			probe14 : in std_logic;
+			probe15 : in std_logic;
+			probe16 : in std_logic_vector(11 downto 0)			
 		);
 	end component;
-
+	
+	constant TRANSACTION_TIMEOUT	: unsigned(11 downto 0) := x"7ff";
+	
     type state_t is (IDLE, RSPD, RST);
         
     signal state                : state_t;
@@ -100,7 +105,8 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
     signal rx_reset             : std_logic;
 
     signal transaction_id       : unsigned(7 downto 0) := (others => '0');
-
+	signal transaction_timer	: unsigned(11 downto 0) := (others => '0');
+	
     signal tx_din               : std_logic := '0';
     signal tx_en                : std_logic := '0';
     signal tx_busy				: std_logic := '0';
@@ -155,11 +161,13 @@ begin
                 state <= IDLE;
                 tx_reset <= '1';
                 rx_reset <= '1';
+                transaction_timer <= (others => '0');
             else         
                 case state is
                     when IDLE =>    
                     
                     	ipb_miso_o <= (ipb_err => '0', ipb_ack => '0', ipb_rdata => (others => '0'));
+                    	transaction_timer <= (others => '0');
                     	
                         -- waiting for a request from IPbus
                         if (ipb_mosi_i.ipb_strobe = '1') then
@@ -217,10 +225,12 @@ begin
                         elsif (rx_valid_sync = '1') then
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '0', ipb_rdata => rx_reg_value);
                             state <= RST;
-                        elsif (rx_error_sync = '1') then
+                        elsif ((rx_error_sync = '1') or (transaction_timer = TRANSACTION_TIMEOUT)) then
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => rx_reg_value);
                             state <= RST;
                         end if;
+
+						transaction_timer <= transaction_timer + 1;
 
                         tx_reset <= '0';
                         rx_reset <= '0';
@@ -320,7 +330,8 @@ begin
 
     i_vfat3_sc_rx : entity work.vfat3_sc_rx
         port map(
-            reset_i            => reset_i or rx_reset,
+            reset_i            => reset_i,
+            fsm_reset_i        => rx_reset,
             clk_40_i           => ttc_clk_i.clk_40,
             data_i             => rx_data,
             data_en_i          => rx_data_en,
@@ -365,10 +376,13 @@ begin
     		probe7 => std_logic_vector(transaction_id),
     		probe8 => tx_oh_idx,
     		probe9 => tx_vfat_idx,
-    		probe10 => rx_valid_sync,
-    		probe11 => rx_error_sync,
+    		probe10 => rx_valid,
+    		probe11 => rx_error,
     		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
-    		probe13 => ipb_mosi_i.ipb_strobe
+    		probe13 => ipb_mosi_i.ipb_strobe,
+    		probe14 => tx_command_en,
+    		probe15 => tx_command_en_sync,
+    		probe16 => std_logic_vector(transaction_timer)
     	);
     
 end vfat3_slow_control_arch;

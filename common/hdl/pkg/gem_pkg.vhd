@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170825";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170829";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 16;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 18;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -48,6 +48,8 @@ package gem_pkg is
     -- 3.0.14 Delay tx_command_en and transfer from ipb_clk to ttc40 domain
     -- 3.0.15 Delay and sync the rx_valid and rx_error signals
     -- 3.0.16 Reset the ipb_ack when in IDLE state
+    -- 3.0.17 Added a timeout in the slow_control state machine
+    -- 3.0.18 Make SC_RX FSM robust against double frame start markers or any garbage before the real packet
 
     --======================--
     --==      General     ==--
