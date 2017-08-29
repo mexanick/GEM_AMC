@@ -165,8 +165,8 @@ begin
                             elsif ((set_bit_cnt = 6) and (data_i = '0')) then
 
                                 -- check the crc
-                                -- using some magic numbers here found experimentally.. not sure why it's not 0000..
-                                if ((packet_length >= min_length) and (packet_crc /= x"0697") and ((packet_crc /= x"8697"))) then
+                                -- magic number here, found experimentally.. not sure why it's not 0000..
+                                if ((packet_length >= min_length) and (packet_crc /= x"1d0f")) then
                                     crc_err <= '1';
                                     --state <= ERROR;
                                     -- TODO: make this a hard error (go to error state, and replace the end if in the next line to else

@@ -43,7 +43,7 @@ def main():
 
     if instructions == 'ctp7':
         subheading('Testing CTP7')
-        regTest(REG_CTP7_BOARD_ID, 0xbeef, 0xffff, True, numIterations, False)
+        regTest(REG_CTP7_BOARD_ID, 0xbeef, 0xffff, True, numIterations, True)
     elif instructions == 'vfat':
         if len(sys.argv) < 5:
             print('for VFAT testing please also provide the OH number and VFAT number e.g. for OH0 and VFAT #8 use the following command: evkatest.py vfat 100000 0 8')
