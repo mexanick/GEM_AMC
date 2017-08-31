@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
-INPUT_DATA = 0x00000a64000000872001bb1f0300 # real TX HDLC data
-#INPUT_DATA = 0x00000a64000000872001bb1f0300 # real RX HDLC data
+#INPUT_DATA = 0x00000a64000000872001bb1f0300 # real TX HDLC data
+#INPUT_DATA =  0x2001bb100300 # real RX HDLC data without CRC
+# INPUT_DATA =  0xb2dc2001bb100300 # real RX HDLC data with CRC
+#INPUT_DATA =  0xbb4c2001ac100300 # another example of real RX HDLC data with CRC
+INPUT_DATA =  0xe8e500000b20200101000300 # yet another example of real RX HDLC data with CRC
+#INPUT_DATA =  0x3eaf00000b20200131000300 # yet another example of real RX HDLC data with CRC
 
-NUM_BITS = 112
+#NUM_BITS = 112
+#NUM_BITS = 64
+NUM_BITS = 96
 
 HENRI_POLY = 0x8408
 
@@ -23,8 +29,12 @@ def main():
         crc_temp = crc_temp | (bit_xor(check_bit(crc, 4), bit_xor(bit_value, check_bit(crc, 15))) << 5)
         crc_temp = crc_temp | (bit_xor(check_bit(crc, 11), bit_xor(bit_value, check_bit(crc, 15))) << 12)
         crc = crc_temp
+        print("tmp CRC: " + hex(crc))
 
-    print hex(crc)
+    print("--------------------------------------")
+    print("real CRC: " + hex(crc))
+    print("inverted CRC: " + hex(invert(crc, 16)))
+
 
     # for i in range(0, NUM_BITS):
     #     bit_value = check_bit(INPUT_DATA, i)
@@ -126,6 +136,13 @@ def hex(number):
         return 'None'
     else:
         return "{0:#0x}".format(number)
+
+def invert(number, num_bits):
+    ret = 0
+    for i in range(0, num_bits):
+        if (not check_bit(number, i)):
+            ret += 1 << i
+    return ret
 
 if __name__ == '__main__':
     main()
