@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170829";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170831";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 18;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 20;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -50,6 +50,8 @@ package gem_pkg is
     -- 3.0.16 Reset the ipb_ack when in IDLE state
     -- 3.0.17 Added a timeout in the slow_control state machine
     -- 3.0.18 Make SC_RX FSM robust against double frame start markers or any garbage before the real packet
+    -- 3.0.19 Switched to Vivado 2017.2, also added a debug probe for SC RX CRC
+    -- 3.0.20 Fixed VFAT3_SC_RX and SCA_RX CRC checking -- it was latching in the CRC 1 bit too early
 
     --======================--
     --==      General     ==--

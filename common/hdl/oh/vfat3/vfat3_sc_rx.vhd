@@ -78,6 +78,7 @@ architecture vfat3_sc_rx_arch of vfat3_sc_rx is
     signal crc_din          : std_logic;
     signal crc_en           : std_logic;
     signal crc_init         : std_logic;
+    signal crc_latch		: std_logic;
 
     -- monitoring
     signal crc_err_cnt      : std_logic_vector(15 downto 0);
@@ -113,6 +114,7 @@ begin
                 bitstuff_err <= '0';
                 packet_err <= '0';
                 packet <= (others => '0');
+                crc_latch <= '0';
             else
                 crc_err <= '0';
                 bitstuff_err <= '0';
@@ -120,6 +122,7 @@ begin
                 crc_en <= '0';
                 crc_init <= '0';       
                 crc_err <= '0';
+                crc_latch <= '0';
                 
                 if (data_en_i = '1') then
                     
@@ -138,7 +141,7 @@ begin
                                                     
                         -- receiving an active frame
                         when RECEIVING =>
-                            
+                        	
                             -- if there are 5 set bits in a row, then next will be a stuffed zero which should be ignored
                             if (set_bit_cnt < 5) then
                                 packet(packet_pos) <= data_i;
@@ -149,8 +152,8 @@ begin
                                 
                                 -- byte boundary
                                 if (packet_pos = packet_length + 8) then
-                                    packet_length <= packet_pos;
-                                    packet_crc <= crc;
+                                	packet_length <= packet_pos;
+                                	crc_latch <= '1';
                                 end if;
                                 
                                 -- frame shouldn't be that long, go and wait for idle
@@ -197,6 +200,10 @@ begin
                                 state <= ERROR;
                                 bitstuff_err <= '1';
                             end if;
+                            
+                            if (crc_latch = '1') then
+                            	packet_crc <= crc;
+                           	end if;
                             
                         -- a place to stay after an error and wait for a reset
                         when ERROR =>
