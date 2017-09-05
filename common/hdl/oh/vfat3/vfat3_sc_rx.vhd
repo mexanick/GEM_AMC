@@ -120,9 +120,12 @@ begin
                 bitstuff_err <= '0';
                 packet_err <= '0';
                 crc_en <= '0';
-                crc_init <= '0';       
-                crc_err <= '0';
-                crc_latch <= '0';
+                crc_init <= '0';
+                
+                if (crc_latch = '1') then
+                    packet_crc <= crc;
+                    crc_latch <= '0';
+                end if;
                 
                 if (data_en_i = '1') then
                     
@@ -137,6 +140,7 @@ begin
                             packet_pos <= 0;
                             packet_length <= 0;
                             crc_init <= '1';
+                            crc_latch <= '0';
                             packet_valid_o <= '0';
                                                     
                         -- receiving an active frame
@@ -171,17 +175,16 @@ begin
                                 -- magic number here, found experimentally.. not sure why it's not 0000..
                                 if ((packet_length >= min_length) and (packet_crc /= x"1d0f")) then
                                     crc_err <= '1';
-                                    --state <= ERROR;
-                                    -- TODO: make this a hard error (go to error state, and replace the end if in the next line to else
-                                end if;
-                                    
+                                    state <= ERROR;
+
                                 -- VFAT3 sometimes spits out garbage before sending the packet e.g. it may send out two frame separators in a row at the beginning
                                 -- in this case, just start over
-                                if (packet_length < min_length) then
+                                elsif (packet_length < min_length) then
                                     packet_pos <= 0;
                                     packet_length <= 0;
                                     crc_init <= '1';
                                     state <= RECEIVING;
+
                                 -- if the packet is of expected length and various fields look as expected then great, otherwise shoot a packet error    
                                 elsif ((packet(7 downto 0) = HDLC_ADDRESS) and  -- HDLC address field check
                                        (packet(15 downto 8) = HDLC_CONTROL) and -- HDLC control field check
@@ -189,7 +192,9 @@ begin
                                 ) then
                                     packet_valid_o <= '1';
                                     reg_value_o <= packet(79 downto 48);
-                                    state <= DONE;                                    
+                                    state <= DONE;
+                                
+                                -- if the packet contents are not as expected, flag this as a packet error                                    
                                 else
                                     packet_err <= '1';
                                     state <= ERROR;
@@ -200,11 +205,7 @@ begin
                                 state <= ERROR;
                                 bitstuff_err <= '1';
                             end if;
-                            
-                            if (crc_latch = '1') then
-                            	packet_crc <= crc;
-                           	end if;
-                            
+                                                        
                         -- a place to stay after an error and wait for a reset
                         when ERROR =>
                             
@@ -212,12 +213,14 @@ begin
                             crc_err <= '0';
                             bitstuff_err <= '0';
                             packet_err <= '0';
+                            crc_latch <= '0';
                             state <= ERROR;
 
                         -- a place to stay after a successful packet reception and wait for a reset. Could just go to IDLE really, but this way it's a bit more controlled
                         when DONE =>
                             packet_valid_o <= '1';
                             state <= DONE;
+                            crc_latch <= '0';
                             
                         -- hmm    
                         when others =>

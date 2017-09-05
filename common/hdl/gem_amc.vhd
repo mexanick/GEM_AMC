@@ -110,17 +110,19 @@ architecture gem_amc_arch of gem_amc is
     --================================--
 
     --== General ==--
-    signal reset            : std_logic;
-    signal reset_pwrup      : std_logic;
-    signal ipb_reset        : std_logic;
+    signal reset                : std_logic;
+    signal reset_pwrup          : std_logic;
+    signal ipb_reset            : std_logic;
+    signal link_reset           : std_logic;
+    signal manual_link_reset    : std_logic;
 
     --== TTC signals ==--
-    signal ttc_cmd          : t_ttc_cmds;
-    signal ttc_counters     : t_ttc_daq_cntrs;
-    signal ttc_status       : t_ttc_status;
+    signal ttc_cmd              : t_ttc_cmds;
+    signal ttc_counters         : t_ttc_daq_cntrs;
+    signal ttc_status           : t_ttc_status;
 
     --== DAQ signals ==--    
-    signal tk_data_links    : t_data_link_array(g_NUM_OF_OHs - 1 downto 0);
+    signal tk_data_links        : t_data_link_array(g_NUM_OF_OHs - 1 downto 0);
     
     --== Trigger signals ==--    
     signal sbit_clusters_arr        : t_oh_sbits_arr(g_NUM_OF_OHs - 1 downto 0);
@@ -134,7 +136,6 @@ architecture gem_amc_arch of gem_amc is
     --== OH links ==--
     signal oh_trig0_rx_data_arr         : t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);
     signal oh_trig1_rx_data_arr         : t_gt_8b10b_rx_data_arr(g_NUM_OF_OHs - 1 downto 0);    
-    signal oh_link_status_arr           : t_oh_link_status_arr(g_NUM_OF_OHs - 1 downto 0);    
     signal oh_link_tk_error_arr         : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
     signal oh_link_evt_rcvd_arr         : std_logic_vector(g_NUM_OF_OHs - 1 downto 0);
 
@@ -147,8 +148,9 @@ architecture gem_amc_arch of gem_amc is
     signal gbt_rx_valid_arr             : std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
     signal gbt_rx_header                : std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
     signal gbt_rx_header_locked         : std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
-    signal gbt_rx_ready                 : std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
     signal gbt_rx_bitslip_nbr           : rxBitSlipNbr_mxnbit_A(g_NUM_OF_OHs * 3 - 1 downto 0);
+    
+    signal gbt_link_status_arr          : t_gbt_link_status_arr(g_NUM_OF_OHs * 3 - 1 downto 0);
 
     --== GBT elinks ==--
     signal gbt_ready_arr                : std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
@@ -163,13 +165,13 @@ architecture gem_amc_arch of gem_amc is
     signal vfat3_rx_data_arr            : t_vfat3_elinks_arr(g_NUM_OF_OHs - 1 downto 0);
     
     --== VFAT3 ==--
-    signal vfat3_link_reset             : std_logic;
     signal use_oh_vfat3_connectors      : std_logic;
     signal vfat3_run_mode               : std_logic;
     signal vfat3_tx_stream              : std_logic_vector(7 downto 0);
     signal vfat3_tx_idle                : std_logic;
     signal vfat3_sync                   : std_logic;
     signal vfat3_sync_verify            : std_logic;
+    signal vfat3_link_status_arr        : t_oh_vfat_link_status_arr(g_NUM_OF_OHs - 1 downto 0);
     
     signal vfat3_sc_tx_data             : std_logic;
     signal vfat3_sc_tx_rd_en            : std_logic;
@@ -179,6 +181,7 @@ architecture gem_amc_arch of gem_amc is
     signal vfat3_sc_tx_vfat_idx         : std_logic_vector(4 downto 0);
     signal vfat3_sc_rx_data             : t_std24_array(g_NUM_OF_OHs - 1 downto 0);
     signal vfat3_sc_rx_data_en          : t_std24_array(g_NUM_OF_OHs - 1 downto 0);
+    signal vfat3_sc_status              : t_vfat_slow_control_status;    
     
     -- test module links
     signal test_gbt_rx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 3) - 1 downto 0);
@@ -215,6 +218,7 @@ begin
     reset <= reset_i or reset_pwrup; -- TODO: Add a global reset from IPbus
     ipb_reset <= ipb_reset_i or reset_pwrup;
     ipb_miso_arr_o <= ipb_miso_arr;
+    link_reset <= manual_link_reset or ttc_cmd.hard_reset;
 
     g_real_trig_links : if (g_USE_TRIG_LINKS) generate
         gt_trig0_rx_clk_arr <= gt_trig0_rx_clk_arr_i;
@@ -237,7 +241,7 @@ begin
     dbg_gbt_rx_data               <= gbt_rx_data_arr(to_integer(unsigned(dbg_gbt_link_select)));
     dbg_gbt_tx_gearbox_aligned    <= gbt_tx_gearbox_aligned_arr(to_integer(unsigned(dbg_gbt_link_select)));
     dbg_gbt_tx_gearbox_align_done <= gbt_tx_gearbox_align_done_arr(to_integer(unsigned(dbg_gbt_link_select)));
-    dbg_gbt_rx_ready              <= gbt_rx_ready(to_integer(unsigned(dbg_gbt_link_select)));
+    dbg_gbt_rx_ready              <= gbt_link_status_arr(to_integer(unsigned(dbg_gbt_link_select))).gbt_rx_ready;
     dbg_gbt_rx_header             <= gbt_rx_header(to_integer(unsigned(dbg_gbt_link_select)));
     dbg_gbt_rx_header_locked      <= gbt_rx_header_locked(to_integer(unsigned(dbg_gbt_link_select)));
     dbg_gbt_rx_valid              <= gbt_rx_valid_arr(to_integer(unsigned(dbg_gbt_link_select)));
@@ -287,7 +291,7 @@ begin
 
     i_vfat3_tx_stream : entity work.vfat3_tx_stream
         port map(
-            reset_i       => reset or vfat3_link_reset,
+            reset_i       => reset or link_reset,
             ttc_clk_i     => ttc_clocks_i,
             ttc_cmds_i    => ttc_cmd,
             run_mode_i    => vfat3_run_mode,
@@ -298,7 +302,7 @@ begin
         );
 
     --================================--
-    -- VFAT3 Slow Control
+    -- VFAT3 Slow Control    TODO: move into slow control module 
     --================================--
     
     i_vfat3_slow_control : entity work.vfat3_slow_control
@@ -306,7 +310,7 @@ begin
             g_NUM_OF_OHs => g_NUM_OF_OHs
         )
         port map(
-            reset_i       => reset or vfat3_link_reset,
+            reset_i       => reset or link_reset,
             ttc_clk_i     => ttc_clocks_i,
             ipb_clk_i     => ipb_clk_i,
             ipb_mosi_i    => ipb_mosi_arr_i(C_IPB_SLV.vfat3),
@@ -317,7 +321,8 @@ begin
             tx_oh_idx_o   => vfat3_sc_tx_oh_idx,
             tx_vfat_idx_o => vfat3_sc_tx_vfat_idx,
             rx_data_en_i  => vfat3_sc_rx_data_en,
-            rx_data_i     => vfat3_sc_rx_data
+            rx_data_i     => vfat3_sc_rx_data,
+            status_o      => vfat3_sc_status
         );
 
     --================================--
@@ -332,7 +337,7 @@ begin
                 g_DEBUG         => i = 0
             )
             port map(
-                reset_i                 => reset or vfat3_link_reset,
+                reset_i                 => reset or link_reset,
                 ttc_clk_i               => ttc_clocks_i,
                 ttc_cmds_i              => ttc_cmd,
 
@@ -344,8 +349,10 @@ begin
                 gbt_rx_ready_i          => (gbt_ready_arr(i * 3 + 0), gbt_ready_arr(i * 3 + 1), gbt_ready_arr(i * 3 + 2)),
                 fpga_tx_data_o          => oh_fpga_tx_data_arr(i),
                 fpga_rx_data_i          => oh_fpga_rx_data_arr(i),
+
                 vfat3_tx_data_o         => vfat3_tx_data_arr(i),
                 vfat3_rx_data_i         => vfat3_rx_data_arr(i),
+                vfat3_link_status_o     => vfat3_link_status_arr(i),
 
                 vfat3_sc_tx_data_i      => vfat3_sc_tx_data,
                 vfat3_sc_tx_empty_i     => vfat3_sc_tx_empty,
@@ -447,7 +454,7 @@ begin
             loopback_gbt_test_en_o      => loopback_gbt_test_en,
             use_oh_vfat3_connectors_o   => use_oh_vfat3_connectors,
             vfat3_run_mode_o            => vfat3_run_mode,
-            vfat3_link_reset_o          => vfat3_link_reset
+            manual_link_reset_o         => manual_link_reset
         );
 
     --==================--
@@ -459,15 +466,16 @@ begin
             g_NUM_OF_OHs => g_NUM_OF_OHs
         )
         port map(
-            reset_i                => reset,
-            clk_i                  => ttc_clocks_i.clk_160,
+            reset_i                 => reset,
+            clk_i                   => ttc_clocks_i.clk_40,
 
-            oh_link_status_arr_i   => oh_link_status_arr,
+            gbt_link_status_arr_i   => gbt_link_status_arr,
+            vfat3_link_status_arr_i => vfat3_link_status_arr,
 
-            ipb_reset_i            => ipb_reset_i,
-            ipb_clk_i              => ipb_clk_i,
-            ipb_miso_o             => ipb_miso_arr(C_IPB_SLV.oh_links),
-            ipb_mosi_i             => ipb_mosi_arr_i(C_IPB_SLV.oh_links)
+            ipb_reset_i             => ipb_reset_i,
+            ipb_clk_i               => ipb_clk_i,
+            ipb_miso_o              => ipb_miso_arr(C_IPB_SLV.oh_links),
+            ipb_mosi_i              => ipb_mosi_arr_i(C_IPB_SLV.oh_links)
         );
 
     --===================--
@@ -488,6 +496,7 @@ begin
             gbt_tx_sca_elinks_o => sca_tx_data_arr,
             gbt_rx_ic_elinks_i  => gbt_ic_rx_data_arr,
             gbt_tx_ic_elinks_o  => gbt_ic_tx_data_arr,
+            vfat3_sc_status_i   => vfat3_sc_status,
             ipb_reset_i         => ipb_reset_i,
             ipb_clk_i           => ipb_clk_i,
             ipb_miso_o          => ipb_miso_arr(C_IPB_SLV.slow_control),
@@ -531,6 +540,7 @@ begin
         )
         port map(
             reset_i                     => reset,
+            cnt_reset_i                 => link_reset,
             tx_frame_clk_i              => ttc_clocks_i.clk_40,
             rx_frame_clk_i              => ttc_clocks_i.clk_40,
             rx_word_common_clk_i        => gt_gbt_rx_common_clk_i,
@@ -543,7 +553,6 @@ begin
             tx_gearbox_align_done_arr_o => gbt_tx_gearbox_align_done_arr,
             rx_frame_clk_rdy_arr_i      => (others => '1'),
             rx_word_clk_rdy_arr_i       => (others => '1'),
-            rx_rdy_arr_o                => gbt_rx_ready,
             rx_bitslip_nbr_arr_o        => gbt_rx_bitslip_nbr,
             rx_header_arr_o             => gbt_rx_header,
             rx_header_locked_arr_o      => gbt_rx_header_locked,
@@ -551,7 +560,8 @@ begin
             rx_data_arr_o               => gbt_rx_data_arr,
             mgt_rx_rdy_arr_i            => (others => '1'),
             mgt_tx_data_arr_o           => gt_gbt_tx_data_arr_o,
-            mgt_rx_data_arr_i           => gt_gbt_rx_data_arr_i
+            mgt_rx_data_arr_i           => gt_gbt_rx_data_arr_i,
+            link_status_arr_o           => gbt_link_status_arr
         );
     
     
@@ -562,8 +572,7 @@ begin
         port map(
             gbt_rx_data_arr_i           => gbt_rx_data_arr,
             gbt_tx_data_arr_o           => gbt_tx_data_arr,
-            gbt_rx_ready_arr_i          => gbt_rx_ready,
-            gbt_rx_valid_arr_i          => gbt_rx_valid_arr,
+            gbt_link_status_arr_i       => gbt_link_status_arr,
 
             link_test_mode_i            => loopback_gbt_test_en,
             use_oh_vfat3_connectors_i   => use_oh_vfat3_connectors,

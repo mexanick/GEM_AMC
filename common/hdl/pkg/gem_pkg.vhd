@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170831";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170904";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 0;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 20;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 1;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -52,6 +52,7 @@ package gem_pkg is
     -- 3.0.18 Make SC_RX FSM robust against double frame start markers or any garbage before the real packet
     -- 3.0.19 Switched to Vivado 2017.2, also added a debug probe for SC RX CRC
     -- 3.0.20 Fixed VFAT3_SC_RX and SCA_RX CRC checking -- it was latching in the CRC 1 bit too early
+    -- 3.1.0  Hopefully the first stable release for public use. All monitoring flags and counters are accessible through AXI registers. VFAT3 slow control CRC error is now a hard error.
 
     --======================--
     --==      General     ==--
@@ -268,8 +269,8 @@ package gem_pkg is
     --====================--
 
     type t_sync_fifo_status is record
-        ovf         : std_logic;
-        unf         : std_logic;
+        had_ovf         : std_logic;
+        had_unf         : std_logic;
     end record;
     
     type t_gt_status is record
@@ -277,33 +278,42 @@ package gem_pkg is
         disperr         : std_logic;
     end record;
 
-    type t_oh_link_status is record
-        tk_error            : std_logic;
-        evt_rcvd            : std_logic;
-        tk_tx_sync_status   : t_sync_fifo_status;      
-        tk_rx_sync_status   : t_sync_fifo_status;      
-        tr0_rx_sync_status  : t_sync_fifo_status;      
-        tr1_rx_sync_status  : t_sync_fifo_status;
-        tk_rx_gt_status     : t_gt_status;     
-        tr0_rx_gt_status    : t_gt_status;     
-        tr1_rx_gt_status    : t_gt_status;     
+    type t_trig_link_status is record
+        trig0_rx_sync_status    : t_sync_fifo_status;      
+        trig1_rx_sync_status    : t_sync_fifo_status;
+        trig0_rx_gt_status      : t_gt_status;     
+        trig1_rx_gt_status      : t_gt_status;     
+    end record;
+
+    type t_gbt_link_status is record
+        gbt_rx_sync_status      : t_sync_fifo_status;
+        gbt_rx_ready            : std_logic;
+        gbt_rx_had_not_ready    : std_logic;
     end record;
     
-    type t_oh_link_status_arr is array(integer range <>) of t_oh_link_status;    
+    type t_vfat_link_status is record
+        sync_good               : std_logic;
+        sync_error_cnt          : std_logic_vector(3 downto 0);
+    end record;
+    
+    type t_trig_link_status_arr is array(integer range <>) of t_trig_link_status;    
+    type t_gbt_link_status_arr is array(integer range <>) of t_gbt_link_status;    
+    type t_vfat_link_status_arr is array(integer range <>) of t_vfat_link_status;    
+    type t_oh_vfat_link_status_arr is array(integer range <>) of t_vfat_link_status_arr(23 downto 0);    
         
-    --================--
-    --== T1 command ==--
-    --================--
-    
-    type t_t1 is record
-        lv1a        : std_logic;
-        calpulse    : std_logic;
-        resync      : std_logic;
-        bc0         : std_logic;
+
+    --==================--
+    --== Slow control ==--
+    --==================--   
+        
+    type t_vfat_slow_control_status is record
+        crc_error_cnt           : std_logic_vector(15 downto 0);
+        packet_error_cnt        : std_logic_vector(15 downto 0);
+        bitstuff_error_cnt      : std_logic_vector(15 downto 0);
+        timeout_error_cnt       : std_logic_vector(15 downto 0);
+        axi_strobe_error_cnt    : std_logic_vector(15 downto 0);
     end record;
-    
-    type t_t1_array is array(integer range <>) of t_t1;
-	
+    	
 end gem_pkg;
    
 package body gem_pkg is

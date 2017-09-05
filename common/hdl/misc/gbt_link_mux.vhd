@@ -22,8 +22,7 @@ entity gbt_link_mux is
         -- links
         gbt_rx_data_arr_i           : in  t_gbt_frame_array(g_NUM_OF_OHs * 3 - 1 downto 0);
         gbt_tx_data_arr_o           : out t_gbt_frame_array(g_NUM_OF_OHs * 3 - 1 downto 0);
-        gbt_rx_ready_arr_i          : in  std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
-        gbt_rx_valid_arr_i          : in  std_logic_vector(g_NUM_OF_OHs * 3 - 1 downto 0);
+        gbt_link_status_arr_i       : in  t_gbt_link_status_arr(g_NUM_OF_OHs * 3 - 1 downto 0);
         
         -- configure
         link_test_mode_i            : in  std_logic;
@@ -57,15 +56,16 @@ architecture Behavioral of gbt_link_mux is
 
     signal real_gbt_tx_data         : t_gbt_frame_array(g_NUM_OF_OHs * 3 - 1 downto 0);
     signal real_gbt_rx_data         : t_gbt_frame_array(g_NUM_OF_OHs * 3 - 1 downto 0);
+    signal gbt_rx_ready_arr         : std_logic_vector((g_NUM_OF_OHs * 3) - 1 downto 0);
 
 begin
 
     gbt_tx_data_arr_o <= real_gbt_tx_data when link_test_mode_i = '0' else tst_gbt_tx_data_arr_i;
     real_gbt_rx_data <= gbt_rx_data_arr_i when link_test_mode_i = '0' else (others => (others => '0'));
-    gbt_ready_arr_o <= gbt_rx_ready_arr_i when link_test_mode_i = '0' else (others => '0');
+    gbt_ready_arr_o <= gbt_rx_ready_arr when link_test_mode_i = '0' else (others => '0');
     
     tst_gbt_rx_data_arr_o <= gbt_rx_data_arr_i when link_test_mode_i = '1' else (others => (others => '0'));
-    tst_gbt_ready_arr_o <= gbt_rx_ready_arr_i when link_test_mode_i = '1' else (others => '0');
+    tst_gbt_ready_arr_o <= gbt_rx_ready_arr when link_test_mode_i = '1' else (others => '0');
 
     g_ohs : for i in 0 to g_NUM_OF_OHs - 1 generate
     
@@ -75,6 +75,10 @@ begin
         gbt_ic_rx_data_arr_o(i * 3 + 0) <= real_gbt_rx_data(i * 3 + 0)(83 downto 82);
         gbt_ic_rx_data_arr_o(i * 3 + 1) <= real_gbt_rx_data(i * 3 + 1)(83 downto 82);
         gbt_ic_rx_data_arr_o(i * 3 + 2) <= real_gbt_rx_data(i * 3 + 2)(83 downto 82);
+
+        gbt_rx_ready_arr(i * 3 + 0) <= gbt_link_status_arr_i(i * 3 + 0).gbt_rx_ready;
+        gbt_rx_ready_arr(i * 3 + 1) <= gbt_link_status_arr_i(i * 3 + 1).gbt_rx_ready;
+        gbt_rx_ready_arr(i * 3 + 2) <= gbt_link_status_arr_i(i * 3 + 2).gbt_rx_ready;
         
         oh_fpga_rx_data_arr_o(i) <= real_gbt_rx_data(i * 3 + 0)(79 downto 72) & real_gbt_rx_data(i * 3)(57 downto 56) & real_gbt_rx_data(i * 3)(49 downto 48) & real_gbt_rx_data(i * 3)(33 downto 32);
         

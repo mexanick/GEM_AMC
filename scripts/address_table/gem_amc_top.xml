@@ -298,6 +298,10 @@
               description="GEM system counters reset"
               fw_write_pulse_signal="reset_cnt"
               sw_ctrl_configure_set="0x1" sw_ctrl_start_set="0x1"/>
+        <node id="LINK_RESET" address="0x1" permission="w"
+              description="Reset the links to and from OHs and redo VFAT3 sync procedure"
+              fw_write_pulse_signal="manual_link_reset_o"
+              sw_ctrl_configure_set="0x1"/>
       </node>
 
       <node id="TK_LINK_RX_POLARITY" address="0x0" mask="0x00ffffff" permission="rw"
@@ -338,10 +342,6 @@
       </node>
 
       <node id="VFAT3" address="0x10">
-        <node id="LINK_RESET" address="0x0" permission="w"
-              description="Reset the links to VFAT3s and redo VFAT3 sync procedure"
-              fw_write_pulse_signal="vfat3_link_reset"
-              sw_ctrl_configure_set="0x1"/>
         <node id="USE_OH_VFAT3_SLOTS" address="0x1" mask="0x00000001" permission="rw"
               description="When this is set to 1 then VFAT3 connectors mounted on the Optohybrid v3a will be used instead of GEB VFAT3 slots 0 and 1"
               fw_signal="use_oh_vfat3_connectors" fw_default="0b0"/>
@@ -371,66 +371,6 @@
         <node id="FIRMWARE_VERSION" address="0x2" permission="r"
               description="GLIB firmware version + firmware date"
               fw_signal="legacy_fw_version"/>
-
-        <!--node id="IPBus"   address="0x10"
-                 description="counters for IPBus transactions">
-        <node id="Strobe"   address="0x0"
-              description="Counters for the IPBus strobe requests">
-          <node id="OptoHybrid_0"  address="0x0"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="OptoHybrid_1"  address="0x1"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="TRK_0"         address="0x2"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="TRK_1"         address="0x3"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="Counters"      address="0x4"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-        </node>
-        <node id="Ack"      address="0x5"
-              description="Counters for the IPBus acknowledgements">
-          <node id="OptoHybrid_0"  address="0x0"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="OptoHybrid_1"  address="0x1"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="TRK_0"         address="0x2"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="TRK_1"         address="0x3"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-          <node id="Counters"      address="0x4"  permission="r"
-                description="">
-            <node id="Reset"       address="0x0"  permission="w"
-                  description=""/>
-          </node>
-        </node>
-        </node-->
       </node>
     </node>
 
@@ -825,90 +765,78 @@
           fw_slave_bus_signal="ipb_miso_o"
           fw_reg_addr_msb="12"
           fw_reg_addr_lsb="0">
-      <node id="CTRL" address="0x0"
-              description="OH Link control">
-        <node id="CNT_RESET" address="0x0" permission="w"
-              description="Counter reset"
-              fw_write_pulse_signal="reset_local"/>
-      </node>
 
       <node id="OH${OH_IDX}" address="0x100"
             description="Links for OH ${OH_IDX}"
             generate="true" generate_size="2" generate_address_step="0x100" generate_idx_var="OH_IDX">
-        <node id="TRACK_LINK_ERROR_CNT" address="0x0" permission="r"
-              description="Number of times this link didn't see the correct comma character at the correct time"
-              fw_signal="tk_error_cnt_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="100"/>
-        <node id="VFAT_BLOCK_CNT" address="0x1" permission="r"
-              description="Number VFAT blocks received"
-              fw_signal="evt_rcvd_cnt_arr(${OH_IDX})"/>
 
-        <node id="TRACK_LINK_TX_SYNC_OVF_CNT" address="0x2" permission="r"
-              description="Number of overflow occurences in the track tx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tk_tx_ovf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRACK_LINK_TX_SYNC_UNF_CNT" address="0x3" permission="r"
-              description="Number of underflow occurences in the track tx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tk_tx_unf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRACK_LINK_RX_SYNC_OVF_CNT" address="0x4" permission="r"
-              description="Number of overflow occurences in the track rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tk_rx_ovf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRACK_LINK_RX_SYNC_UNF_CNT" address="0x5" permission="r"
-              description="Number of underflow occurences in the track rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tk_rx_unf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRIG0_LINK_RX_SYNC_OVF_CNT" address="0x6" permission="r"
-              description="Number of overflow occurences in the trigger link0 rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tr0_rx_ovf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRIG0_LINK_RX_SYNC_UNF_CNT" address="0x7" permission="r"
-              description="Number of underflow occurences in the trigger link0 rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tr0_rx_unf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRIG1_LINK_RX_SYNC_OVF_CNT" address="0x8" permission="r"
-              description="Number of overflow occurences in the trigger link1 rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tr1_rx_ovf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
-        <node id="TRIG1_LINK_RX_SYNC_UNF_CNT" address="0x9" permission="r"
-              description="Number of underflow occurences in the trigger link1 rx synchronization FIFO
-                           (should be 0, otherwise there's something wrong with clocks)"
-              fw_signal="sync_tr1_rx_unf_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1"/>
+        <node id="GBT0_READY" address="0x0" mask="0x00000001" permission="r"
+              description="If this is set to 1 it means that CTP7 is receiving valid GBT frames from this GBT link"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 0).gbt_rx_ready"
+              sw_monitor_error_value="0"/>
+        <node id="GBT1_READY" address="0x0" mask="0x00000002" permission="r"
+              description="If this is set to 1 it means that CTP7 is receiving valid GBT frames from this GBT link"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 1).gbt_rx_ready"
+              sw_monitor_error_value="0"/>
+        <node id="GBT2_READY" address="0x0" mask="0x00000004" permission="r"
+              description="If this is set to 1 it means that CTP7 is receiving valid GBT frames from this GBT link"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 2).gbt_rx_ready"
+              sw_monitor_error_value="0"/>
 
-        <node id="TRACK_LINK_NOT_IN_TABLE_CNT" address="0xa" permission="r"
-              description="Number of not-in-table errors in the tracking rx link"
-              fw_signal="tk_not_in_table_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
-        <node id="TRACK_LINK_DISPERR_CNT" address="0xb" permission="r"
-              description="Number of dispersion errors in the tracking rx link"
-              fw_signal="tk_disperr_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
-        <node id="TRIG0_LINK_NOT_IN_TABLE_CNT" address="0xc" permission="r"
-              description="Number of not-in-table errors in the trigger link0 rx"
-              fw_signal="tr0_not_in_table_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
-        <node id="TRIG0_LINK_DISPERR_CNT" address="0xd" permission="r"
-              description="Number of dispersion errors in the trigger link0 rx"
-              fw_signal="tr0_disperr_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
-        <node id="TRIG1_LINK_NOT_IN_TABLE_CNT" address="0xe" permission="r"
-              description="Number of not-in-table errors in the trigger link1 rx"
-              fw_signal="tr1_not_in_table_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
-        <node id="TRIG1_LINK_DISPERR_CNT" address="0xf" permission="r"
-              description="Number of dispersion errors in the trigger link1 rx"
-              fw_signal="tr1_disperr_arr(${OH_IDX})"
-              sw_monitor_warn_min_threshold="1000"/>
+        <node id="GBT0_WAS_NOT_READY" address="0x0" mask="0x00000008" permission="r"
+              description="This flag is latched high whenever the GBT link ready goes low, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 0).gbt_rx_had_not_ready"
+              sw_monitor_warn_value="0"/>
+        <node id="GBT1_WAS_NOT_READY" address="0x0" mask="0x00000010" permission="r"
+              description="This flag is latched high whenever the GBT link ready goes low, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 1).gbt_rx_had_not_ready"
+              sw_monitor_warn_value="0"/>
+        <node id="GBT2_WAS_NOT_READY" address="0x0" mask="0x00000020" permission="r"
+              description="This flag is latched high whenever the GBT link ready goes low, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 2).gbt_rx_had_not_ready"
+              sw_monitor_warn_value="0"/>
 
+        <node id="GBT0_RX_HAD_OVERFLOW" address="0x0" mask="0x00000040" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has overflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 0).gbt_rx_sync_status.had_ovf"
+              sw_monitor_error_value="0"/>
+        <node id="GBT1_RX_HAD_OVERFLOW" address="0x0" mask="0x00000080" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has overflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 1).gbt_rx_sync_status.had_ovf"
+              sw_monitor_error_value="0"/>
+        <node id="GBT2_RX_HAD_OVERFLOW" address="0x0" mask="0x00000100" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has overflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 2).gbt_rx_sync_status.had_ovf"
+              sw_monitor_error_value="0"/>
+
+        <node id="GBT0_RX_HAD_UNDERFLOW" address="0x0" mask="0x00000200" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has underflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 0).gbt_rx_sync_status.had_unf"
+              sw_monitor_error_value="0"/>
+        <node id="GBT1_RX_HAD_UNDERFLOW" address="0x0" mask="0x00000400" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has underflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 1).gbt_rx_sync_status.had_unf"
+              sw_monitor_error_value="0"/>
+        <node id="GBT2_RX_HAD_UNDERFLOW" address="0x0" mask="0x00000800" permission="r"
+              description="This flag is latched high if the GBT RX sync fifo has underflow, and is reset with link reset"
+              fw_signal="gbt_link_status_arr_i(${OH_IDX} * 3 + 2).gbt_rx_sync_status.had_unf"
+              sw_monitor_error_value="0"/>
+
+        <node id="VFAT${VFAT_IDX}" address="0x10"
+              description="Link status of VFAT ${VFAT_IDX} on ${OH_IDX}"
+              generate="true" generate_size="24" generate_address_step="0x2" generate_idx_var="VFAT_IDX">
+
+          <node id="LINK_GOOD" address="0x0" mask="0x00000001" permission="r"
+                description="This flag is set high after detecting 10 consecutive good sync verify replies and set bad after 100 bad ones in a row (sync verify is done once per orbit). This flag can only go high if the initial sync procedure and RX bitslipping was done successfully"
+                fw_signal="vfat3_link_status_arr_i(${OH_IDX})(${VFAT_IDX}).sync_good"
+                sw_monitor_error_value="0"/>
+          <node id="SYNC_ERR_CNT" address="0x0" mask="0x000000f0" permission="r"
+                description="This counter counts the total number of times that VFAT3 didn't reply to sync_verify command correctly. This counter doesn't roll over, and is reset on link reset."
+                fw_signal="vfat3_link_status_arr_i(${OH_IDX})(${VFAT_IDX}).sync_error_cnt"
+                sw_monitor_error_value="0"/>
+
+        </node>
+        
       </node>
     </node>
 
@@ -1166,7 +1094,7 @@
 
       </node>
 
-      <node id="IC" address="0x10000">
+      <node id="IC" address="0x3000">
         <node id="ADDRESS" address="0x0" mask="0x0000ffff" permission="rw"
               description="GBTx register address to read or write"
               fw_signal="ic_address" fw_default="0x0000"/>
@@ -1188,6 +1116,24 @@
               fw_signal="ic_gbtx_i2c_addr" fw_default="0x1"/>
       </node>
 
+      <node id="VFAT3" address="0x4000">
+        <node id="CRC_ERROR_CNT" address="0x0" mask="0x0000ffff" permission="r"
+              description="Number of CRC errors in the VFAT3 slow control reply packets"
+              fw_signal="vfat3_sc_status_i.crc_error_cnt"/>
+        <node id="PACKET_ERROR_CNT" address="0x0" mask="0xffff0000" permission="r"
+              description="Number of packet errors in the VFAT3 slow control reply packets. Packet error means that either a received packet was too long, or a packet with good CRC was received but the contents were not as expected, more specifically one or more of the following fields were not correct: transaction ID, HDLC address, HDLC control, IPBus version, IPBus write flag."
+              fw_signal="vfat3_sc_status_i.packet_error_cnt"/>
+        <node id="BITSTUFFING_ERROR_CNT" address="0x1" mask="0x0000ffff" permission="r"
+              description="Number of bitstuffing errors in the VFAT3 slow control reply packets. Bitstuffing error means that more than 5 SC1 characters were received in a row and it was not a frame separator (frame separator is 01111110)."
+              fw_signal="vfat3_sc_status_i.bitstuff_error_cnt"/>
+        <node id="TIMEOUT_ERROR_CNT" address="0x1" mask="0xffff0000" permission="r"
+              description="Number of timeouts while waiting for a slow control reply from a VFAT3."
+              fw_signal="vfat3_sc_status_i.timeout_error_cnt"/>
+        <node id="AXI_STROBE_ERROR_CNT" address="0x2" mask="0x0000ffff" permission="r"
+              description="Number of AXI strobe errors in VFAT3 slow control transactions. An AXI strobe error means that the AXI strobe went away before the VFAT3 slow control state machine replied or timed out. This might be caused by force closing the AXI transaction upstream e.g. a safety timeout in Zynq AXI master."
+              fw_signal="vfat3_sc_status_i.axi_strobe_error_cnt"/>
+      </node>
+
     </node>
 
     <!--OptoHybrid module -->
@@ -1207,31 +1153,133 @@
                   description="VFAT ${OH_IDX}"
                   generate="true" generate_size="24" generate_address_step="0x00000800" generate_idx_var="OH_IDX">
 
-              <node id="VFATChannels"  address="0x0"
+              <node id="VFAT_CHANNELS"  address="0x0"
                     description="Registers for the individual VFAT channels
                                  Hardwired sleep value 0x00
                                  Software default value 0x00">
-                <node id="ChanReg${CHANNEL_IDX}"  address="0x00"  permission="rw"
-                      description="Register for VFAT channel ${CHANNEL_IDX}"
+                <node id="CHANNEL${CHANNEL_IDX}"  address="0x00"  permission="rw"
+                      description="Config register for VFAT channel ${CHANNEL_IDX}"
                       generate="true" generate_size="128" generate_address_step="0x1" generate_idx_var="CHANNEL_IDX">
+
+                  <node id="CALPULSE_ENABLE"  address="0x0" mask="0x00008000"  permission="rw"
+                        description="Enable the calibration pulse to the channel input">
+                  </node>
+                  <node id="MASK"  address="0x0" mask="0x00004000"  permission="rw"
+                        description="Mask the channel output for trigger and readout">
+                  </node>
+                  <node id="ZCC_TRIM_POLARITY"  address="0x0" mask="0x00002000"  permission="rw"
+                        description="Zero Crossing Comparator threshold trimming: correction polarity (0 = positive, 1 = negative)">
+                  </node>
+                  <node id="ZCC_TRIM_AMPLITUDE"  address="0x0" mask="0x00001f80"  permission="rw"
+                        description="Zero Crossing Comparator threshold trimming: correction amplitude (steps of 0.5mV)">
+                  </node>
+                  <node id="ARM_TRIM_POLARITY"  address="0x0" mask="0x00000040"  permission="rw"
+                        description="Arming Comparator threshold trimming: correction polarity (0 = positive, 1 = negative)">
+                  </node>
+                  <node id="ARM_TRIM_AMPLITUDE"  address="0x0" mask="0x0000003f"  permission="rw"
+                        description="Arming Comparator threshold trimming: correction amplitude (steps of 0.5mV)">
+                  </node>
+                  
                 </node>
               </node> <!-- end of VFATChannels -->
 
+              <node id="CFG_PULSE_STRETCH"  address="0x81" mask="0x0000e000"  permission="rw"
+                    description="Pulse Stretcher control. Range is from 1 to 8 clock cycles (0 means 1 cycle, 7 means 8 cycles)">
+              </node>
+              <node id="CFG_SYNC_LEVEL_MODE"  address="0x81" mask="0x00000004"  permission="rw"
+                    description="Switch the input synchronizer from edge to level mode (0 = edge, 1 = level)">
+              </node>
+              <node id="CFG_SELF_TRIGGER_MODE"  address="0x81" mask="0x00000002"  permission="rw"
+                    description="Enable self trigger mode (0 = disable, 1 = enable)">
+              </node>
+              <node id="CFG_DDR_TRIGGER_MODE"  address="0x81" mask="0x00000001"  permission="rw"
+                    description="Enable DDR trigger output mode (0 = SDR, 1 = DDR)">
+              </node>
+
+              <node id="CFG_SPZS_SUMMARY_ONLY"  address="0x82" mask="0x00008000"  permission="rw"
+                    description="When set high, the SPZS mode will send only the 16bit partition summary (no sub-partition data at all)">
+              </node>
+              <node id="CFG_SPZS_MAX_NUM_PARTITIONS"  address="0x82" mask="0x00003c00"  permission="rw"
+                    description="Maximum number of sub-partition data to send in SPZS mode (range: 1-16)">
+              </node>
+              <node id="CFG_SPZS_ENABLE"  address="0x82" mask="0x00000100"  permission="rw"
+                    description="Enable SPZS zero suppression mode">
+              </node>
+              <node id="CFG_SZP_ENABLE"  address="0x82" mask="0x00000080"  permission="rw"
+                    description="Enable SZP zero suppression mode (suppress zero packets -- only send the header)">
+              </node>
+              <node id="CFG_SZD_ENABLE"  address="0x82" mask="0x00000040"  permission="rw"
+                    description="Enable SZD zero suppression mode (suppress zero data only -- still send header, EC, BC and CRC)">
+              </node>
+              <node id="CFG_TIME_TAG"  address="0x82" mask="0x00000030"  permission="rw"
+                    description="Time tag format (00 = EC and BC, 01 = EC, 10 = BC, 11 = EC+BC)">
+              </node>
+              <node id="CFG_EC_BYTES"  address="0x82" mask="0x00000006"  permission="rw"
+                    description="Event counter bytes (00 = 1B, 01 = 2B, 10 = 3B, 11 = 1B)">
+              </node>
+              <node id="CFG_BC_BYTES"  address="0x82" mask="0x00000001"  permission="rw"
+                    description="Bunch counter bytes (0 = 2B, 1 = 3B)">
+              </node>
+              <node id="CFG_FP_FE"  address="0x83" mask="0x000000e0"  permission="rw"
+                    description="Front end peaking time (000 = 25ns, 001 = 50ns, 011 = 75ns, 111 = 100ns)">
+              </node>
+              <node id="CFG_RES_PRE"  address="0x83" mask="0x0000001c"  permission="rw"
+                    description="Preamplifier resistance set (001 = high gain, 010 = middle gain, 100 = low gain)">
+              </node>
+              <node id="CFG_CAP_PRE"  address="0x83" mask="0x00000003"  permission="rw"
+                    description="Preamplifier capacity set (00 = high gain, 01 = middle gain, 11 = low gain)">
+              </node>
+              <node id="CFG_PT"  address="0x84" mask="0x000003c0"  permission="rw"
+                    description="CFD Time Constant (0001 = 25ns, 0011 = 50ns, 0111 = 75ns, 1111 = 100ns)">
+              </node>
+              <node id="CFG_EN_HYST"  address="0x84" mask="0x00000020"  permission="rw"
+                    description="Arming comparator hysteresis (0 = disable, 1 = enable)">
+              </node>
+              <node id="CFG_SEL_POL"  address="0x84" mask="0x00000010"  permission="rw"
+                    description="CFD input charge polarity (0 = positive, 1 = negative/GEM )">
+              </node>
+              <node id="CFG_FORCE_EN_ZCC"  address="0x84" mask="0x00000008"  permission="rw"
+                    description="Debug and calibration: force ZCC output, independent from arming comp (0 = disable, 1 = enable)">
+              </node>
+              <node id="CFG_FORCE_TH"  address="0x84" mask="0x00000004"  permission="rw"
+                    description="Debug: force active ZCC threshold (0 = disable, 1 = enable)">
+              </node>
+              <node id="CFG_SEL_COMP_MODE"  address="0x84" mask="0x00000003"  permission="rw"
+                    description="CFD output mode (00 = normal, 01 = arming, 10 = ZCC, 11 = 0)">
+              </node>
+              <node id="CFG_VREF_ADC"  address="0x85" mask="0x00000300"  permission="rw"
+                    description="ADC internal reference tuning, 50mV steps to adjust to 1.0V during production calibration (range: 0-3)">
+              </node>
+              <node id="CFG_MON_GAIN"  address="0x85" mask="0x00000080"  permission="rw"
+                    description="Gain of ADC monitoring buffer (0 = gain 1, 1 = gain 5)">
+              </node>
+              <node id="CFG_MONITOR_SELECT"  address="0x85" mask="0x0000003f"  permission="rw"
+                    description="Monitoring selection (0 = Imon Iref, 1 = Imon Calib IDC, 2 = Imon Preamp InpTran, 3 = Imon Preamp LC, 4 = Imon Preamp SF, 5 = Imon Shap FC, 6 = Imon Shap Inpair, 7 = Imon SD Inpair, 8 = Imon SD FC, 9 = Imon SD SF, 10 = Imon CFD Bias1, 11 = Imon CFD Bias2, 12 = Imon CFD Hyst, 13 = Imon CFD Ireflocal, 14 = Imon CFD ThArm, 15 = Imon CFD ThZcc, 16 = Imon SLVS Ibias, 32 = Vmon BGR, 33 = Vmon Calib Vstep, 34 = Vmon Preamp Vref, 35 = Vmon Vth Arm, 36 = Vmon Vth ZCC, 37 = V Tsens Int, 38 = V Tsens Ext, 39 = ADC ref, 40 = ADC VinM, 41 = SLVS Vref">
+              </node>
+              <node id="CFG_IREF"  address="0x86" mask="0x0000003f"  permission="rw"
+                    description="Tuning of global reference current generated by Bandgap reference circuit. Target value: 10uA. Nominal: 310nA/bit">
+              </node>
+
+              <!-- a catch-all for all config registers (individual bits extracted above), may want to use the ones below for faster configuration to set all 32 bits at once instead of individual pieces -->
               <node id="CFG_CTR_${CFG_REG_IDX}"  address="0x81"  permission="rw"
                     description="VFAT control register number ${CFG_REG_IDX}"
                     generate="true" generate_size="6" generate_address_step="0x1" generate_idx_var="CFG_REG_IDX">
               </node>
+              <!-- -->
 
-              <node id="CFG_GLOBAL_THRESHOLD"  address="0x87"  permission="rw"
-                    description="VFAT global threshold register">
+              <node id="CFG_THR_ZCC_DAC"  address="0x87" mask="0x0000ff00" permission="rw"
+                    description="ZCC global threshold: nominal 0.5mV/bit (range: 0x00-0xff)">
+              </node>
+              <node id="CFG_THR_ARM_DAC"  address="0x87" mask="0x000000ff" permission="rw"
+                    description="Arming global threshold: nominal 2mV/bit (range: 0x00-0xff)">
               </node>
 
-              <node id="CFG_GLOBAL_HYST"  address="0x88"  permission="rw"
-                    description="VFAT global hysteresis register">
+              <node id="CFG_HYST"  address="0x88" mask="0x0000003f" permission="rw"
+                    description="Global hysteresis DAC: nominal 0.4mV/bit (range: 0x00-0x3f)">
               </node>
 
-              <node id="CFG_GLOBAL_LATENCY"  address="0x89"  permission="rw"
-                    description="VFAT global latency register">
+              <node id="CFG_LATENCY"  address="0x89" mask="0x0000ffff" permission="rw"
+                    description="Internal L1A latency (range: 0-1023)">
               </node>
               
               <!-- add the some regs here, like bias, etc.. -->

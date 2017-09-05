@@ -33,7 +33,7 @@ entity vfat3_rx_aligner is
         -- outputs
         sync_ok_o               : out std_logic;
         num_bitslips_o          : out std_logic_vector(2 downto 0);
-        sync_verify_err_cnt_o   : out std_logic_vector(7 downto 0);
+        sync_verify_err_cnt_o   : out std_logic_vector(3 downto 0);
         data_o                  : out std_logic_vector(7 downto 0)
     );
 end vfat3_rx_aligner;
@@ -58,7 +58,7 @@ architecture vfat3_rx_aligner_arch of vfat3_rx_aligner is
     signal aligned_data             : std_logic_vector(7 downto 0) := (others => '0');
     
     signal sync_verify_countdown    : unsigned(11 downto 0) := SYNC_VERIFY_TIMEOUT;
-    signal sync_verify_err_cnt      : unsigned(7 downto 0) := (others => '0'); -- total number of sync verify errors since reset
+    signal sync_verify_err_cnt      : unsigned(3 downto 0) := (others => '0'); -- total number of sync verify errors since reset
     signal sync_verify_err_cnt_cont : unsigned(7 downto 0) := (others => '0'); -- number of sync verify errors in a row
     signal sync_verify_good_cnt_cont: unsigned(3 downto 0) := (others => '0'); -- number of good sync verifies in a row
     
@@ -134,7 +134,7 @@ begin
                         sync_verify_err_cnt_cont <= sync_verify_err_cnt_cont + 1;
                         sync_verify_good_cnt_cont <= (others => '0');
                         
-                        if (sync_verify_err_cnt /= x"ff") then
+                        if (sync_verify_err_cnt /= x"f") then
                             sync_verify_err_cnt <= sync_verify_err_cnt + 1;
                         end if;
                                                 

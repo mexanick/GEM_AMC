@@ -40,11 +40,14 @@ entity slow_control is
         gbt_rx_ic_elinks_i      : in  t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
         gbt_tx_ic_elinks_o      : out t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
         
+        -- VFAT3 slow control status
+        vfat3_sc_status_i       : in t_vfat_slow_control_status; 
+        
         -- IPbus
-        ipb_reset_i            : in  std_logic;
-        ipb_clk_i              : in  std_logic;
-        ipb_miso_o             : out ipb_rbus;
-        ipb_mosi_i             : in  ipb_wbus
+        ipb_reset_i             : in  std_logic;
+        ipb_clk_i               : in  std_logic;
+        ipb_miso_o              : out ipb_rbus;
+        ipb_mosi_i              : in  ipb_wbus
         
     );
 end slow_control;
@@ -323,12 +326,15 @@ begin
     regs_addresses(40)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"2504";
     regs_addresses(41)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"2505";
     regs_addresses(42)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"2506";
-    regs_addresses(43)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0000";
-    regs_addresses(44)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0001";
-    regs_addresses(45)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0002";
-    regs_addresses(46)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0003";
-    regs_addresses(47)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0004";
-    regs_addresses(48)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '1' & x"0005";
+    regs_addresses(43)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3000";
+    regs_addresses(44)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3001";
+    regs_addresses(45)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3002";
+    regs_addresses(46)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3003";
+    regs_addresses(47)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3004";
+    regs_addresses(48)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"3005";
+    regs_addresses(49)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"4000";
+    regs_addresses(50)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"4001";
+    regs_addresses(51)(REG_SLOW_CONTROL_ADDRESS_MSB downto REG_SLOW_CONTROL_ADDRESS_LSB) <= '0' & x"4002";
 
     -- Connect read signals
     regs_read_arr(2)(REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_BIT) <= sca_ttc_hr_enable;
@@ -402,6 +408,11 @@ begin
     regs_read_arr(44)(REG_SLOW_CONTROL_IC_READ_WRITE_LENGTH_MSB downto REG_SLOW_CONTROL_IC_READ_WRITE_LENGTH_LSB) <= ic_rw_length;
     regs_read_arr(45)(REG_SLOW_CONTROL_IC_WRITE_DATA_MSB downto REG_SLOW_CONTROL_IC_WRITE_DATA_LSB) <= ic_write_data;
     regs_read_arr(48)(REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_MSB downto REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_LSB) <= ic_gbtx_i2c_addr;
+    regs_read_arr(49)(REG_SLOW_CONTROL_VFAT3_CRC_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_CRC_ERROR_CNT_LSB) <= vfat3_sc_status_i.crc_error_cnt;
+    regs_read_arr(49)(REG_SLOW_CONTROL_VFAT3_PACKET_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_PACKET_ERROR_CNT_LSB) <= vfat3_sc_status_i.packet_error_cnt;
+    regs_read_arr(50)(REG_SLOW_CONTROL_VFAT3_BITSTUFFING_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_BITSTUFFING_ERROR_CNT_LSB) <= vfat3_sc_status_i.bitstuff_error_cnt;
+    regs_read_arr(50)(REG_SLOW_CONTROL_VFAT3_TIMEOUT_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_TIMEOUT_ERROR_CNT_LSB) <= vfat3_sc_status_i.timeout_error_cnt;
+    regs_read_arr(51)(REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_LSB) <= vfat3_sc_status_i.axi_strobe_error_cnt;
 
     -- Connect write signals
     sca_ttc_hr_enable <= regs_write_arr(2)(REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_BIT);

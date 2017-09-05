@@ -40,7 +40,11 @@ entity vfat3_slow_control is
         tx_vfat_idx_o   : out std_logic_vector(4 downto 0);
         
         rx_data_en_i    : in t_std24_array(g_NUM_OF_OHs - 1 downto 0);
-        rx_data_i       : in t_std24_array(g_NUM_OF_OHs - 1 downto 0)
+        rx_data_i       : in t_std24_array(g_NUM_OF_OHs - 1 downto 0);
+        
+        -- monitoring
+        status_o        : out t_vfat_slow_control_status
+        
     );
 end vfat3_slow_control;
 
@@ -108,6 +112,8 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
 
     signal transaction_id       : unsigned(7 downto 0) := (others => '0');
 	signal transaction_timer	: unsigned(11 downto 0) := (others => '0');
+	signal timeout_err_cnt      : unsigned(15 downto 0) := (others => '0');
+	signal axi_strobe_err_cnt   : unsigned(15 downto 0) := (others => '0');
 	
     signal tx_din               : std_logic := '0';
     signal tx_en                : std_logic := '0';
@@ -148,6 +154,12 @@ begin
     tx_oh_idx_o <= tx_oh_idx;
     tx_vfat_idx_o <= tx_vfat_idx;
 
+    status_o.bitstuff_error_cnt     <= rx_bitstuff_err_cnt;
+    status_o.crc_error_cnt          <= rx_crc_err_cnt;
+    status_o.packet_error_cnt       <= rx_packet_err_cnt;
+    status_o.timeout_error_cnt      <= std_logic_vector(timeout_err_cnt);
+    status_o.axi_strobe_error_cnt   <= std_logic_vector(axi_strobe_err_cnt);
+
     --== IPbus process ==--
 
     process(ipb_clk_i)       
@@ -164,6 +176,8 @@ begin
                 tx_reset <= '1';
                 rx_reset <= '1';
                 transaction_timer <= (others => '0');
+                timeout_err_cnt <= (others => '0');
+                axi_strobe_err_cnt <= (others => '0');
             else         
                 case state is
                     when IDLE =>    
@@ -224,10 +238,15 @@ begin
                             state <= IDLE;     
                             tx_reset <= '1';
                             rx_reset <= '1';
+                            axi_strobe_err_cnt <= axi_strobe_err_cnt + 1;
                         elsif (rx_valid_sync = '1') then
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '0', ipb_rdata => rx_reg_value);
                             state <= RST;
-                        elsif ((rx_error_sync = '1') or (transaction_timer = TRANSACTION_TIMEOUT)) then
+                        elsif (rx_error_sync = '1') then
+                            ipb_miso_o <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => rx_reg_value);
+                            state <= RST;
+                        elsif (transaction_timer = TRANSACTION_TIMEOUT) then
+                            timeout_err_cnt <= timeout_err_cnt + 1;
                             ipb_miso_o <= (ipb_ack => '1', ipb_err => '1', ipb_rdata => rx_reg_value);
                             state <= RST;
                         end if;
@@ -352,7 +371,7 @@ begin
     rx_data_en <= rx_data_en_i(to_integer(unsigned(tx_oh_idx)))(to_integer(unsigned(tx_vfat_idx)));
     rx_data <= rx_data_i(to_integer(unsigned(tx_oh_idx)))(to_integer(unsigned(tx_vfat_idx)));
 
-    -- DEBUG
+--    -- DEBUG
     i_vfat3_sc_vio : vio_vfat3_sc
         port map(
             clk       => ttc_clk_i.clk_40,

@@ -4,8 +4,9 @@
 #INPUT_DATA =  0x2001bb100300 # real RX HDLC data without CRC
 # INPUT_DATA =  0xb2dc2001bb100300 # real RX HDLC data with CRC
 #INPUT_DATA =  0xbb4c2001ac100300 # another example of real RX HDLC data with CRC
-INPUT_DATA =  0xe8e500000b20200101000300 # yet another example of real RX HDLC data with CRC
+#INPUT_DATA =  0xe8e500000b20200101000300 # yet another example of real RX HDLC data with CRC
 #INPUT_DATA =  0x3eaf00000b20200131000300 # yet another example of real RX HDLC data with CRC
+INPUT_DATA =  0xc15000000b20200131000300 # the above packet but with CRC inverted -- results in 0x0000
 
 #NUM_BITS = 112
 #NUM_BITS = 64

@@ -44,6 +44,7 @@ entity optohybrid is
         -- VFAT3 links
         vfat3_tx_data_o         : out t_std8_array(23 downto 0);
         vfat3_rx_data_i         : in  t_std8_array(23 downto 0);
+        vfat3_link_status_o     : out t_vfat_link_status_arr(23 downto 0);
         
         -- VFAT3 slow control
         vfat3_sc_tx_data_i      : in std_logic;
@@ -91,7 +92,7 @@ architecture optohybrid_arch of optohybrid is
         probe6 : in std_logic_vector(7 DOWNTO 0); 
         probe7 : in std_logic;
         probe8 : in std_logic_vector(2 DOWNTO 0);
-        probe9 : in std_logic_vector(7 DOWNTO 0)
+        probe9 : in std_logic_vector(3 DOWNTO 0)
     );
     end component;
     
@@ -99,7 +100,7 @@ architecture optohybrid_arch of optohybrid is
     signal vfat3_rx_ready           : std_logic_vector(23 downto 0);
     signal vfat3_sync_ok            : std_logic_vector(23 downto 0);
     signal vfat3_rx_num_bitslips    : t_std3_array(23 downto 0);
-    signal vfat3_rx_sync_err_cnt    : t_std8_array(23 downto 0);
+    signal vfat3_rx_sync_err_cnt    : t_std4_array(23 downto 0);
     
     signal vfat3_tx_data            : t_std8_array(23 downto 0);
     signal vfat3_rx_aligned_data    : t_std8_array(23 downto 0);
@@ -129,7 +130,7 @@ architecture optohybrid_arch of optohybrid is
     signal dbg_vfat3_rx_aligned_data    : std_logic_vector(7 downto 0);
     signal dbg_vfat3_sync_ok            : std_logic;
     signal dbg_vfat3_rx_num_bitslips    : std_logic_vector(2 downto 0);
-    signal dbg_vfat3_rx_sync_err_cnt    : std_logic_vector(7 downto 0);
+    signal dbg_vfat3_rx_sync_err_cnt    : std_logic_vector(3 downto 0);
     
 begin
 
@@ -215,6 +216,9 @@ begin
                 slow_ctrl_data_o    => vfat3_sc_rx_data_o(i),
                 slow_ctrl_data_en_o => vfat3_sc_rx_data_en_o(i)
             );
+    
+        vfat3_link_status_o(i).sync_good <= vfat3_rx_ready(i);
+        vfat3_link_status_o(i).sync_error_cnt <= vfat3_rx_sync_err_cnt(i);
     
     end generate;
     

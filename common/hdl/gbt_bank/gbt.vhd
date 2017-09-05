@@ -27,6 +27,7 @@ entity gbt is
     );
     port(
         reset_i                     : in  std_logic;
+        cnt_reset_i                 : in  std_logic;
 
         --========--
         -- Clocks --     
@@ -55,7 +56,6 @@ entity gbt is
         rx_frame_clk_rdy_arr_i      : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_word_clk_rdy_arr_i       : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         
-        rx_rdy_arr_o                : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_bitslip_nbr_arr_o        : out rxBitSlipNbr_mxnbit_A(NUM_LINKS - 1 downto 0);
         rx_header_arr_o             : out std_logic_vector(NUM_LINKS - 1 downto 0);
         rx_header_locked_arr_o      : out std_logic_vector(NUM_LINKS - 1 downto 0);
@@ -68,7 +68,13 @@ entity gbt is
         
         mgt_rx_rdy_arr_i            : in  std_logic_vector(NUM_LINKS - 1 downto 0);
         mgt_tx_data_arr_o           : out t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0);
-        mgt_rx_data_arr_i           : in  t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0)
+        mgt_rx_data_arr_i           : in  t_gt_gbt_data_arr(NUM_LINKS - 1 downto 0);
+
+        --===========--              
+        --   Status  --              
+        --===========-- 
+        
+        link_status_arr_o           : out t_gbt_link_status_arr(NUM_LINKS - 1 downto 0)
         
     );
 end gbt;
@@ -135,6 +141,11 @@ architecture gbt_arch of gbt is
     signal mgt_sync_rx_valid_arr     : std_logic_vector(NUM_LINKS - 1 downto 0);
    
     signal rx_data_arr               : t_gbt_frame_array(NUM_LINKS - 1 downto 0);
+    
+    signal rx_ready_arr              : std_logic_vector(NUM_LINKS - 1 downto 0);
+    signal rx_ovf_arr                : std_logic_vector(NUM_LINKS - 1 downto 0);
+    signal rx_unf_arr                : std_logic_vector(NUM_LINKS - 1 downto 0);
+    
     --== constant signals ==--
     
     signal tied_to_ground   : std_logic;
@@ -173,14 +184,30 @@ begin                                   --========####   Architecture Body   ###
                 rd_en     => tied_to_vcc,
                 dout      => mgt_sync_rx_data_arr(i),
                 full      => open,
-                overflow  => open,
+                overflow  => rx_ovf_arr(i),
                 empty     => open,
                 valid     => mgt_sync_rx_valid_arr(i),
-                underflow => open
+                underflow => rx_unf_arr(i)
             );
             
         rx_wordNbit_from_mgt(i) <= mgt_rx_data_arr_i(i);
         
+        i_gbt_rx_sync_ovf_latch : entity work.latch
+            port map(
+                reset_i => reset_i or cnt_reset_i,
+                clk_i   => rx_common_word_clk,
+                input_i => rx_ovf_arr(i),
+                latch_o => link_status_arr_o(i).gbt_rx_sync_status.had_ovf
+            );
+
+        i_gbt_rx_sync_unf_latch : entity work.latch
+            port map(
+                reset_i => reset_i or cnt_reset_i,
+                clk_i   => rx_common_word_clk,
+                input_i => rx_unf_arr(i),
+                latch_o => link_status_arr_o(i).gbt_rx_sync_status.had_unf
+            );
+                    
     end generate;
    
    --========--
@@ -270,7 +297,7 @@ begin                                   --========####   Architecture Body   ###
 					RX_HEADER_LOCKED_O                  => rxHeaderLocked_from_gbtRx(i),                 
 					RX_HEADER_FLAG_O                    => rx_header_arr_o(i),
 					RX_ISDATA_FLAG_O                    => rx_data_valid_arr_o(i),            
-					RX_READY_O                          => rx_rdy_arr_o(i),
+					RX_READY_O                          => rx_ready_arr(i),
 					-- Word & Data:                  
 					RX_WORD_I                           => mgt_sync_rx_data_arr(i),                  
 					RX_DATA_O                           => rx_data_arr(i),
@@ -282,6 +309,15 @@ begin                                   --========####   Architecture Body   ###
             rxReady_from_mgt(i)                       <= mgt_rx_rdy_arr_i(i);
 			rx_bitslip_nbr_arr_o(i)                   <= rxBitSlipNbr_from_gbtRx(i);                         
 			rx_header_locked_arr_o(i)                 <= rxHeaderLocked_from_gbtRx(i);
+			link_status_arr_o(i).gbt_rx_ready         <= rx_ready_arr(i);
+			
+			i_gbt_rx_not_ready_latch : entity work.latch
+			    port map(
+			        reset_i => reset_i or cnt_reset_i,
+			        clk_i   => rx_frame_clk_i,
+			        input_i => not rx_ready_arr(i),
+			        latch_o => link_status_arr_o(i).gbt_rx_had_not_ready
+			    );
 	 
 		end generate;
 	end generate;
