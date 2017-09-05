@@ -312,6 +312,7 @@ package gem_pkg is
         bitstuff_error_cnt      : std_logic_vector(15 downto 0);
         timeout_error_cnt       : std_logic_vector(15 downto 0);
         axi_strobe_error_cnt    : std_logic_vector(15 downto 0);
+        transaction_cnt         : std_logic_vector(15 downto 0);
     end record;
     	
 end gem_pkg;

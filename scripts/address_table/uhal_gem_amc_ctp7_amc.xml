@@ -685,6 +685,7 @@
         <node id="BITSTUFFING_ERROR_CNT" address="0x1" permission="r" mask="0xffff"/>
         <node id="TIMEOUT_ERROR_CNT" address="0x1" permission="r" mask="0xffff0000"/>
         <node id="AXI_STROBE_ERROR_CNT" address="0x2" permission="r" mask="0xffff"/>
+        <node id="TRANSACTION_CNT" address="0x2" permission="r" mask="0xffff0000"/>
       </node>
     </node>
     <node id="GLIB_SYSTEM" address="0x910000" >

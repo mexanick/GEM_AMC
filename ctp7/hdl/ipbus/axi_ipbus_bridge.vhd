@@ -134,6 +134,8 @@ architecture arch_imp of axi_ipbus_bridge is
     );
   end component ila_axi_ipbus_bridge;
 
+    signal transaction_cnt  : unsigned(15 downto 0) := (others => '0');
+
 	-- AXI4LITE signals
 	signal axi_awready: std_logic;
 	signal axi_wready	: std_logic;
@@ -188,6 +190,7 @@ begin
         axi_awready <= '0';
         axi_wready  <= '0';
         ipb_slv_select <= 0;
+        transaction_cnt <= (others => '0');
       else    
         -- main state machine     
         case ipb_state is
@@ -203,12 +206,14 @@ begin
               axi_arready <= '1';
               ipb_slv_select <= ipb_addr_sel(S_AXI_ARADDR(C_S_AXI_ADDR_WIDTH-1 downto 2));
               ipb_state <= READ;
+              transaction_cnt <= transaction_cnt + 1;
             
             -- axi write request
             elsif (S_AXI_AWVALID = '1' and S_AXI_WVALID = '1') then
               axi_awready <= '1';
               axi_wready <= '1';
               ipb_slv_select <= ipb_addr_sel(S_AXI_AWADDR(C_S_AXI_ADDR_WIDTH-1 downto 2));
+              transaction_cnt <= transaction_cnt + 1;
               
               -- Respective byte enables are asserted as per write strobes                   
               for byte_index in 0 to (C_S_AXI_DATA_WIDTH/8-1) loop
@@ -362,7 +367,7 @@ begin
       probe9      => S_AXI_ARPROT,
       probe10     => S_AXI_ARVALID,
       probe11     => S_AXI_RREADY,
-      probe12     => x"00000000",
+      probe12     => x"0000" & std_logic_vector(transaction_cnt),
       probe13     => axi_awready,
       probe14     => axi_wready,
       probe15     => axi_bresp,

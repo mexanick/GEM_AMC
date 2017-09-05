@@ -110,7 +110,7 @@ architecture vfat3_slow_control_arch of vfat3_slow_control is
     signal tx_reset             : std_logic;
     signal rx_reset             : std_logic;
 
-    signal transaction_id       : unsigned(7 downto 0) := (others => '0');
+    signal transaction_id       : unsigned(15 downto 0) := (others => '0');
 	signal transaction_timer	: unsigned(11 downto 0) := (others => '0');
 	signal timeout_err_cnt      : unsigned(15 downto 0) := (others => '0');
 	signal axi_strobe_err_cnt   : unsigned(15 downto 0) := (others => '0');
@@ -159,6 +159,7 @@ begin
     status_o.packet_error_cnt       <= rx_packet_err_cnt;
     status_o.timeout_error_cnt      <= std_logic_vector(timeout_err_cnt);
     status_o.axi_strobe_error_cnt   <= std_logic_vector(axi_strobe_err_cnt);
+    status_o.transaction_cnt        <= std_logic_vector(transaction_id);
 
     --== IPbus process ==--
 
@@ -327,7 +328,7 @@ begin
             clk_40_i          => ttc_clk_i.clk_40,
             data_o            => tx_din,
             data_en_o         => tx_en,
-            transaction_id_i  => std_logic_vector(transaction_id),
+            transaction_id_i  => std_logic_vector(transaction_id(7 downto 0)),
             is_write_i        => tx_is_write,
             reg_addr_i        => tx_reg_addr,
             reg_value_i       => tx_reg_value,
@@ -356,7 +357,7 @@ begin
             clk_40_i           => ttc_clk_i.clk_40,
             data_i             => rx_data,
             data_en_i          => rx_data_en,
-            transaction_id_i   => std_logic_vector(transaction_id),
+            transaction_id_i   => std_logic_vector(transaction_id(7 downto 0)),
             is_write_i         => tx_is_write,
             error_o            => rx_error,
             packet_valid_o     => rx_valid,
@@ -394,7 +395,7 @@ begin
     		probe4 => rx_data,
     		probe5 => rx_data_en,
     		probe6 => tx_is_write,
-    		probe7 => std_logic_vector(transaction_id),
+    		probe7 => std_logic_vector(transaction_id(7 downto 0)),
     		probe8 => tx_oh_idx,
     		probe9 => tx_vfat_idx,
     		probe10 => rx_valid,

@@ -413,6 +413,7 @@ begin
     regs_read_arr(50)(REG_SLOW_CONTROL_VFAT3_BITSTUFFING_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_BITSTUFFING_ERROR_CNT_LSB) <= vfat3_sc_status_i.bitstuff_error_cnt;
     regs_read_arr(50)(REG_SLOW_CONTROL_VFAT3_TIMEOUT_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_TIMEOUT_ERROR_CNT_LSB) <= vfat3_sc_status_i.timeout_error_cnt;
     regs_read_arr(51)(REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_LSB) <= vfat3_sc_status_i.axi_strobe_error_cnt;
+    regs_read_arr(51)(REG_SLOW_CONTROL_VFAT3_TRANSACTION_CNT_MSB downto REG_SLOW_CONTROL_VFAT3_TRANSACTION_CNT_LSB) <= vfat3_sc_status_i.transaction_cnt;
 
     -- Connect write signals
     sca_ttc_hr_enable <= regs_write_arr(2)(REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_BIT);

@@ -1867,5 +1867,9 @@ package registers is
     constant REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_MSB    : integer := 15;
     constant REG_SLOW_CONTROL_VFAT3_AXI_STROBE_ERROR_CNT_LSB     : integer := 0;
 
+    constant REG_SLOW_CONTROL_VFAT3_TRANSACTION_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"4002";
+    constant REG_SLOW_CONTROL_VFAT3_TRANSACTION_CNT_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_VFAT3_TRANSACTION_CNT_LSB     : integer := 16;
+
 
 end registers;
