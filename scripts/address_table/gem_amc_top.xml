@@ -1152,9 +1152,9 @@
         <node id="GEB"  address="0x100000"
               description="VFAT3 registers">
 
-            <node id="VFAT${OH_IDX}"  address="0x0"
-                  description="VFAT ${OH_IDX}"
-                  generate="true" generate_size="24" generate_address_step="0x00000800" generate_idx_var="OH_IDX">
+            <node id="VFAT${VFAT_IDX}"  address="0x0"
+                  description="VFAT ${VFAT_IDX}"
+                  generate="true" generate_size="24" generate_address_step="0x00000800" generate_idx_var="VFAT_IDX">
 
               <node id="VFAT_CHANNELS"  address="0x0"
                     description="Registers for the individual VFAT channels
