@@ -43,7 +43,7 @@ def main():
 
     if instructions == 'ctp7':
         subheading('Testing CTP7')
-        regTest(REG_CTP7_BOARD_ID, 0xbeef, 0xffff, True, numIterations, True)
+        regTest(REG_CTP7_BOARD_ID, 0xbeef, 0xffff, False, numIterations, True)
     elif instructions == 'vfat':
         if len(sys.argv) < 5:
             print('for VFAT testing please also provide the OH number and VFAT number e.g. for OH0 and VFAT #8 use the following command: evkatest.py vfat 100000 0 8')
@@ -54,7 +54,7 @@ def main():
         regAddr = REG_OH0_VFAT0_LATENCY + ((ohIdx * 0x00010000) << 2) + ((vfatIdx * 0x00000800) << 2)
         checkVfat3SlowControlStatus()
         printCyan("Stress-testing VFAT3 slow control....")
-        regTest(regAddr, 0xabc, 0x0000ffff, True, numIterations, True)
+        regTest(regAddr, 0xabc, 0x0000ffff, False, numIterations, True)
         print("")
         checkVfat3SlowControlStatus()
 
@@ -63,7 +63,7 @@ def initRegAddrs():
     global REG_CTP7_BOARD_ID
     global REG_OH0_VFAT0_LATENCY
     REG_CTP7_BOARD_ID = getNode('GEM_AMC.GEM_SYSTEM.BOARD_ID').real_address
-    REG_OH0_VFAT0_LATENCY = getNode('GEM_AMC.OH.OH0.GEB.VFAT0.CFG_GLOBAL_LATENCY').real_address
+    REG_OH0_VFAT0_LATENCY = getNode('GEM_AMC.OH.OH0.GEB.VFAT0.CFG_LATENCY').real_address
 
 def regTest(regAddress, initValue, regMask, doInitWrite, numIterations, doRandomWrites):
     if (doInitWrite):
@@ -99,6 +99,7 @@ def checkVfat3SlowControlStatus():
     print("    Bitstuffing error count: %d" % parseInt(readReg(getNode('GEM_AMC.SLOW_CONTROL.VFAT3.BITSTUFFING_ERROR_CNT'))))
     print("    Timeout error count:     %d" % parseInt(readReg(getNode('GEM_AMC.SLOW_CONTROL.VFAT3.TIMEOUT_ERROR_CNT'))))
     print("    AXI strobe error count:  %d" % parseInt(readReg(getNode('GEM_AMC.SLOW_CONTROL.VFAT3.AXI_STROBE_ERROR_CNT'))))
+    #print("    Transaction count:       %d" % parseInt(readReg(getNode('GEM_AMC.SLOW_CONTROL.VFAT3.TRANSACTION_CNT'))))
 
 def check_bit(byteval,idx):
     return ((byteval&(1<<idx))!=0);
