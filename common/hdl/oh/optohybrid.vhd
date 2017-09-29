@@ -56,6 +56,9 @@ entity optohybrid is
         vfat3_sc_rx_data_o      : out std_logic_vector(23 downto 0);
         vfat3_sc_rx_data_en_o   : out std_logic_vector(23 downto 0);
         
+        -- VFAT3 DAQ output
+        vfat3_daq_links_o       : out t_vfat_daq_link_arr(23 downto 0);
+        
         -- Trigger links
         gth_rx_trig_data_i      : in t_gt_8b10b_rx_data_arr(1 downto 0);
         sbit_clusters_o         : out t_oh_sbits;
@@ -81,19 +84,25 @@ end optohybrid;
 architecture optohybrid_arch of optohybrid is
     
     component ila_vfat3
-    port (
-        clk    : in std_logic;
-        probe0 : in std_logic_vector(7 DOWNTO 0); 
-        probe1 : in std_logic; 
-        probe2 : in std_logic; 
-        probe3 : in std_logic; 
-        probe4 : in std_logic; 
-        probe5 : in std_logic_vector(7 DOWNTO 0); 
-        probe6 : in std_logic_vector(7 DOWNTO 0); 
-        probe7 : in std_logic;
-        probe8 : in std_logic_vector(2 DOWNTO 0);
-        probe9 : in std_logic_vector(3 DOWNTO 0)
-    );
+        port(
+            clk     : in std_logic;
+            probe0  : in std_logic_vector(7 DOWNTO 0);
+            probe1  : in std_logic;
+            probe2  : in std_logic;
+            probe3  : in std_logic;
+            probe4  : in std_logic;
+            probe5  : in std_logic_vector(7 DOWNTO 0);
+            probe6  : in std_logic_vector(7 DOWNTO 0);
+            probe7  : in std_logic;
+            probe8  : in std_logic_vector(2 DOWNTO 0);
+            probe9  : in std_logic_vector(3 DOWNTO 0);
+            probe10 : in std_logic_vector(7 DOWNTO 0);
+            probe11 : in std_logic;
+            probe12 : in std_logic;
+            probe13 : in std_logic;
+            probe14 : in std_logic_vector(7 DOWNTO 0);
+            probe15 : in std_logic_vector(7 DOWNTO 0)
+        );
     end component;
     
     --== VFAT3 signals ==--
@@ -108,6 +117,14 @@ architecture optohybrid_arch of optohybrid is
     signal vfat3_sc_tx_en           : std_logic_vector(23 downto 0);
     signal vfat3_sc_tx_rd_en        : std_logic_vector(23 downto 0);
     
+    signal vfat3_daq_data           : t_std8_array(23 downto 0);
+    signal vfat3_daq_data_en        : std_logic_vector(23 downto 0);
+    signal vfat3_daq_crc_err        : std_logic_vector(23 downto 0);
+    signal vfat3_daq_event_done     : std_logic_vector(23 downto 0);
+    
+    signal vfat3_daq_cnt_crc_err_arr: t_std8_array(23 downto 0);
+    signal vfat3_daq_cnt_evt_arr    : t_std8_array(23 downto 0);
+    
     --== FPGA register access requests ==--
     
     signal g2o_req_en               : std_logic;
@@ -118,11 +135,6 @@ architecture optohybrid_arch of optohybrid is
     signal o2g_req_data             : std_logic_vector(31 downto 0);
     signal o2g_req_error            : std_logic;    
     
-    --== DAQ data ==--
-    
-    signal evt_en                   : std_logic;
-    signal evt_data                 : std_logic_vector(15 downto 0);
-
     --== Debug ==--
 
     signal dbg_vfat3_tx_data            : std_logic_vector(7 downto 0);
@@ -131,6 +143,12 @@ architecture optohybrid_arch of optohybrid is
     signal dbg_vfat3_sync_ok            : std_logic;
     signal dbg_vfat3_rx_num_bitslips    : std_logic_vector(2 downto 0);
     signal dbg_vfat3_rx_sync_err_cnt    : std_logic_vector(3 downto 0);
+    signal dbg_vfat3_daq_data           : std_logic_vector(7 downto 0);
+    signal dbg_vfat3_daq_data_en        : std_logic;
+    signal dbg_vfat3_daq_crc_err        : std_logic;
+    signal dbg_vfat3_daq_event_done     : std_logic;
+    signal dbg_vfat3_cnt_events         : std_logic_vector(7 downto 0);
+    signal dbg_vfat3_cnt_crc_errors     : std_logic_vector(7 downto 0);    
     
 begin
 
@@ -207,19 +225,34 @@ begin
             port map(
                 reset_i             => reset_i,
                 ttc_clk_i           => ttc_clk_i,
+
                 data_i              => vfat3_rx_aligned_data(i),
                 sync_ok_i           => vfat3_sync_ok(i),
+
                 ready_o             => vfat3_rx_ready(i),
-                daq_data_o          => open,
-                daq_data_en_o       => open,
-                daq_crc_error_o     => open,
+
+                daq_data_o          => vfat3_daq_data(i),
+                daq_data_en_o       => vfat3_daq_data_en(i),
+                daq_crc_error_o     => vfat3_daq_crc_err(i),
+                daq_event_done_o    => vfat3_daq_event_done(i),
+
                 slow_ctrl_data_o    => vfat3_sc_rx_data_o(i),
-                slow_ctrl_data_en_o => vfat3_sc_rx_data_en_o(i)
+                slow_ctrl_data_en_o => vfat3_sc_rx_data_en_o(i),
+
+                cnt_events_o        => vfat3_daq_cnt_evt_arr(i),
+                cnt_crc_errors_o    => vfat3_daq_cnt_crc_err_arr(i)
             );
     
-        vfat3_link_status_o(i).sync_good <= vfat3_rx_ready(i);
-        vfat3_link_status_o(i).sync_error_cnt <= vfat3_rx_sync_err_cnt(i);
-    
+        vfat3_link_status_o(i).sync_good        <= vfat3_rx_ready(i);
+        vfat3_link_status_o(i).sync_error_cnt   <= vfat3_rx_sync_err_cnt(i);
+        vfat3_link_status_o(i).daq_event_cnt    <= vfat3_daq_cnt_evt_arr(i);
+        vfat3_link_status_o(i).daq_crc_err_cnt  <= vfat3_daq_cnt_crc_err_arr(i);
+            
+        vfat3_daq_links_o(i).data_en    <= vfat3_daq_data_en(i);
+        vfat3_daq_links_o(i).data       <= vfat3_daq_data(i);
+        vfat3_daq_links_o(i).event_done <= vfat3_daq_event_done(i);
+        vfat3_daq_links_o(i).crc_error  <= vfat3_daq_crc_err(i);
+
     end generate;
     
     
@@ -323,6 +356,12 @@ begin
         dbg_vfat3_sync_ok           <= vfat3_sync_ok(to_integer(unsigned(debug_vfat_select_i)));
         dbg_vfat3_rx_num_bitslips   <= vfat3_rx_num_bitslips(to_integer(unsigned(debug_vfat_select_i)));
         dbg_vfat3_rx_sync_err_cnt   <= vfat3_rx_sync_err_cnt(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_daq_data          <= vfat3_daq_data(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_daq_data_en       <= vfat3_daq_data_en(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_daq_crc_err       <= vfat3_daq_crc_err(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_daq_event_done    <= vfat3_daq_event_done(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_cnt_events        <= vfat3_daq_cnt_evt_arr(to_integer(unsigned(debug_vfat_select_i)));
+        dbg_vfat3_cnt_crc_errors    <= vfat3_daq_cnt_crc_err_arr(to_integer(unsigned(debug_vfat_select_i)));
         
         i_vfat_ila : ila_vfat3
             port map(
@@ -336,7 +375,13 @@ begin
                 probe6 => dbg_vfat3_rx_aligned_data,
                 probe7 => dbg_vfat3_sync_ok,
                 probe8 => dbg_vfat3_rx_num_bitslips,
-                probe9 => dbg_vfat3_rx_sync_err_cnt
+                probe9 => dbg_vfat3_rx_sync_err_cnt,
+                probe10 => dbg_vfat3_daq_data,
+                probe11 => dbg_vfat3_daq_data_en,
+                probe12 => dbg_vfat3_daq_crc_err,
+                probe13 => dbg_vfat3_daq_event_done,
+                probe14 => dbg_vfat3_cnt_events,
+                probe15 => dbg_vfat3_cnt_crc_errors
             );
 
     end generate;     

@@ -15,7 +15,7 @@ package registers is
     -- data status, bc0 status, command counters and a small spy buffer)
     --============================================================================
 
-    constant REG_TTC_NUM_REGS : integer := 26;
+    constant REG_TTC_NUM_REGS : integer := 33;
     constant REG_TTC_ADDRESS_MSB : integer := 5;
     constant REG_TTC_ADDRESS_LSB : integer := 0;
     constant REG_TTC_CTRL_MODULE_RESET_ADDR    : std_logic_vector(5 downto 0) := "00" & x"0";
@@ -164,6 +164,48 @@ package registers is
     constant REG_TTC_TTC_SPY_BUFFER_ADDR    : std_logic_vector(5 downto 0) := "01" & x"9";
     constant REG_TTC_TTC_SPY_BUFFER_MSB    : integer := 31;
     constant REG_TTC_TTC_SPY_BUFFER_LSB     : integer := 0;
+
+    constant REG_TTC_GENERATOR_RESET_ADDR    : std_logic_vector(5 downto 0) := "10" & x"0";
+    constant REG_TTC_GENERATOR_RESET_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_RESET_LSB     : integer := 0;
+
+    constant REG_TTC_GENERATOR_ENABLE_ADDR    : std_logic_vector(5 downto 0) := "10" & x"1";
+    constant REG_TTC_GENERATOR_ENABLE_BIT    : integer := 0;
+    constant REG_TTC_GENERATOR_ENABLE_DEFAULT : std_logic := '0';
+
+    constant REG_TTC_GENERATOR_CYCLIC_RUNNING_ADDR    : std_logic_vector(5 downto 0) := "10" & x"1";
+    constant REG_TTC_GENERATOR_CYCLIC_RUNNING_BIT    : integer := 1;
+
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_GAP_ADDR    : std_logic_vector(5 downto 0) := "10" & x"1";
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_GAP_MSB    : integer := 19;
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_GAP_LSB     : integer := 4;
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_GAP_DEFAULT : std_logic_vector(19 downto 4) := x"0190";
+
+    constant REG_TTC_GENERATOR_CYCLIC_CALPULSE_TO_L1A_GAP_ADDR    : std_logic_vector(5 downto 0) := "10" & x"1";
+    constant REG_TTC_GENERATOR_CYCLIC_CALPULSE_TO_L1A_GAP_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_CYCLIC_CALPULSE_TO_L1A_GAP_LSB     : integer := 20;
+    constant REG_TTC_GENERATOR_CYCLIC_CALPULSE_TO_L1A_GAP_DEFAULT : std_logic_vector(31 downto 20) := x"000";
+
+    constant REG_TTC_GENERATOR_SINGLE_HARD_RESET_ADDR    : std_logic_vector(5 downto 0) := "10" & x"2";
+    constant REG_TTC_GENERATOR_SINGLE_HARD_RESET_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_SINGLE_HARD_RESET_LSB     : integer := 0;
+
+    constant REG_TTC_GENERATOR_SINGLE_RESYNC_ADDR    : std_logic_vector(5 downto 0) := "10" & x"3";
+    constant REG_TTC_GENERATOR_SINGLE_RESYNC_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_SINGLE_RESYNC_LSB     : integer := 0;
+
+    constant REG_TTC_GENERATOR_SINGLE_EC0_ADDR    : std_logic_vector(5 downto 0) := "10" & x"4";
+    constant REG_TTC_GENERATOR_SINGLE_EC0_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_SINGLE_EC0_LSB     : integer := 0;
+
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_COUNT_ADDR    : std_logic_vector(5 downto 0) := "10" & x"5";
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_COUNT_MSB    : integer := 23;
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_COUNT_LSB     : integer := 0;
+    constant REG_TTC_GENERATOR_CYCLIC_L1A_COUNT_DEFAULT : std_logic_vector(23 downto 0) := x"002710";
+
+    constant REG_TTC_GENERATOR_CYCLIC_START_ADDR    : std_logic_vector(5 downto 0) := "10" & x"6";
+    constant REG_TTC_GENERATOR_CYCLIC_START_MSB    : integer := 31;
+    constant REG_TTC_GENERATOR_CYCLIC_START_LSB     : integer := 0;
 
 
     --============================================================================
@@ -609,7 +651,7 @@ package registers is
     -- This module is controlling various hardware tests e.g. fiber loopback
     --============================================================================
 
-    constant REG_GEM_TESTS_NUM_REGS : integer := 20;
+    constant REG_GEM_TESTS_NUM_REGS : integer := 46;
     constant REG_GEM_TESTS_ADDRESS_MSB : integer := 16;
     constant REG_GEM_TESTS_ADDRESS_LSB : integer := 0;
     constant REG_GEM_TESTS_CTRL_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
@@ -685,6 +727,220 @@ package registers is
     constant REG_GEM_TESTS_GBT_LOOPBACK_LINK_5_ERROR_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"1062";
     constant REG_GEM_TESTS_GBT_LOOPBACK_LINK_5_ERROR_CNT_MSB    : integer := 31;
     constant REG_GEM_TESTS_GBT_LOOPBACK_LINK_5_ERROR_CNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2000";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_RESET_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_RESET_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_ENABLE_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_ENABLE_BIT    : integer := 0;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_ENABLE_DEFAULT : std_logic := '0';
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_OH_SELECT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_OH_SELECT_MSB    : integer := 7;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_OH_SELECT_LSB     : integer := 4;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_OH_SELECT_DEFAULT : std_logic_vector(7 downto 4) := x"0";
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_SELECT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_SELECT_MSB    : integer := 14;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_SELECT_LSB     : integer := 8;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_SELECT_DEFAULT : std_logic_vector(14 downto 8) := "000" & x"0";
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_GLOBAL_OR_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2001";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_GLOBAL_OR_BIT    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_CTRL_VFAT_CHANNEL_GLOBAL_OR_DEFAULT : std_logic := '0';
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2010";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2010";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT0_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2020";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2020";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT1_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2030";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2030";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT2_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2040";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2040";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT3_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2050";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2050";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT4_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2060";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2060";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT5_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2070";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2070";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT6_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2080";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2080";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT7_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2090";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2090";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT8_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20a0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT9_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20b0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20b0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT10_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20c0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20c0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT11_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20d0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20d0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT12_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20e0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20e0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT13_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20f0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"20f0";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT14_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2100";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT15_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2110";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2110";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT16_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2120";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2120";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT17_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2130";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2130";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT18_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2140";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2140";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT19_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2150";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2150";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT20_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2160";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2160";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT21_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2170";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2170";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT22_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_GOOD_EVENTS_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2180";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_GOOD_EVENTS_COUNT_MSB    : integer := 15;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_GOOD_EVENTS_COUNT_LSB     : integer := 0;
+
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_CHANNEL_FIRE_COUNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"2180";
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_CHANNEL_FIRE_COUNT_MSB    : integer := 31;
+    constant REG_GEM_TESTS_VFAT_DAQ_MONITOR_VFAT23_CHANNEL_FIRE_COUNT_LSB     : integer := 16;
 
 
     --============================================================================
@@ -1145,12 +1401,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT0_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT0_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"110";
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"110";
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT0_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT1_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"112";
     constant REG_OH_LINKS_OH0_VFAT1_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT1_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"112";
     constant REG_OH_LINKS_OH0_VFAT1_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT1_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"112";
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"112";
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT1_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT2_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"114";
     constant REG_OH_LINKS_OH0_VFAT2_LINK_GOOD_BIT    : integer := 0;
@@ -1159,12 +1431,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT2_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT2_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"114";
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"114";
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT2_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT3_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"116";
     constant REG_OH_LINKS_OH0_VFAT3_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT3_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"116";
     constant REG_OH_LINKS_OH0_VFAT3_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT3_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"116";
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"116";
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT3_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT4_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"118";
     constant REG_OH_LINKS_OH0_VFAT4_LINK_GOOD_BIT    : integer := 0;
@@ -1173,12 +1461,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT4_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT4_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"118";
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"118";
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT4_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT5_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11a";
     constant REG_OH_LINKS_OH0_VFAT5_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT5_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11a";
     constant REG_OH_LINKS_OH0_VFAT5_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT5_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11a";
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11a";
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT5_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT6_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11c";
     constant REG_OH_LINKS_OH0_VFAT6_LINK_GOOD_BIT    : integer := 0;
@@ -1187,12 +1491,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT6_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT6_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11c";
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11c";
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT6_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT7_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11e";
     constant REG_OH_LINKS_OH0_VFAT7_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT7_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11e";
     constant REG_OH_LINKS_OH0_VFAT7_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT7_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11e";
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"11e";
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT7_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT8_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"120";
     constant REG_OH_LINKS_OH0_VFAT8_LINK_GOOD_BIT    : integer := 0;
@@ -1201,12 +1521,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT8_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT8_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"120";
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"120";
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT8_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT9_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"122";
     constant REG_OH_LINKS_OH0_VFAT9_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT9_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"122";
     constant REG_OH_LINKS_OH0_VFAT9_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT9_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"122";
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"122";
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT9_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT10_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"124";
     constant REG_OH_LINKS_OH0_VFAT10_LINK_GOOD_BIT    : integer := 0;
@@ -1215,12 +1551,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT10_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT10_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"124";
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"124";
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT10_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT11_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"126";
     constant REG_OH_LINKS_OH0_VFAT11_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT11_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"126";
     constant REG_OH_LINKS_OH0_VFAT11_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT11_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"126";
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"126";
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT11_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT12_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"128";
     constant REG_OH_LINKS_OH0_VFAT12_LINK_GOOD_BIT    : integer := 0;
@@ -1229,12 +1581,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT12_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT12_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"128";
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"128";
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT12_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT13_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12a";
     constant REG_OH_LINKS_OH0_VFAT13_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT13_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12a";
     constant REG_OH_LINKS_OH0_VFAT13_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT13_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12a";
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12a";
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT13_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT14_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12c";
     constant REG_OH_LINKS_OH0_VFAT14_LINK_GOOD_BIT    : integer := 0;
@@ -1243,12 +1611,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT14_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT14_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12c";
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12c";
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT14_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT15_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12e";
     constant REG_OH_LINKS_OH0_VFAT15_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT15_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12e";
     constant REG_OH_LINKS_OH0_VFAT15_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT15_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12e";
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"12e";
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT15_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT16_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"130";
     constant REG_OH_LINKS_OH0_VFAT16_LINK_GOOD_BIT    : integer := 0;
@@ -1257,12 +1641,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT16_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT16_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"130";
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"130";
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT16_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT17_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"132";
     constant REG_OH_LINKS_OH0_VFAT17_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT17_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"132";
     constant REG_OH_LINKS_OH0_VFAT17_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT17_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"132";
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"132";
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT17_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT18_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"134";
     constant REG_OH_LINKS_OH0_VFAT18_LINK_GOOD_BIT    : integer := 0;
@@ -1271,12 +1671,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT18_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT18_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"134";
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"134";
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT18_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT19_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"136";
     constant REG_OH_LINKS_OH0_VFAT19_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT19_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"136";
     constant REG_OH_LINKS_OH0_VFAT19_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT19_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"136";
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"136";
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT19_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT20_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"138";
     constant REG_OH_LINKS_OH0_VFAT20_LINK_GOOD_BIT    : integer := 0;
@@ -1285,12 +1701,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT20_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT20_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"138";
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"138";
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT20_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT21_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13a";
     constant REG_OH_LINKS_OH0_VFAT21_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT21_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13a";
     constant REG_OH_LINKS_OH0_VFAT21_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT21_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13a";
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13a";
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT21_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH0_VFAT22_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13c";
     constant REG_OH_LINKS_OH0_VFAT22_LINK_GOOD_BIT    : integer := 0;
@@ -1299,12 +1731,28 @@ package registers is
     constant REG_OH_LINKS_OH0_VFAT22_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT22_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13c";
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13c";
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT22_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH0_VFAT23_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13e";
     constant REG_OH_LINKS_OH0_VFAT23_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH0_VFAT23_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13e";
     constant REG_OH_LINKS_OH0_VFAT23_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH0_VFAT23_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13e";
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"13e";
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH0_VFAT23_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_GBT0_READY_ADDR    : std_logic_vector(12 downto 0) := '0' & x"200";
     constant REG_OH_LINKS_OH1_GBT0_READY_BIT    : integer := 0;
@@ -1349,12 +1797,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT0_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT0_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"210";
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"210";
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT0_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT1_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"212";
     constant REG_OH_LINKS_OH1_VFAT1_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT1_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"212";
     constant REG_OH_LINKS_OH1_VFAT1_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT1_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"212";
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"212";
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT1_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT2_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"214";
     constant REG_OH_LINKS_OH1_VFAT2_LINK_GOOD_BIT    : integer := 0;
@@ -1363,12 +1827,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT2_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT2_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"214";
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"214";
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT2_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT3_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"216";
     constant REG_OH_LINKS_OH1_VFAT3_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT3_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"216";
     constant REG_OH_LINKS_OH1_VFAT3_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT3_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"216";
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"216";
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT3_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT4_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"218";
     constant REG_OH_LINKS_OH1_VFAT4_LINK_GOOD_BIT    : integer := 0;
@@ -1377,12 +1857,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT4_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT4_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"218";
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"218";
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT4_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT5_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21a";
     constant REG_OH_LINKS_OH1_VFAT5_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT5_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21a";
     constant REG_OH_LINKS_OH1_VFAT5_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT5_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21a";
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21a";
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT5_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT6_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21c";
     constant REG_OH_LINKS_OH1_VFAT6_LINK_GOOD_BIT    : integer := 0;
@@ -1391,12 +1887,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT6_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT6_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21c";
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21c";
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT6_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT7_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21e";
     constant REG_OH_LINKS_OH1_VFAT7_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT7_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21e";
     constant REG_OH_LINKS_OH1_VFAT7_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT7_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21e";
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"21e";
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT7_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT8_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"220";
     constant REG_OH_LINKS_OH1_VFAT8_LINK_GOOD_BIT    : integer := 0;
@@ -1405,12 +1917,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT8_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT8_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"220";
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"220";
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT8_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT9_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"222";
     constant REG_OH_LINKS_OH1_VFAT9_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT9_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"222";
     constant REG_OH_LINKS_OH1_VFAT9_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT9_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"222";
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"222";
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT9_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT10_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"224";
     constant REG_OH_LINKS_OH1_VFAT10_LINK_GOOD_BIT    : integer := 0;
@@ -1419,12 +1947,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT10_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT10_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"224";
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"224";
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT10_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT11_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"226";
     constant REG_OH_LINKS_OH1_VFAT11_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT11_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"226";
     constant REG_OH_LINKS_OH1_VFAT11_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT11_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"226";
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"226";
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT11_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT12_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"228";
     constant REG_OH_LINKS_OH1_VFAT12_LINK_GOOD_BIT    : integer := 0;
@@ -1433,12 +1977,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT12_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT12_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"228";
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"228";
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT12_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT13_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22a";
     constant REG_OH_LINKS_OH1_VFAT13_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT13_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22a";
     constant REG_OH_LINKS_OH1_VFAT13_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT13_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22a";
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22a";
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT13_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT14_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22c";
     constant REG_OH_LINKS_OH1_VFAT14_LINK_GOOD_BIT    : integer := 0;
@@ -1447,12 +2007,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT14_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT14_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22c";
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22c";
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT14_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT15_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22e";
     constant REG_OH_LINKS_OH1_VFAT15_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT15_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22e";
     constant REG_OH_LINKS_OH1_VFAT15_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT15_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22e";
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"22e";
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT15_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT16_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"230";
     constant REG_OH_LINKS_OH1_VFAT16_LINK_GOOD_BIT    : integer := 0;
@@ -1461,12 +2037,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT16_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT16_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"230";
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"230";
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT16_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT17_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"232";
     constant REG_OH_LINKS_OH1_VFAT17_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT17_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"232";
     constant REG_OH_LINKS_OH1_VFAT17_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT17_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"232";
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"232";
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT17_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT18_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"234";
     constant REG_OH_LINKS_OH1_VFAT18_LINK_GOOD_BIT    : integer := 0;
@@ -1475,12 +2067,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT18_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT18_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"234";
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"234";
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT18_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT19_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"236";
     constant REG_OH_LINKS_OH1_VFAT19_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT19_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"236";
     constant REG_OH_LINKS_OH1_VFAT19_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT19_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"236";
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"236";
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT19_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT20_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"238";
     constant REG_OH_LINKS_OH1_VFAT20_LINK_GOOD_BIT    : integer := 0;
@@ -1489,12 +2097,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT20_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT20_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"238";
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"238";
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT20_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT21_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23a";
     constant REG_OH_LINKS_OH1_VFAT21_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT21_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23a";
     constant REG_OH_LINKS_OH1_VFAT21_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT21_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23a";
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23a";
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT21_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
     constant REG_OH_LINKS_OH1_VFAT22_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23c";
     constant REG_OH_LINKS_OH1_VFAT22_LINK_GOOD_BIT    : integer := 0;
@@ -1503,12 +2127,28 @@ package registers is
     constant REG_OH_LINKS_OH1_VFAT22_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT22_SYNC_ERR_CNT_LSB     : integer := 4;
 
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23c";
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23c";
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT22_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
+
     constant REG_OH_LINKS_OH1_VFAT23_LINK_GOOD_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23e";
     constant REG_OH_LINKS_OH1_VFAT23_LINK_GOOD_BIT    : integer := 0;
 
     constant REG_OH_LINKS_OH1_VFAT23_SYNC_ERR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23e";
     constant REG_OH_LINKS_OH1_VFAT23_SYNC_ERR_CNT_MSB    : integer := 7;
     constant REG_OH_LINKS_OH1_VFAT23_SYNC_ERR_CNT_LSB     : integer := 4;
+
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_EVENT_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23e";
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_EVENT_CNT_MSB    : integer := 15;
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_EVENT_CNT_LSB     : integer := 8;
+
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_CRC_ERROR_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"23e";
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_CRC_ERROR_CNT_MSB    : integer := 23;
+    constant REG_OH_LINKS_OH1_VFAT23_DAQ_CRC_ERROR_CNT_LSB     : integer := 16;
 
 
     --============================================================================

@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170904";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20170929";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 4;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -53,6 +53,10 @@ package gem_pkg is
     -- 3.0.19 Switched to Vivado 2017.2, also added a debug probe for SC RX CRC
     -- 3.0.20 Fixed VFAT3_SC_RX and SCA_RX CRC checking -- it was latching in the CRC 1 bit too early
     -- 3.1.0  Hopefully the first stable release for public use. All monitoring flags and counters are accessible through AXI registers. VFAT3 slow control CRC error is now a hard error.
+    -- 3.1.1  Added VFAT3 DAQ data detection and handling (including CRC check, event counting, and error counting). Not yet wired up to DAQ module for event building.
+    -- 3.1.2  Added VFAT3 channel activity monitoring (either a global OR of all channels or an individual channel can be selected), not yet routed out to axi registers
+    -- 3.1.3  Added a TTC generator module which can be used to either issue single commands or setup cyclic generators for L1A and CalPulse
+    -- 3.1.4  Routed the VFAT3 DAQ signals out to the top, and moved the VFAT3 DAQ channel monitoring to GEM_TESTS module and hooked up to AXI registers (24 such VFAT DAQMON modules are implemented with OH selection)
 
     --======================--
     --==      General     ==--
@@ -294,13 +298,28 @@ package gem_pkg is
     type t_vfat_link_status is record
         sync_good               : std_logic;
         sync_error_cnt          : std_logic_vector(3 downto 0);
+        daq_event_cnt           : std_logic_vector(7 downto 0);
+        daq_crc_err_cnt         : std_logic_vector(7 downto 0);
     end record;
     
     type t_trig_link_status_arr is array(integer range <>) of t_trig_link_status;    
     type t_gbt_link_status_arr is array(integer range <>) of t_gbt_link_status;    
     type t_vfat_link_status_arr is array(integer range <>) of t_vfat_link_status;    
     type t_oh_vfat_link_status_arr is array(integer range <>) of t_vfat_link_status_arr(23 downto 0);    
-        
+
+    --==================--
+    --==   VFAT3 DAQ  ==--
+    --==================--   
+
+    type t_vfat_daq_link is record
+        data_en         : std_logic;
+        data            : std_logic_vector(7 downto 0);
+        event_done      : std_logic;
+        crc_error       : std_logic;
+    end record;
+
+    type t_vfat_daq_link_arr is array(integer range <>) of t_vfat_daq_link;
+    type t_oh_vfat_daq_link_arr is array(integer range <>) of t_vfat_daq_link_arr(23 downto 0);    
 
     --==================--
     --== Slow control ==--

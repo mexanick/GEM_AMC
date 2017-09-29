@@ -183,6 +183,8 @@ architecture gem_amc_arch of gem_amc is
     signal vfat3_sc_rx_data_en          : t_std24_array(g_NUM_OF_OHs - 1 downto 0);
     signal vfat3_sc_status              : t_vfat_slow_control_status;    
     
+    signal vfat3_daq_link_arr           : t_oh_vfat_daq_link_arr(g_NUM_OF_OHs - 1 downto 0);
+    
     -- test module links
     signal test_gbt_rx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 3) - 1 downto 0);
     signal test_gbt_tx_data_arr         : t_gbt_frame_array((g_NUM_OF_OHs * 3) - 1 downto 0);
@@ -362,7 +364,9 @@ begin
                 
                 vfat3_sc_rx_data_o      => vfat3_sc_rx_data(i),
                 vfat3_sc_rx_data_en_o   => vfat3_sc_rx_data_en(i),
-                
+
+                vfat3_daq_links_o       => vfat3_daq_link_arr(i),
+                                
                 sbit_clusters_o         => sbit_clusters_arr(i), 
                 sbit_links_status_o     => sbit_links_status_arr(i), 
                 gth_rx_trig_data_i      => (oh_trig0_rx_data_arr(i), oh_trig1_rx_data_arr(i)),
@@ -509,7 +513,8 @@ begin
     
     i_gem_tests : entity work.gem_tests
         generic map(
-            g_NUM_GBT_LINKS => g_NUM_OF_OHs * 3
+            g_NUM_GBT_LINKS => g_NUM_OF_OHs * 3,
+            g_NUM_OF_OHs    => g_NUM_OF_OHs
         )
         port map(
             reset_i                     => reset_i,
@@ -519,6 +524,7 @@ begin
             gbt_link_ready_i            => test_gbt_ready_arr,
             gbt_tx_data_arr_o           => test_gbt_tx_data_arr,
             gbt_rx_data_arr_i           => test_gbt_rx_data_arr,
+            vfat3_daq_links_arr_i       => vfat3_daq_link_arr,
             ipb_reset_i                 => ipb_reset,
             ipb_clk_i                   => ipb_clk_i,
             ipb_mosi_i                  => ipb_mosi_arr_i(C_IPB_SLV.test),

@@ -1,17 +1,28 @@
 #!/usr/bin/env python
 
+# ============== slow control data ================
+
 #INPUT_DATA = 0x00000a64000000872001bb1f0300 # real TX HDLC data
 #INPUT_DATA =  0x2001bb100300 # real RX HDLC data without CRC
 # INPUT_DATA =  0xb2dc2001bb100300 # real RX HDLC data with CRC
 #INPUT_DATA =  0xbb4c2001ac100300 # another example of real RX HDLC data with CRC
 #INPUT_DATA =  0xe8e500000b20200101000300 # yet another example of real RX HDLC data with CRC
 #INPUT_DATA =  0x3eaf00000b20200131000300 # yet another example of real RX HDLC data with CRC
-INPUT_DATA =  0xc15000000b20200131000300 # the above packet but with CRC inverted -- results in 0x0000
+#INPUT_DATA =  0xc15000000b20200131000300 # the above packet but with CRC inverted -- results in 0x0000 !!!!!!!!
 
 #NUM_BITS = 112
 #NUM_BITS = 64
 NUM_BITS = 96
 
+# ============== DAQ control data ================
+
+INPUT_DATA = 0xb34a00000000000000000000000000000000f501011e # real DAQ event with header
+#INPUT_DATA = 0xace600000000000000000000000000000000f501031e # real DAQ event with header
+#INPUT_DATA = 0xb3dc00000000000000000000000000000000f501041e # real DAQ event with header
+
+NUM_BYTES = 22
+
+DAQ_POLY = 0x1021
 HENRI_POLY = 0x8408
 
 def main():
@@ -23,18 +34,37 @@ def main():
     # print hex(data)
 
     #SCA version
-    for i in range(0, NUM_BITS):
-        bit_value = check_bit(INPUT_DATA, i)
-        crc_temp = (crc << 1) | bit_xor(bit_value, check_bit(crc, 15))
-        crc_temp = crc_temp & 0xefdf
-        crc_temp = crc_temp | (bit_xor(check_bit(crc, 4), bit_xor(bit_value, check_bit(crc, 15))) << 5)
-        crc_temp = crc_temp | (bit_xor(check_bit(crc, 11), bit_xor(bit_value, check_bit(crc, 15))) << 12)
-        crc = crc_temp
-        print("tmp CRC: " + hex(crc))
+    # WORKS WHEN CRC IS INVERTED IN THE DATA
+    # for i in range(0, NUM_BITS):
+    #     bit_value = check_bit(INPUT_DATA, i)
+    #     crc_temp = (crc << 1) | bit_xor(bit_value, check_bit(crc, 15))
+    #     crc_temp = crc_temp & 0xefdf
+    #     crc_temp = crc_temp | (bit_xor(check_bit(crc, 4), bit_xor(bit_value, check_bit(crc, 15))) << 5)
+    #     crc_temp = crc_temp | (bit_xor(check_bit(crc, 11), bit_xor(bit_value, check_bit(crc, 15))) << 12)
+    #     crc = crc_temp
+    #     print("tmp CRC: " + hex(crc))
+    #
+    # print("--------------------------------------")
+    # print("real CRC: " + hex(crc))
+    # print("inverted CRC: " + hex(invert(crc, 16)))
 
+
+    #DAQ CRC from Henri (crc_ccitt.v)
+    data = INPUT_DATA
+    for i in range(0, NUM_BYTES):
+        byte = data & 0xff
+        data = data >> 8
+        print("byte %i (%s)" % (i, hex(byte)))
+        for j in range(7, -1, -1):
+            if bit_xor(check_bit(byte, j), check_bit(crc, 15) == True):
+                crc = ((crc << 1) & 0xffff) ^ DAQ_POLY
+            else:
+                crc = (crc << 1) & 0xffff
+            print("tmp CRC: " + hex(crc))
     print("--------------------------------------")
     print("real CRC: " + hex(crc))
     print("inverted CRC: " + hex(invert(crc, 16)))
+
 
 
     # for i in range(0, NUM_BITS):
@@ -78,6 +108,7 @@ def main():
     # print hex(crc)
 
     #Henri's code:
+    # WORKS FOR SLOW CONTROL
     # crc = crc_remainder([0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,0,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
     #
     # crc_bin = bin(crc)

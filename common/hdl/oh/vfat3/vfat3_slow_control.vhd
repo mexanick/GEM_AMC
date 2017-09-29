@@ -373,40 +373,40 @@ begin
     rx_data <= rx_data_i(to_integer(unsigned(tx_oh_idx)))(to_integer(unsigned(tx_vfat_idx)));
 
 --    -- DEBUG
-    i_vfat3_sc_vio : vio_vfat3_sc
-        port map(
-            clk       => ttc_clk_i.clk_40,
-            probe_in0 => rx_packet_err_cnt,
-            probe_in1 => rx_bitstuff_err_cnt,
-            probe_in2 => rx_crc_err_cnt,
-            probe_in3 => tx_calc_crc_last,
-            probe_in4 => rx_calc_crc_last,
-            probe_in5 => tx_raw_last_packet_last,
-            probe_in6 => rx_raw_last_reply_last
-        );
-    
-    i_vfat3_sc_ila : ila_vfat3_slow_control
-    	port map(
-    		clk    => ttc_clk_i.clk_40,
-    		probe0 => tx_reset,
-    		probe1 => rx_reset,
-    		probe2 => tx_din,
-    		probe3 => tx_en,
-    		probe4 => rx_data,
-    		probe5 => rx_data_en,
-    		probe6 => tx_is_write,
-    		probe7 => std_logic_vector(transaction_id(7 downto 0)),
-    		probe8 => tx_oh_idx,
-    		probe9 => tx_vfat_idx,
-    		probe10 => rx_valid,
-    		probe11 => rx_error,
-    		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
-    		probe13 => ipb_mosi_i.ipb_strobe,
-    		probe14 => tx_command_en,
-    		probe15 => tx_command_en_sync,
-    		probe16 => std_logic_vector(transaction_timer),
-    		probe17 => rx_reg_value,
-    		probe18 => rx_calc_crc
-    	);
+--    i_vfat3_sc_vio : vio_vfat3_sc
+--        port map(
+--            clk       => ttc_clk_i.clk_40,
+--            probe_in0 => rx_packet_err_cnt,
+--            probe_in1 => rx_bitstuff_err_cnt,
+--            probe_in2 => rx_crc_err_cnt,
+--            probe_in3 => tx_calc_crc_last,
+--            probe_in4 => rx_calc_crc_last,
+--            probe_in5 => tx_raw_last_packet_last,
+--            probe_in6 => rx_raw_last_reply_last
+--        );
+--    
+--    i_vfat3_sc_ila : ila_vfat3_slow_control
+--    	port map(
+--    		clk    => ttc_clk_i.clk_40,
+--    		probe0 => tx_reset,
+--    		probe1 => rx_reset,
+--    		probe2 => tx_din,
+--    		probe3 => tx_en,
+--    		probe4 => rx_data,
+--    		probe5 => rx_data_en,
+--    		probe6 => tx_is_write,
+--    		probe7 => std_logic_vector(transaction_id(7 downto 0)),
+--    		probe8 => tx_oh_idx,
+--    		probe9 => tx_vfat_idx,
+--    		probe10 => rx_valid,
+--    		probe11 => rx_error,
+--    		probe12 => std_logic_vector(to_unsigned(state_t'pos(state), 2)),
+--    		probe13 => ipb_mosi_i.ipb_strobe,
+--    		probe14 => tx_command_en,
+--    		probe15 => tx_command_en_sync,
+--    		probe16 => std_logic_vector(transaction_timer),
+--    		probe17 => rx_reg_value,
+--    		probe18 => rx_calc_crc
+--    	);
     
 end vfat3_slow_control_arch;
