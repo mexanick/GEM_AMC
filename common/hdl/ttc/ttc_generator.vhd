@@ -95,7 +95,7 @@ begin
                 pre_bc0 <= '0';
                 post_bc0 <= '0';
             else
-                if (bx = unsigned(C_TTC_NUM_BXs)) then
+                if (bx = unsigned(C_TTC_NUM_BXs) - 1) then
                     bx <= (others => '0');
                     bc0 <= '1';
                 else
@@ -103,7 +103,7 @@ begin
                     bc0 <= '0';
                 end if;
                 
-                if (bx = unsigned(C_TTC_NUM_BXs) - 1) then
+                if (bx = unsigned(C_TTC_NUM_BXs) - 2) then
                     pre_bc0 <= '1';
                 else
                     pre_bc0 <= '0';
