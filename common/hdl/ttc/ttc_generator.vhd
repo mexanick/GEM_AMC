@@ -196,11 +196,11 @@ begin
                     cyclic_running <= '1';
                 end if;
                 
-                if (cyclic_running = '1') and (cyclic_l1a_cnt_i /= x"0000") and (cyclic_l1a_cntdown /= x"0000") and (cyclic_l1a_fire = '1') then
+                if (cyclic_running = '1') and (cyclic_l1a_cnt_i /= x"000000") and (cyclic_l1a_cntdown /= x"000000") and (cyclic_l1a_fire = '1') then
                     cyclic_l1a_cntdown <= cyclic_l1a_cntdown - 1;
                 end if;
                 
-                if (cyclic_running = '1') and (cyclic_l1a_cnt_i /= x"0000") and (cyclic_l1a_cntdown = x"0000") then
+                if (cyclic_running = '1') and (cyclic_l1a_cnt_i /= x"000000") and (cyclic_l1a_cntdown = x"000000") then
                     cyclic_running <= '0';
                 end if;
                 
