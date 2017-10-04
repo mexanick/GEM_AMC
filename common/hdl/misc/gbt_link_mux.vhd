@@ -82,30 +82,30 @@ begin
         
         oh_fpga_rx_data_arr_o(i) <= real_gbt_rx_data(i * 3 + 0)(79 downto 72) & real_gbt_rx_data(i * 3)(57 downto 56) & real_gbt_rx_data(i * 3)(49 downto 48) & real_gbt_rx_data(i * 3)(33 downto 32);
         
-        vfat3_rx_data_arr_o(i)(0)  <= real_gbt_rx_data(i * 3 + 0)(71 downto 64) when use_oh_vfat3_connectors_i = '0' else real_gbt_rx_data(i * 3 + 1)(7 downto 0);
-        vfat3_rx_data_arr_o(i)(1)  <= real_gbt_rx_data(i * 3 + 2)(79 downto 72) when use_oh_vfat3_connectors_i = '0' else real_gbt_rx_data(i * 3 + 2)(7 downto 0);
-        vfat3_rx_data_arr_o(i)(2)  <= real_gbt_rx_data(i * 3 + 2)(31 downto 24);
-        vfat3_rx_data_arr_o(i)(3)  <= real_gbt_rx_data(i * 3 + 2)(23 downto 16);
-        vfat3_rx_data_arr_o(i)(4)  <= real_gbt_rx_data(i * 3 + 2)(63 downto 56);
-        vfat3_rx_data_arr_o(i)(5)  <= real_gbt_rx_data(i * 3 + 2)(55 downto 48);
-        vfat3_rx_data_arr_o(i)(6)  <= real_gbt_rx_data(i * 3 + 2)(71 downto 64);
-        vfat3_rx_data_arr_o(i)(7)  <= real_gbt_rx_data(i * 3 + 1)(63 downto 56);
-        vfat3_rx_data_arr_o(i)(8)  <= real_gbt_rx_data(i * 3 + 0)(7 downto 0);
-        vfat3_rx_data_arr_o(i)(9)  <= real_gbt_rx_data(i * 3 + 0)(15 downto 8);
-        vfat3_rx_data_arr_o(i)(10) <= real_gbt_rx_data(i * 3 + 0)(23 downto 16);
-        vfat3_rx_data_arr_o(i)(11) <= real_gbt_rx_data(i * 3 + 0)(31 downto 24);
-        vfat3_rx_data_arr_o(i)(12) <= real_gbt_rx_data(i * 3 + 2)(39 downto 32);
-        vfat3_rx_data_arr_o(i)(13) <= real_gbt_rx_data(i * 3 + 2)(47 downto 40);
-        vfat3_rx_data_arr_o(i)(14) <= real_gbt_rx_data(i * 3 + 2)(15 downto 8);
-        vfat3_rx_data_arr_o(i)(15) <= real_gbt_rx_data(i * 3 + 1)(39 downto 32);
-        vfat3_rx_data_arr_o(i)(16) <= real_gbt_rx_data(i * 3 + 0)(47 downto 40);
-        vfat3_rx_data_arr_o(i)(17) <= real_gbt_rx_data(i * 3 + 1)(55 downto 48);
-        vfat3_rx_data_arr_o(i)(18) <= real_gbt_rx_data(i * 3 + 1)(71 downto 64);
-        vfat3_rx_data_arr_o(i)(19) <= real_gbt_rx_data(i * 3 + 1)(15 downto 8);
-        vfat3_rx_data_arr_o(i)(20) <= real_gbt_rx_data(i * 3 + 1)(31 downto 24);
-        vfat3_rx_data_arr_o(i)(21) <= real_gbt_rx_data(i * 3 + 1)(23 downto 16);
-        vfat3_rx_data_arr_o(i)(22) <= real_gbt_rx_data(i * 3 + 1)(79 downto 72);
-        vfat3_rx_data_arr_o(i)(23) <= real_gbt_rx_data(i * 3 + 1)(47 downto 40);
+        vfat3_rx_data_arr_o(i)(23)  <= real_gbt_rx_data(i * 3 + 0)(71 downto 64) when use_oh_vfat3_connectors_i = '0' else real_gbt_rx_data(i * 3 + 1)(7 downto 0);
+        vfat3_rx_data_arr_o(i)(22)  <= real_gbt_rx_data(i * 3 + 2)(79 downto 72) when use_oh_vfat3_connectors_i = '0' else real_gbt_rx_data(i * 3 + 2)(7 downto 0);
+        vfat3_rx_data_arr_o(i)(21)  <= real_gbt_rx_data(i * 3 + 2)(31 downto 24);
+        vfat3_rx_data_arr_o(i)(20)  <= real_gbt_rx_data(i * 3 + 2)(23 downto 16);
+        vfat3_rx_data_arr_o(i)(19)  <= real_gbt_rx_data(i * 3 + 2)(63 downto 56);
+        vfat3_rx_data_arr_o(i)(18)  <= real_gbt_rx_data(i * 3 + 2)(55 downto 48);
+        vfat3_rx_data_arr_o(i)(17)  <= real_gbt_rx_data(i * 3 + 2)(71 downto 64);
+        vfat3_rx_data_arr_o(i)(16)  <= real_gbt_rx_data(i * 3 + 1)(63 downto 56);
+        vfat3_rx_data_arr_o(i)(15)  <= real_gbt_rx_data(i * 3 + 0)(7 downto 0);
+        vfat3_rx_data_arr_o(i)(14)  <= real_gbt_rx_data(i * 3 + 0)(15 downto 8);
+        vfat3_rx_data_arr_o(i)(13) <= real_gbt_rx_data(i * 3 + 0)(23 downto 16);
+        vfat3_rx_data_arr_o(i)(12) <= real_gbt_rx_data(i * 3 + 0)(31 downto 24);
+        vfat3_rx_data_arr_o(i)(11) <= real_gbt_rx_data(i * 3 + 2)(39 downto 32);
+        vfat3_rx_data_arr_o(i)(10) <= real_gbt_rx_data(i * 3 + 2)(47 downto 40);
+        vfat3_rx_data_arr_o(i)(9) <= real_gbt_rx_data(i * 3 + 2)(15 downto 8);
+        vfat3_rx_data_arr_o(i)(8) <= real_gbt_rx_data(i * 3 + 1)(39 downto 32);
+        vfat3_rx_data_arr_o(i)(7) <= real_gbt_rx_data(i * 3 + 0)(47 downto 40);
+        vfat3_rx_data_arr_o(i)(6) <= real_gbt_rx_data(i * 3 + 1)(55 downto 48);
+        vfat3_rx_data_arr_o(i)(5) <= real_gbt_rx_data(i * 3 + 1)(71 downto 64);
+        vfat3_rx_data_arr_o(i)(4) <= real_gbt_rx_data(i * 3 + 1)(15 downto 8);
+        vfat3_rx_data_arr_o(i)(3) <= real_gbt_rx_data(i * 3 + 1)(31 downto 24);
+        vfat3_rx_data_arr_o(i)(2) <= real_gbt_rx_data(i * 3 + 1)(23 downto 16);
+        vfat3_rx_data_arr_o(i)(1) <= real_gbt_rx_data(i * 3 + 1)(79 downto 72);
+        vfat3_rx_data_arr_o(i)(0) <= real_gbt_rx_data(i * 3 + 1)(47 downto 40);
 
         --------- TX ---------
         real_gbt_tx_data(i * 3 + 0)(81 downto 80) <= sca_tx_data_arr_i(i);
@@ -123,32 +123,32 @@ begin
         real_gbt_tx_data(i * 3 + 0)(55 downto 48) <= promless_tx_data_arr_i(i)(15 downto 8);
         real_gbt_tx_data(i * 3 + 0)(39 downto 32) <= promless_tx_data_arr_i(i)(7 downto 0);
         
-        real_gbt_tx_data(i * 3 + 1)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(0) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 1 on the OH
-        real_gbt_tx_data(i * 3 + 2)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(1) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 2 on the OH
-        real_gbt_tx_data(i * 3 + 0)(71 downto 64) <= vfat3_tx_data_arr_i(i)(0) when use_oh_vfat3_connectors_i = '0' else (others => '0'); -- real slot 0 on the GEB 
-        real_gbt_tx_data(i * 3 + 2)(79 downto 72) <= vfat3_tx_data_arr_i(i)(1) when use_oh_vfat3_connectors_i = '0' else (others => '0'); -- real slot 1 on the GEB
-        real_gbt_tx_data(i * 3 + 2)(31 downto 24) <= vfat3_tx_data_arr_i(i)(2);
-        real_gbt_tx_data(i * 3 + 2)(23 downto 16) <= vfat3_tx_data_arr_i(i)(3); 
-        real_gbt_tx_data(i * 3 + 2)(63 downto 56) <= vfat3_tx_data_arr_i(i)(4);
-        real_gbt_tx_data(i * 3 + 2)(55 downto 48) <= vfat3_tx_data_arr_i(i)(5);
-        real_gbt_tx_data(i * 3 + 2)(71 downto 64) <= vfat3_tx_data_arr_i(i)(6); 
-        real_gbt_tx_data(i * 3 + 1)(63 downto 56) <= vfat3_tx_data_arr_i(i)(7); 
-        real_gbt_tx_data(i * 3 + 0)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(8);
-        real_gbt_tx_data(i * 3 + 0)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(9);
-        real_gbt_tx_data(i * 3 + 0)(23 downto 16) <= vfat3_tx_data_arr_i(i)(10);
-        real_gbt_tx_data(i * 3 + 0)(31 downto 24) <= vfat3_tx_data_arr_i(i)(11);
-        real_gbt_tx_data(i * 3 + 2)(39 downto 32) <= vfat3_tx_data_arr_i(i)(12);
-        real_gbt_tx_data(i * 3 + 2)(47 downto 40) <= vfat3_tx_data_arr_i(i)(13);
-        real_gbt_tx_data(i * 3 + 2)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(14);
-        real_gbt_tx_data(i * 3 + 1)(39 downto 32) <= vfat3_tx_data_arr_i(i)(15);
-        real_gbt_tx_data(i * 3 + 0)(47 downto 40) <= vfat3_tx_data_arr_i(i)(16); -- problematic because it sits on the same group as the promless elinks, so can run only at 80MHz
-        real_gbt_tx_data(i * 3 + 1)(55 downto 48) <= vfat3_tx_data_arr_i(i)(17);
-        real_gbt_tx_data(i * 3 + 1)(71 downto 64) <= vfat3_tx_data_arr_i(i)(18);
-        real_gbt_tx_data(i * 3 + 1)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(19);
-        real_gbt_tx_data(i * 3 + 1)(31 downto 24) <= vfat3_tx_data_arr_i(i)(20);
-        real_gbt_tx_data(i * 3 + 1)(23 downto 16) <= vfat3_tx_data_arr_i(i)(21);
-        real_gbt_tx_data(i * 3 + 1)(79 downto 72) <= vfat3_tx_data_arr_i(i)(22);
-        real_gbt_tx_data(i * 3 + 1)(47 downto 40) <= vfat3_tx_data_arr_i(i)(23);
+        real_gbt_tx_data(i * 3 + 1)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(23) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 1 on the OH
+        real_gbt_tx_data(i * 3 + 2)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(22) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 2 on the OH
+        real_gbt_tx_data(i * 3 + 0)(71 downto 64) <= vfat3_tx_data_arr_i(i)(23) when use_oh_vfat3_connectors_i = '0' else (others => '0'); -- real slot 0 on the GEB 
+        real_gbt_tx_data(i * 3 + 2)(79 downto 72) <= vfat3_tx_data_arr_i(i)(22) when use_oh_vfat3_connectors_i = '0' else (others => '0'); -- real slot 1 on the GEB
+        real_gbt_tx_data(i * 3 + 2)(31 downto 24) <= vfat3_tx_data_arr_i(i)(21);
+        real_gbt_tx_data(i * 3 + 2)(23 downto 16) <= vfat3_tx_data_arr_i(i)(20); 
+        real_gbt_tx_data(i * 3 + 2)(63 downto 56) <= vfat3_tx_data_arr_i(i)(19);
+        real_gbt_tx_data(i * 3 + 2)(55 downto 48) <= vfat3_tx_data_arr_i(i)(18);
+        real_gbt_tx_data(i * 3 + 2)(71 downto 64) <= vfat3_tx_data_arr_i(i)(17); 
+        real_gbt_tx_data(i * 3 + 1)(63 downto 56) <= vfat3_tx_data_arr_i(i)(16); 
+        real_gbt_tx_data(i * 3 + 0)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(15);
+        real_gbt_tx_data(i * 3 + 0)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(14);
+        real_gbt_tx_data(i * 3 + 0)(23 downto 16) <= vfat3_tx_data_arr_i(i)(13);
+        real_gbt_tx_data(i * 3 + 0)(31 downto 24) <= vfat3_tx_data_arr_i(i)(12);
+        real_gbt_tx_data(i * 3 + 2)(39 downto 32) <= vfat3_tx_data_arr_i(i)(11);
+        real_gbt_tx_data(i * 3 + 2)(47 downto 40) <= vfat3_tx_data_arr_i(i)(10);
+        real_gbt_tx_data(i * 3 + 2)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(9);
+        real_gbt_tx_data(i * 3 + 1)(39 downto 32) <= vfat3_tx_data_arr_i(i)(8);
+        real_gbt_tx_data(i * 3 + 0)(47 downto 40) <= vfat3_tx_data_arr_i(i)(7); -- problematic because it sits on the same group as the promless elinks, so can run only at 80MHz
+        real_gbt_tx_data(i * 3 + 1)(55 downto 48) <= vfat3_tx_data_arr_i(i)(6);
+        real_gbt_tx_data(i * 3 + 1)(71 downto 64) <= vfat3_tx_data_arr_i(i)(5);
+        real_gbt_tx_data(i * 3 + 1)(15 downto 8)  <= vfat3_tx_data_arr_i(i)(4);
+        real_gbt_tx_data(i * 3 + 1)(31 downto 24) <= vfat3_tx_data_arr_i(i)(3);
+        real_gbt_tx_data(i * 3 + 1)(23 downto 16) <= vfat3_tx_data_arr_i(i)(2);
+        real_gbt_tx_data(i * 3 + 1)(79 downto 72) <= vfat3_tx_data_arr_i(i)(1);
+        real_gbt_tx_data(i * 3 + 1)(47 downto 40) <= vfat3_tx_data_arr_i(i)(0);
         
     end generate;
 

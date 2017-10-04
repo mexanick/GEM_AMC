@@ -100,7 +100,7 @@ begin
                 end if;
                 
                 -- pick the right word with the upper bits of the channel index and then the bit within the word with the lower 3 bits of the channel index
-                if ( (word_cnt = CHANNEL_DATA_WORD_START + unsigned(TIED_TO_GND & chan_single_idx_i(6 downto 3))) and
+                if ( (word_cnt = CHANNEL_DATA_WORD_START + 15 - unsigned(TIED_TO_GND & chan_single_idx_i(6 downto 3))) and
                      (data_i(to_integer(unsigned(chan_single_idx_i(2 downto 0)))) = '1') )
                 then
                     chan_single_fired <= '1';
