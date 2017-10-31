@@ -891,6 +891,7 @@
         <node id="EXECUTE_WRITE" address="0x3" permission="w" />
         <node id="EXECUTE_READ" address="0x4" permission="w" />
         <node id="GBTX_I2C_ADDR" address="0x5" permission="rw" mask="0xf"/>
+        <node id="GBTX_LINK_SELECT" address="0x6" permission="rw" mask="0x3f"/>
       </node>
       <node id="VFAT3" address="0x4000" >
         <node id="CRC_ERROR_CNT" address="0x0" permission="r" mask="0xffff"/>

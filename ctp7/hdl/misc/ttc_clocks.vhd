@@ -20,6 +20,7 @@ library UNISIM;
 use UNISIM.VComponents.all;
 
 use work.ttc_pkg.all;
+use work.gem_board_config_package.all;
 
 --============================================================================
 --                                                          Entity declaration
@@ -102,6 +103,7 @@ END COMPONENT  ;
     signal mmcm_locked      : std_logic;
     signal mmcm_reset       : std_logic;
 
+    signal pll_ref_clk      : std_logic;
     signal pll_locked_raw   : std_logic;
     signal pll_locked       : std_logic;
     signal pll_reset        : std_logic;
@@ -256,6 +258,15 @@ begin
     --------- Phase Alignment to TTC backplane clock ---------
     ----------------------------------------------------------
   
+    gen_use_backplane_ref:
+    if not CFG_DISABLE_TTC_PHASE_LOCKING generate
+        pll_ref_clk <= clk_40_ttc_bufg;
+    end generate;
+    gen_no_backplane_ref:
+    if CFG_DISABLE_TTC_PHASE_LOCKING generate
+        pll_ref_clk <= ttc_clocks_bufg.clk_40;
+    end generate;
+    
     mmcm_ps_clk <= clk_160_ttc_clean_i;
     mmcm_locked_o <= '1' when pa_state = SYNC_DONE else '0';
     pll_lock_time_o <= std_logic_vector(pll_lock_wait_timer);
@@ -294,7 +305,7 @@ begin
             CLKOUT5  => open,
             LOCKED   => pll_locked_raw,
             CLKFBIN  => ttc_clocks_bufg.clk_40,
-            CLKIN1   => clk_40_ttc_bufg,
+            CLKIN1   => pll_ref_clk,
             PWRDWN   => '0',
             RST      => pll_reset
         );  

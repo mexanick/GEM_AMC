@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171004";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171027";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 5;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 6;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -58,6 +58,7 @@ package gem_pkg is
     -- 3.1.3  Added a TTC generator module which can be used to either issue single commands or setup cyclic generators for L1A and CalPulse
     -- 3.1.4  Routed the VFAT3 DAQ signals out to the top, and moved the VFAT3 DAQ channel monitoring to GEM_TESTS module and hooked up to AXI registers (24 such VFAT DAQMON modules are implemented with OH selection)
     -- 3.1.5  Changed VFAT order to be compatible with v2 ordering.. Fixed channel word order in VFAT DAQMON (VFAT3 sends the high channels first).
+    -- 3.1.6  Added link select for GBT IC control
 
     --======================--
     --==      General     ==--

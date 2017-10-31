@@ -2158,7 +2158,7 @@ package registers is
     -- communication)
     --============================================================================
 
-    constant REG_SLOW_CONTROL_NUM_REGS : integer := 52;
+    constant REG_SLOW_CONTROL_NUM_REGS : integer := 53;
     constant REG_SLOW_CONTROL_ADDRESS_MSB : integer := 16;
     constant REG_SLOW_CONTROL_ADDRESS_LSB : integer := 0;
     constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
@@ -2486,6 +2486,11 @@ package registers is
     constant REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_MSB    : integer := 3;
     constant REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_LSB     : integer := 0;
     constant REG_SLOW_CONTROL_IC_GBTX_I2C_ADDR_DEFAULT : std_logic_vector(3 downto 0) := x"1";
+
+    constant REG_SLOW_CONTROL_IC_GBTX_LINK_SELECT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"3006";
+    constant REG_SLOW_CONTROL_IC_GBTX_LINK_SELECT_MSB    : integer := 5;
+    constant REG_SLOW_CONTROL_IC_GBTX_LINK_SELECT_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_IC_GBTX_LINK_SELECT_DEFAULT : std_logic_vector(5 downto 0) := "00" & x"0";
 
     constant REG_SLOW_CONTROL_VFAT3_CRC_ERROR_CNT_ADDR    : std_logic_vector(16 downto 0) := '0' & x"4000";
     constant REG_SLOW_CONTROL_VFAT3_CRC_ERROR_CNT_MSB    : integer := 15;
