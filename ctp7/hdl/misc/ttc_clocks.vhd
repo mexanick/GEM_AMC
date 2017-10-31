@@ -101,14 +101,14 @@ END COMPONENT  ;
     signal mmcm_ps_done     : std_logic;
     signal mmcm_locked_raw  : std_logic;
     signal mmcm_locked      : std_logic;
-    signal mmcm_reset       : std_logic;
+    signal mmcm_reset       : std_logic := '0';
 
-    signal pll_ref_clk      : std_logic;
     signal pll_locked_raw   : std_logic;
     signal pll_locked       : std_logic;
     signal pll_reset        : std_logic;
 
-    signal fsm_reset            : std_logic := '1';
+    signal fsm_reset            : std_logic := '0';
+    signal fsm_reset_debug      : std_logic;
     signal pa_state             : pa_state_t            := IDLE;
     signal searching_for_unlock : std_logic;
     signal shifting_back        : std_logic;
@@ -260,15 +260,16 @@ begin
   
     gen_use_backplane_ref:
     if not CFG_DISABLE_TTC_PHASE_LOCKING generate
-        pll_ref_clk <= clk_40_ttc_bufg;
+        fsm_reset <= '0';
+        mmcm_locked_o <= '1' when pa_state = SYNC_DONE else '0';
     end generate;
     gen_no_backplane_ref:
     if CFG_DISABLE_TTC_PHASE_LOCKING generate
-        pll_ref_clk <= ttc_clocks_bufg.clk_40;
+        fsm_reset <= '1';
+        mmcm_locked_o <= mmcm_locked_raw;
     end generate;
     
     mmcm_ps_clk <= clk_160_ttc_clean_i;
-    mmcm_locked_o <= '1' when pa_state = SYNC_DONE else '0';
     pll_lock_time_o <= std_logic_vector(pll_lock_wait_timer);
     pll_lock_window_o <= std_logic_vector(pll_lock_window);
     unlock_cnt_o <= std_logic_vector(unlock_cnt);
@@ -305,7 +306,7 @@ begin
             CLKOUT5  => open,
             LOCKED   => pll_locked_raw,
             CLKFBIN  => ttc_clocks_bufg.clk_40,
-            CLKIN1   => pll_ref_clk,
+            CLKIN1   => clk_40_ttc_bufg,
             PWRDWN   => '0',
             RST      => pll_reset
         );  
@@ -367,7 +368,7 @@ begin
     process(mmcm_ps_clk)
     begin
         if (rising_edge(mmcm_ps_clk)) then
-            if ((mmcm_reset = '1') or (fsm_reset = '1')) then
+            if ((mmcm_reset = '1') or (fsm_reset = '1') or (fsm_reset_debug = '1')) then
                 pa_state <= IDLE;
                 pll_reset <= '1';
                 mmcm_ps_en <= '0';
@@ -544,7 +545,7 @@ begin
             probe_in5  => std_logic_vector(mmcm_unlock_cnt),
             probe_in6  => std_logic_vector(to_unsigned(pa_state_t'pos(pa_state), 3)),
             probe_out0 => mmcm_reset,
-            probe_out1 => fsm_reset
+            probe_out1 => fsm_reset_debug
         );
     
 --    i_ila_ttc_clocks : component ila_ttc_clocks
