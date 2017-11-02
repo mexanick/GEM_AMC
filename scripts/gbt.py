@@ -130,7 +130,7 @@ def selectGbt(ohIdx, gbtIdx):
     return 0
 
 def checkGbtReady(ohIdx, gbtIdx):
-    return readReg(getNode('GEM_AMC.OH_LINKS.OH%d.GBT%d_READY' % (ohIdx, gbtIdx)))
+    return parseInt(readReg(getNode('GEM_AMC.OH_LINKS.OH%d.GBT%d_READY' % (ohIdx, gbtIdx))))
 
 def check_bit(byteval,idx):
     return ((byteval&(1<<idx))!=0);
