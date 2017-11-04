@@ -1230,6 +1230,9 @@
             description="Optohybrid ${OH_IDX}"
             generate="true" generate_size="2" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
 
+        <node id="TEST"  address="0x0"  permission="rw"
+              description="test register for OH"/>
+
         <node id="GEB"  address="0x100000"
               description="VFAT3 registers">
 

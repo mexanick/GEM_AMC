@@ -12,8 +12,8 @@ package gem_pkg is
 
     constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171104";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 8;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 2;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -60,7 +60,7 @@ package gem_pkg is
     -- 3.1.5  Changed VFAT order to be compatible with v2 ordering.. Fixed channel word order in VFAT DAQMON (VFAT3 sends the high channels first).
     -- 3.1.6  Added link select for GBT IC control
     -- 3.1.7  Include trigger links
-    -- 3.1.8  OH FPGA protocol implemented
+    -- 3.2.0  OH FPGA slow control protocol implemented
 
     --======================--
     --==      General     ==--

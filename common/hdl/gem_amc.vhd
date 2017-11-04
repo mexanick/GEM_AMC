@@ -378,8 +378,8 @@ begin
 
                 oh_reg_ipb_reset_i      => ipb_reset,
                 oh_reg_ipb_clk_i        => ipb_clk_i,
-                oh_reg_ipb_reg_miso_o   => ipb_miso_arr(C_IPB_SLV.oh_reg(i)),
-                oh_reg_ipb_reg_mosi_i   => ipb_mosi_arr_i(C_IPB_SLV.oh_reg(i)),
+                oh_reg_ipb_miso_o       => ipb_miso_arr(C_IPB_SLV.oh_reg(i)),
+                oh_reg_ipb_mosi_i       => ipb_mosi_arr_i(C_IPB_SLV.oh_reg(i)),
                 
                 debug_vfat_select_i     => dbg_vfat_link_select
             );    
