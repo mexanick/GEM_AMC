@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171027";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171104";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 1;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 6;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 8;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -59,6 +59,8 @@ package gem_pkg is
     -- 3.1.4  Routed the VFAT3 DAQ signals out to the top, and moved the VFAT3 DAQ channel monitoring to GEM_TESTS module and hooked up to AXI registers (24 such VFAT DAQMON modules are implemented with OH selection)
     -- 3.1.5  Changed VFAT order to be compatible with v2 ordering.. Fixed channel word order in VFAT DAQMON (VFAT3 sends the high channels first).
     -- 3.1.6  Added link select for GBT IC control
+    -- 3.1.7  Include trigger links
+    -- 3.1.8  OH FPGA protocol implemented
 
     --======================--
     --==      General     ==--
@@ -152,7 +154,7 @@ package gem_pkg is
     type t_oh_sbits_arr is array(integer range <>) of t_oh_sbits;
 
     type t_sbit_link_status is record
-        valid           : std_logic;
+        sbit_overflow   : std_logic;
         sync_word       : std_logic;
         missed_comma    : std_logic;
         underflow       : std_logic;

@@ -369,7 +369,8 @@ begin
                                 
                 sbit_clusters_o         => sbit_clusters_arr(i), 
                 sbit_links_status_o     => sbit_links_status_arr(i), 
-                gth_rx_trig_data_i      => (oh_trig0_rx_data_arr(i), oh_trig1_rx_data_arr(i)),
+                gth_rx_trig_data_i      => (gt_trig0_rx_data_arr_i(i), gt_trig1_rx_data_arr_i(i)),
+                gth_rx_trig_usrclk_i    => (gt_trig0_rx_clk_arr_i(i), gt_trig1_rx_clk_arr_i(i)),
 
                 tk_data_link_o          => tk_data_links(i),
                 tk_error_o              => oh_link_tk_error_arr(i),
@@ -396,7 +397,7 @@ begin
             g_NUM_OF_OHs => g_NUM_OF_OHs
         )
         port map(
-            reset_i            => reset,
+            reset_i            => reset or link_reset,
             ttc_clk_i          => ttc_clocks_i,
             ttc_cmds_i         => ttc_cmd,
             sbit_clusters_i    => sbit_clusters_arr,

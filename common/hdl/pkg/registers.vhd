@@ -320,13 +320,13 @@ package registers is
     constant REG_TRIGGER_OH0_CLUSTER_SIZE_8_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_CLUSTER_SIZE_8_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH0_LINK0_NOT_VALID_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a0";
-    constant REG_TRIGGER_OH0_LINK0_NOT_VALID_CNT_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_LINK0_NOT_VALID_CNT_LSB     : integer := 0;
+    constant REG_TRIGGER_OH0_LINK0_SBIT_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a0";
+    constant REG_TRIGGER_OH0_LINK0_SBIT_OVERFLOW_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH0_LINK0_SBIT_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH0_LINK1_NOT_VALID_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a0";
-    constant REG_TRIGGER_OH0_LINK1_NOT_VALID_CNT_MSB    : integer := 31;
-    constant REG_TRIGGER_OH0_LINK1_NOT_VALID_CNT_LSB     : integer := 16;
+    constant REG_TRIGGER_OH0_LINK1_SBIT_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a0";
+    constant REG_TRIGGER_OH0_LINK1_SBIT_OVERFLOW_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH0_LINK1_SBIT_OVERFLOW_CNT_LSB     : integer := 16;
 
     constant REG_TRIGGER_OH0_LINK0_MISSED_COMMA_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a1";
     constant REG_TRIGGER_OH0_LINK0_MISSED_COMMA_CNT_MSB    : integer := 15;
@@ -480,13 +480,13 @@ package registers is
     constant REG_TRIGGER_OH1_CLUSTER_SIZE_8_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_CLUSTER_SIZE_8_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH1_LINK0_NOT_VALID_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a0";
-    constant REG_TRIGGER_OH1_LINK0_NOT_VALID_CNT_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_LINK0_NOT_VALID_CNT_LSB     : integer := 0;
+    constant REG_TRIGGER_OH1_LINK0_SBIT_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a0";
+    constant REG_TRIGGER_OH1_LINK0_SBIT_OVERFLOW_CNT_MSB    : integer := 15;
+    constant REG_TRIGGER_OH1_LINK0_SBIT_OVERFLOW_CNT_LSB     : integer := 0;
 
-    constant REG_TRIGGER_OH1_LINK1_NOT_VALID_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a0";
-    constant REG_TRIGGER_OH1_LINK1_NOT_VALID_CNT_MSB    : integer := 31;
-    constant REG_TRIGGER_OH1_LINK1_NOT_VALID_CNT_LSB     : integer := 16;
+    constant REG_TRIGGER_OH1_LINK1_SBIT_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a0";
+    constant REG_TRIGGER_OH1_LINK1_SBIT_OVERFLOW_CNT_MSB    : integer := 31;
+    constant REG_TRIGGER_OH1_LINK1_SBIT_OVERFLOW_CNT_LSB     : integer := 16;
 
     constant REG_TRIGGER_OH1_LINK0_MISSED_COMMA_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a1";
     constant REG_TRIGGER_OH1_LINK0_MISSED_COMMA_CNT_MSB    : integer := 15;

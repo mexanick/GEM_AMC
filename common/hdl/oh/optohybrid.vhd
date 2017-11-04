@@ -60,6 +60,7 @@ entity optohybrid is
         vfat3_daq_links_o       : out t_vfat_daq_link_arr(23 downto 0);
         
         -- Trigger links
+        gth_rx_trig_usrclk_i    : in std_logic_vector(1 downto 0);
         gth_rx_trig_data_i      : in t_gt_8b10b_rx_data_arr(1 downto 0);
         sbit_clusters_o         : out t_oh_sbits;
         sbit_links_status_o     : out t_oh_sbit_links;
@@ -105,6 +106,23 @@ architecture optohybrid_arch of optohybrid is
         );
     end component;
     
+    component sync_fifo_8b10b_16
+        port(
+            rst       : IN  std_logic;
+            wr_clk    : IN  std_logic;
+            rd_clk    : IN  std_logic;
+            din       : IN  std_logic_vector(23 DOWNTO 0);
+            wr_en     : IN  std_logic;
+            rd_en     : IN  std_logic;
+            dout      : OUT std_logic_vector(23 DOWNTO 0);
+            full      : OUT std_logic;
+            overflow  : OUT std_logic;
+            empty     : OUT std_logic;
+            valid     : OUT std_logic;
+            underflow : OUT std_logic
+        );
+    end component;
+        
     --== VFAT3 signals ==--
     signal vfat3_rx_ready           : std_logic_vector(23 downto 0);
     signal vfat3_sync_ok            : std_logic_vector(23 downto 0);
@@ -135,6 +153,14 @@ architecture optohybrid_arch of optohybrid is
     signal o2g_req_data             : std_logic_vector(31 downto 0);
     signal o2g_req_error            : std_logic;    
     
+    --== Trigger RX sync FIFOs ==--
+
+    signal sync_trig_rx_din_arr     : t_std24_array(1 downto 0);
+    signal sync_trig_rx_dout_arr    : t_std24_array(1 downto 0);
+    signal sync_trig_rx_gth_data_arr: t_gt_8b10b_rx_data_arr(1 downto 0);
+    signal sync_trig_rx_ovf_arr     : std_logic_vector(1 downto 0);
+    signal sync_trig_rx_unf_arr     : std_logic_vector(1 downto 0);
+
     --== Debug ==--
 
     signal dbg_vfat3_tx_data            : std_logic_vector(7 downto 0);
@@ -165,8 +191,6 @@ begin
 
     ------------- zero wiring -------------
     fpga_tx_data_o <= (others => '0');
-    sbit_clusters_o <= (others => (size => (others => '0'), address => (others => '0')));
-    sbit_links_status_o <= (others => (valid => '0', sync_word => '0', missed_comma => '0', underflow => '0', overflow => '0'));
     tk_data_link_o.data <= (others => '0');
     tk_data_link_o.data_en <= '0';
     tk_error_o <= '0';
@@ -313,35 +337,54 @@ begin
     --==   RX Trigger Link   ==--
     --=========================--
     
---    -- TODO: need sync fifos for incoming trig data (take from link_hub.vhd)
---    
---    i_link_rx_trigger0 : entity work.link_rx_trigger
---        port map(
---            ttc_clk_i           => ttc_clk_i.clk_40,
---            reset_i             => reset_i,
---            gt_rx_trig_usrclk_i => ttc_clk_i.clk_160,
---            rx_kchar_i          => gth_rx_trig_data_i(0).rxcharisk(1 downto 0),
---            rx_data_i           => gth_rx_trig_data_i(0).rxdata(15 downto 0),
---            sbit_cluster0_o     => sbit_clusters_o(0),
---            sbit_cluster1_o     => sbit_clusters_o(1),
---            sbit_cluster2_o     => sbit_clusters_o(2),
---            sbit_cluster3_o     => sbit_clusters_o(3),
---            link_status_o       => sbit_links_status_o(0)
---        );
---     
---    i_link_rx_trigger1 : entity work.link_rx_trigger
---        port map(
---            ttc_clk_i           => ttc_clk_i.clk_40,
---            reset_i             => reset_i,
---            gt_rx_trig_usrclk_i => ttc_clk_i.clk_160,
---            rx_kchar_i          => gth_rx_trig_data_i(1).rxcharisk(1 downto 0),
---            rx_data_i           => gth_rx_trig_data_i(1).rxdata(15 downto 0),
---            sbit_cluster0_o     => sbit_clusters_o(4),
---            sbit_cluster1_o     => sbit_clusters_o(5),
---            sbit_cluster2_o     => sbit_clusters_o(6),
---            sbit_cluster3_o     => sbit_clusters_o(7),
---            link_status_o       => sbit_links_status_o(1)
---        );
+    gen_trig_links: for i in 0 to 1 generate
+
+        -- Sync FIFO
+        i_sync_rx_trig : component sync_fifo_8b10b_16
+            port map(
+                rst       => reset_i,
+                wr_clk    => gth_rx_trig_usrclk_i(i),
+                rd_clk    => ttc_clk_i.clk_160,
+                din       => sync_trig_rx_din_arr(i),
+                wr_en     => '1',
+                rd_en     => '1',
+                dout      => sync_trig_rx_dout_arr(i),
+                full      => open,
+                overflow  => sync_trig_rx_ovf_arr(i),
+                empty     => open,
+                valid     => open,
+                underflow => sync_trig_rx_unf_arr(i)
+            );
+            
+        sync_trig_rx_din_arr(i) <= gth_rx_trig_data_i(i).rxdisperr(1 downto 0) & 
+                                   gth_rx_trig_data_i(i).rxnotintable(1 downto 0) & 
+                                   gth_rx_trig_data_i(i).rxchariscomma(1 downto 0) & 
+                                   gth_rx_trig_data_i(i).rxcharisk(1 downto 0) & 
+                                   gth_rx_trig_data_i(i).rxdata(15 downto 0);
+                                   
+        sync_trig_rx_gth_data_arr(i).rxdata(15 downto 0) <= sync_trig_rx_dout_arr(i)(15 downto 0);
+        sync_trig_rx_gth_data_arr(i).rxcharisk(1 downto 0) <= sync_trig_rx_dout_arr(i)(17 downto 16);
+        sync_trig_rx_gth_data_arr(i).rxchariscomma(1 downto 0) <= sync_trig_rx_dout_arr(i)(19 downto 18);
+        sync_trig_rx_gth_data_arr(i).rxnotintable(1 downto 0) <= sync_trig_rx_dout_arr(i)(21 downto 20);
+        sync_trig_rx_gth_data_arr(i).rxdisperr(1 downto 0) <= sync_trig_rx_dout_arr(i)(23 downto 22);
+        
+        -- TODO: report rxnotintable and also the overflow/underflow of this fifo
+        
+        i_link_rx_trigger : entity work.link_rx_trigger
+            port map(
+                ttc_clk_i           => ttc_clk_i.clk_40,
+                reset_i             => reset_i,
+                gt_rx_trig_usrclk_i => ttc_clk_i.clk_160,
+                rx_kchar_i          => sync_trig_rx_gth_data_arr(i).rxcharisk(1 downto 0),
+                rx_data_i           => sync_trig_rx_gth_data_arr(i).rxdata(15 downto 0),
+                sbit_cluster0_o     => sbit_clusters_o(i * 4 + 0),
+                sbit_cluster1_o     => sbit_clusters_o(i * 4 + 1),
+                sbit_cluster2_o     => sbit_clusters_o(i * 4 + 2),
+                sbit_cluster3_o     => sbit_clusters_o(i * 4 + 3),
+                link_status_o       => sbit_links_status_o(i)
+            );        
+    
+    end generate;
         
     --============================--
     --==        Debug           ==--
@@ -382,6 +425,16 @@ begin
                 probe13 => dbg_vfat3_daq_event_done,
                 probe14 => dbg_vfat3_cnt_events,
                 probe15 => dbg_vfat3_cnt_crc_errors
+            );
+
+        i_ila_trig0_link : entity work.gt_rx_link_ila_wrapper
+            port map(
+                clk_i          => gth_rx_trig_usrclk_i(0),
+                kchar_i        => gth_rx_trig_data_i(0).rxcharisk(1 downto 0),
+                comma_i        => gth_rx_trig_data_i(0).rxchariscomma(1 downto 0),
+                not_in_table_i => gth_rx_trig_data_i(0).rxnotintable(1 downto 0),
+                disperr_i      => gth_rx_trig_data_i(0).rxdisperr(1 downto 0),
+                data_i         => gth_rx_trig_data_i(0).rxdata(15 downto 0)
             );
 
     end generate;     

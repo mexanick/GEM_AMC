@@ -48,11 +48,19 @@ architecture Behavioral of link_rx_trigger is
         );
     end component sbit_cluster_fifo;
 
+    -- trigger links will send a K-char every 4 clocks to mark a BX start, and every BX it will cycle through 4 different K-chars: 0xBC, 0xF7, 0xFB, 0xFD
+    -- in case there is an overflow in that particular BX, the K-char for this BX will be 0xFC
+
+    constant FRAME_MARKERS          : t_std8_array(3 downto 0) := (x"bc", x"f7", x"fb", x"fd");
+    constant OVERFLOW_FRAME_MARKER  : std_logic_vector(7 downto 0) := x"fc";
+
     type state_t is (COMMA, DATA_0, DATA_1, DATA_2);    
     
     signal state                : state_t := COMMA;
+    signal frame_counter        : integer range 0 to 3;
     signal reset_done           : std_logic := '0'; -- asserted after the first comma after the reset    
     signal missed_comma_err     : std_logic := '0'; -- asserted if a comma character is not found when FSM is in COMMA state
+    signal sbit_overflow        : std_logic := '0'; -- asserted when an overflow K-char is detected at the BX boundary (0xFC)
 
     signal fifo_we              : std_logic := '0';
     signal fifo_re              : std_logic := '0';
@@ -69,11 +77,17 @@ begin
         if (rising_edge(gt_rx_trig_usrclk_i)) then
             if (reset_i = '1') then
                 state <= COMMA;
+                frame_counter <= 0;
             else
                 case state is
                     when COMMA =>
-                        if (rx_kchar_i(1 downto 0) = "01" and rx_data_i(7 downto 0) = x"BC") then
+                        if (rx_kchar_i(1 downto 0) = "01" and (rx_data_i(7 downto 0) = FRAME_MARKERS(frame_counter) or rx_data_i(7 downto 0) = OVERFLOW_FRAME_MARKER)) then
                             state <= DATA_0;
+                            if (frame_counter = 3) then
+                                frame_counter <= 0;
+                            else
+                                frame_counter <= frame_counter + 1;
+                            end if;
                         end if;
                     when DATA_0 => state <= DATA_1;
                     when DATA_1 => state <= DATA_2;
@@ -93,14 +107,20 @@ begin
                 reset_done <= '0';
                 missed_comma_err <= '0';
                 fifo_re <= '0';
+                sbit_overflow <= '0';
             else
                 case state is
                     when COMMA =>
                         fifo_we <= '0';
-                        if (rx_kchar_i(1 downto 0) = "01" and rx_data_i(7 downto 0) = x"BC") then
+                        if (rx_kchar_i(1 downto 0) = "01" and (rx_data_i(7 downto 0) = FRAME_MARKERS(frame_counter) or rx_data_i(7 downto 0) = OVERFLOW_FRAME_MARKER)) then
                             reset_done <= '1';
                             if (fifo_we = '1') then
                                 missed_comma_err <= '0'; -- deassert it only if it's the first clock we're in the COMMA state
+                            end if;
+                            if (rx_data_i(7 downto 0) = OVERFLOW_FRAME_MARKER) then
+                                sbit_overflow <= '1';
+                            else
+                                sbit_overflow <= '0';
                             end if;
                             fifo_din(7 downto 0) <= rx_data_i(15 downto 8);
                         elsif (reset_done = '1') then
@@ -116,7 +136,7 @@ begin
                         fifo_din(55 downto 40) <= rx_data_i(15 downto 0);
                         fifo_din(56) <= missed_comma_err;
                         fifo_din(57) <= fifo_almost_full;
-                        fifo_din(58) <= '0'; -- will be used for sync character
+                        fifo_din(58) <= sbit_overflow;
                     when others =>
                         fifo_we <= '0';
                 end case;
@@ -138,13 +158,14 @@ begin
             full        => open,
             almost_full => fifo_almost_full,
             empty       => open,
-            valid       => link_status_o.valid,
+            valid       => open,
             underflow   => link_status_o.underflow
         );
     
     link_status_o.missed_comma  <= fifo_dout(56);
     link_status_o.overflow      <= fifo_dout(57);
-    link_status_o.sync_word     <= fifo_dout(58);
+    link_status_o.sbit_overflow <= fifo_dout(58);
+    link_status_o.sync_word     <= '0';
     
     sbit_cluster0_o.size     <= fifo_dout(13 downto 11);
     sbit_cluster0_o.address  <= fifo_dout(10 downto  0);

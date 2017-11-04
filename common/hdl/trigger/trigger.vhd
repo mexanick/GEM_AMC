@@ -60,7 +60,7 @@ architecture trigger_arch of trigger is
     signal or_trigger_cnt       : std_logic_vector(31 downto 0); 
     
     -- OH counters
-    signal not_valid_cnt        : t_std32_array(g_NUM_OF_OHs - 1 downto 0);
+    signal sbit_overflow_cnt    : t_std32_array(g_NUM_OF_OHs - 1 downto 0);
     signal missed_comma_cnt     : t_std32_array(g_NUM_OF_OHs - 1 downto 0);
     signal invalid_size_cnt     : t_std32_array(g_NUM_OF_OHs - 1 downto 0);
     signal link_overflow_cnt    : t_std32_array(g_NUM_OF_OHs - 1 downto 0);
@@ -154,7 +154,7 @@ begin
                 link_status_i        => sbit_link_status_i(i),
                 masked_i             => oh_mask(i),
                 trigger_o            => oh_triggers(i),
-                not_valid_cnt_o      => not_valid_cnt(i),
+                sbit_overflow_cnt_o  => sbit_overflow_cnt(i),
                 missed_comma_cnt_o   => missed_comma_cnt(i),
                 invalid_size_cnt_o   => invalid_size_cnt(i),
                 link_overflow_cnt_o  => link_overflow_cnt(i),
@@ -296,8 +296,8 @@ begin
     regs_read_arr(22)(REG_TRIGGER_OH0_CLUSTER_SIZE_6_CNT_MSB downto REG_TRIGGER_OH0_CLUSTER_SIZE_6_CNT_LSB) <= cluster_cnt(0 * 9 + 6);
     regs_read_arr(23)(REG_TRIGGER_OH0_CLUSTER_SIZE_7_CNT_MSB downto REG_TRIGGER_OH0_CLUSTER_SIZE_7_CNT_LSB) <= cluster_cnt(0 * 9 + 7);
     regs_read_arr(24)(REG_TRIGGER_OH0_CLUSTER_SIZE_8_CNT_MSB downto REG_TRIGGER_OH0_CLUSTER_SIZE_8_CNT_LSB) <= cluster_cnt(0 * 9 + 8);
-    regs_read_arr(25)(REG_TRIGGER_OH0_LINK0_NOT_VALID_CNT_MSB downto REG_TRIGGER_OH0_LINK0_NOT_VALID_CNT_LSB) <= not_valid_cnt(0)(15 downto 0);
-    regs_read_arr(25)(REG_TRIGGER_OH0_LINK1_NOT_VALID_CNT_MSB downto REG_TRIGGER_OH0_LINK1_NOT_VALID_CNT_LSB) <= not_valid_cnt(0)(31 downto 16);
+    regs_read_arr(25)(REG_TRIGGER_OH0_LINK0_SBIT_OVERFLOW_CNT_MSB downto REG_TRIGGER_OH0_LINK0_SBIT_OVERFLOW_CNT_LSB) <= sbit_overflow_cnt(0)(15 downto 0);
+    regs_read_arr(25)(REG_TRIGGER_OH0_LINK1_SBIT_OVERFLOW_CNT_MSB downto REG_TRIGGER_OH0_LINK1_SBIT_OVERFLOW_CNT_LSB) <= sbit_overflow_cnt(0)(31 downto 16);
     regs_read_arr(26)(REG_TRIGGER_OH0_LINK0_MISSED_COMMA_CNT_MSB downto REG_TRIGGER_OH0_LINK0_MISSED_COMMA_CNT_LSB) <= missed_comma_cnt(0)(15 downto 0);
     regs_read_arr(26)(REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_MSB downto REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_LSB) <= missed_comma_cnt(0)(31 downto 16);
     regs_read_arr(27)(REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_MSB downto REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_LSB) <= invalid_size_cnt(0)(15 downto 0);
@@ -336,8 +336,8 @@ begin
     regs_read_arr(56)(REG_TRIGGER_OH1_CLUSTER_SIZE_6_CNT_MSB downto REG_TRIGGER_OH1_CLUSTER_SIZE_6_CNT_LSB) <= cluster_cnt(1 * 9 + 6);
     regs_read_arr(57)(REG_TRIGGER_OH1_CLUSTER_SIZE_7_CNT_MSB downto REG_TRIGGER_OH1_CLUSTER_SIZE_7_CNT_LSB) <= cluster_cnt(1 * 9 + 7);
     regs_read_arr(58)(REG_TRIGGER_OH1_CLUSTER_SIZE_8_CNT_MSB downto REG_TRIGGER_OH1_CLUSTER_SIZE_8_CNT_LSB) <= cluster_cnt(1 * 9 + 8);
-    regs_read_arr(59)(REG_TRIGGER_OH1_LINK0_NOT_VALID_CNT_MSB downto REG_TRIGGER_OH1_LINK0_NOT_VALID_CNT_LSB) <= not_valid_cnt(1)(15 downto 0);
-    regs_read_arr(59)(REG_TRIGGER_OH1_LINK1_NOT_VALID_CNT_MSB downto REG_TRIGGER_OH1_LINK1_NOT_VALID_CNT_LSB) <= not_valid_cnt(1)(31 downto 16);
+    regs_read_arr(59)(REG_TRIGGER_OH1_LINK0_SBIT_OVERFLOW_CNT_MSB downto REG_TRIGGER_OH1_LINK0_SBIT_OVERFLOW_CNT_LSB) <= sbit_overflow_cnt(1)(15 downto 0);
+    regs_read_arr(59)(REG_TRIGGER_OH1_LINK1_SBIT_OVERFLOW_CNT_MSB downto REG_TRIGGER_OH1_LINK1_SBIT_OVERFLOW_CNT_LSB) <= sbit_overflow_cnt(1)(31 downto 16);
     regs_read_arr(60)(REG_TRIGGER_OH1_LINK0_MISSED_COMMA_CNT_MSB downto REG_TRIGGER_OH1_LINK0_MISSED_COMMA_CNT_LSB) <= missed_comma_cnt(1)(15 downto 0);
     regs_read_arr(60)(REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_MSB downto REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_LSB) <= missed_comma_cnt(1)(31 downto 16);
     regs_read_arr(61)(REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_MSB downto REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_LSB) <= invalid_size_cnt(1)(15 downto 0);

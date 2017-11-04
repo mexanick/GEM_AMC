@@ -28,7 +28,7 @@ port(
     trigger_o           : out std_logic;
     
     -- counters
-    not_valid_cnt_o     : out std_logic_vector(31 downto 0);
+    sbit_overflow_cnt_o : out std_logic_vector(31 downto 0);
     missed_comma_cnt_o  : out std_logic_vector(31 downto 0);
     invalid_size_cnt_o  : out std_logic_vector(31 downto 0);
     link_overflow_cnt_o : out std_logic_vector(31 downto 0);
@@ -153,8 +153,8 @@ begin
         port map(
             ref_clk_i => clk_i,
             reset_i   => reset_i or reset_cnt_i,
-            en_i      => not link_status_i(i).valid,
-            count_o    => not_valid_cnt_o(((i + 1) * 16) - 1 downto i * 16) 
+            en_i      => not link_status_i(i).sbit_overflow,
+            count_o   => sbit_overflow_cnt_o(((i + 1) * 16) - 1 downto i * 16) 
         );
             
         i_missed_comma_cnt: entity work.counter
@@ -165,7 +165,7 @@ begin
             ref_clk_i => clk_i,
             reset_i   => reset_i or reset_cnt_i,
             en_i      => link_status_i(i).missed_comma,
-            count_o    => missed_comma_cnt_o(((i + 1) * 16) - 1 downto i * 16)
+            count_o   => missed_comma_cnt_o(((i + 1) * 16) - 1 downto i * 16)
         );
             
         

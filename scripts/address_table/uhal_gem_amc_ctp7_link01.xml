@@ -23,8 +23,8 @@
         <node id="CLUSTER_SIZE_6_CNT" address="0x26" permission="r" />
         <node id="CLUSTER_SIZE_7_CNT" address="0x27" permission="r" />
         <node id="CLUSTER_SIZE_8_CNT" address="0x28" permission="r" />
-        <node id="LINK0_NOT_VALID_CNT" address="0xa0" permission="r" mask="0xffff"/>
-        <node id="LINK1_NOT_VALID_CNT" address="0xa0" permission="r" mask="0xffff0000"/>
+        <node id="LINK0_SBIT_OVERFLOW_CNT" address="0xa0" permission="r" mask="0xffff"/>
+        <node id="LINK1_SBIT_OVERFLOW_CNT" address="0xa0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff0000"/>
         <node id="LINK0_INVALID_SIZE_CNT" address="0xa2" permission="r" mask="0xffff"/>

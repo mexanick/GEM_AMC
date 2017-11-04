@@ -261,13 +261,13 @@
               description="Count of cluster size ${CS_IDX} (size 0 means no sbit clusters)"
               fw_signal="cluster_cnt(${OH_IDX} * 9 + ${CS_IDX})"
               generate="true" generate_size="9" generate_address_step="0x1" generate_idx_var="CS_IDX"/>
-        <node id="LINK0_NOT_VALID_CNT" address="0xa0" mask="0x0000ffff" permission="r"
-              description="Count of valid flag being 0 in the sync FIFO for link 0"
-              fw_signal="not_valid_cnt(${OH_IDX})(15 downto 0)"
+        <node id="LINK0_SBIT_OVERFLOW_CNT" address="0xa0" mask="0x0000ffff" permission="r"
+              description="Count of overflow markers received from OH on lin 0"
+              fw_signal="sbit_overflow_cnt(${OH_IDX})(15 downto 0)"
               sw_monitor_error_min_threshold="100"/>
-        <node id="LINK1_NOT_VALID_CNT" address="0xa0" mask="0xffff0000" permission="r"
-              description="Count of valid flag being 0 in the sync FIFO for link 1"
-              fw_signal="not_valid_cnt(${OH_IDX})(31 downto 16)"
+        <node id="LINK1_SBIT_OVERFLOW_CNT" address="0xa0" mask="0xffff0000" permission="r"
+              description="Count of overflow markers received from OH on link 1"
+              fw_signal="sbit_overflow_cnt(${OH_IDX})(31 downto 16)"
               sw_monitor_error_min_threshold="100"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0xa1" mask="0x0000ffff" permission="r"
               description="Count of missed comma character at the expected time for link 0 (this indicates an out-of-sync condition)"
