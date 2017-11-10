@@ -185,7 +185,6 @@ begin
 --    tk_data_link_o.data <= evt_data;
 
     ------------- zero wiring -------------
-    fpga_tx_data_o <= (others => '0');
     tk_data_link_o.data <= (others => '0');
     tk_data_link_o.data_en <= '0';
     tk_error_o <= '0';
