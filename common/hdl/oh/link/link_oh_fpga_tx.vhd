@@ -65,7 +65,7 @@ begin
                 case state is
                     when IDLE =>
                         if (request_valid_i = '1') then
-                            state <= HEADER;
+                            state <= START;
                             data_frame_cnt <= 0;
                         else
                             state <= IDLE;
