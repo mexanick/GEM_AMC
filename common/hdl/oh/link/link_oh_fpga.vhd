@@ -165,7 +165,7 @@ begin
 
     i_rx_valid_sync : entity work.synchronizer
         generic map(
-            N_STAGES => 2
+            N_STAGES => 4
         )
         port map(
             async_i => rx_valid,
@@ -175,7 +175,7 @@ begin
 
     i_rx_error_sync : entity work.synchronizer
         generic map(
-            N_STAGES => 2
+            N_STAGES => 4
         )
         port map(
             async_i => rx_error,
