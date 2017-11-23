@@ -70,6 +70,18 @@
         <node id="OR_TRIGGER_RATE" address="0x0" permission="r" />
         <node id="OR_TRIGGER_CNT" address="0x1" permission="r" />
       </node>
+      <node id="SBIT_MONITOR" address="0x80" >
+        <node id="RESET" address="0x0" permission="w" />
+        <node id="OH_SELECT" address="0x1" permission="rw" mask="0xf"/>
+        <node id="CLUSTER0" address="0x2" permission="r" mask="0xffff"/>
+        <node id="CLUSTER1" address="0x3" permission="r" mask="0xffff"/>
+        <node id="CLUSTER2" address="0x4" permission="r" mask="0xffff"/>
+        <node id="CLUSTER3" address="0x5" permission="r" mask="0xffff"/>
+        <node id="CLUSTER4" address="0x6" permission="r" mask="0xffff"/>
+        <node id="CLUSTER5" address="0x7" permission="r" mask="0xffff"/>
+        <node id="CLUSTER6" address="0x8" permission="r" mask="0xffff"/>
+        <node id="CLUSTER7" address="0x9" permission="r" mask="0xffff"/>
+      </node>
       <node id="OH0" address="0x100" >
         <node id="TRIGGER_RATE" address="0x0" permission="r" />
         <node id="TRIGGER_CNT" address="0x1" permission="r" />
@@ -95,22 +107,12 @@
         <node id="LINK1_SBIT_OVERFLOW_CNT" address="0xa0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_INVALID_SIZE_CNT" address="0xa2" permission="r" mask="0xffff"/>
-        <node id="LINK1_INVALID_SIZE_CNT" address="0xa2" permission="r" mask="0xffff0000"/>
         <node id="LINK0_OVERFLOW_CNT" address="0xa3" permission="r" mask="0xffff"/>
         <node id="LINK1_OVERFLOW_CNT" address="0xa3" permission="r" mask="0xffff0000"/>
         <node id="LINK0_UNDERFLOW_CNT" address="0xa4" permission="r" mask="0xffff"/>
         <node id="LINK1_UNDERFLOW_CNT" address="0xa4" permission="r" mask="0xffff0000"/>
         <node id="LINK0_SYNC_WORD_CNT" address="0xa5" permission="r" mask="0xffff"/>
         <node id="LINK1_SYNC_WORD_CNT" address="0xa5" permission="r" mask="0xffff0000"/>
-        <node id="DEBUG_LAST_CLUSTER_0" address="0xf0" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_1" address="0xf1" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_2" address="0xf2" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_3" address="0xf3" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_4" address="0xf4" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_5" address="0xf5" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_6" address="0xf6" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_7" address="0xf7" permission="r" mask="0xffff"/>
       </node>
       <node id="OH1" address="0x200" >
         <node id="TRIGGER_RATE" address="0x0" permission="r" />
@@ -137,22 +139,12 @@
         <node id="LINK1_SBIT_OVERFLOW_CNT" address="0xa0" permission="r" mask="0xffff0000"/>
         <node id="LINK0_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff"/>
         <node id="LINK1_MISSED_COMMA_CNT" address="0xa1" permission="r" mask="0xffff0000"/>
-        <node id="LINK0_INVALID_SIZE_CNT" address="0xa2" permission="r" mask="0xffff"/>
-        <node id="LINK1_INVALID_SIZE_CNT" address="0xa2" permission="r" mask="0xffff0000"/>
         <node id="LINK0_OVERFLOW_CNT" address="0xa3" permission="r" mask="0xffff"/>
         <node id="LINK1_OVERFLOW_CNT" address="0xa3" permission="r" mask="0xffff0000"/>
         <node id="LINK0_UNDERFLOW_CNT" address="0xa4" permission="r" mask="0xffff"/>
         <node id="LINK1_UNDERFLOW_CNT" address="0xa4" permission="r" mask="0xffff0000"/>
         <node id="LINK0_SYNC_WORD_CNT" address="0xa5" permission="r" mask="0xffff"/>
         <node id="LINK1_SYNC_WORD_CNT" address="0xa5" permission="r" mask="0xffff0000"/>
-        <node id="DEBUG_LAST_CLUSTER_0" address="0xf0" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_1" address="0xf1" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_2" address="0xf2" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_3" address="0xf3" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_4" address="0xf4" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_5" address="0xf5" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_6" address="0xf6" permission="r" mask="0xffff"/>
-        <node id="DEBUG_LAST_CLUSTER_7" address="0xf7" permission="r" mask="0xffff"/>
       </node>
     </node>
     <node id="GEM_SYSTEM" address="0x900000" >

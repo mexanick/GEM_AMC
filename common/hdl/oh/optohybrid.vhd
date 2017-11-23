@@ -325,6 +325,9 @@ begin
         -- TODO: report rxnotintable and also the overflow/underflow of this fifo
         
         i_link_rx_trigger : entity work.link_rx_trigger
+            generic map (
+                g_DEBUG => false
+            )
             port map(
                 ttc_clk_i           => ttc_clk_i.clk_40,
                 reset_i             => reset_i,

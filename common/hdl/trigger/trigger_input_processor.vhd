@@ -30,7 +30,6 @@ port(
     -- counters
     sbit_overflow_cnt_o : out std_logic_vector(31 downto 0);
     missed_comma_cnt_o  : out std_logic_vector(31 downto 0);
-    invalid_size_cnt_o  : out std_logic_vector(31 downto 0);
     link_overflow_cnt_o : out std_logic_vector(31 downto 0);
     link_underflow_cnt_o: out std_logic_vector(31 downto 0);
     sync_word_cnt_o     : out std_logic_vector(31 downto 0);
@@ -47,7 +46,6 @@ architecture trigger_input_processor_arch of trigger_input_processor is
     signal valid_clusters   : std_logic_vector(7 downto 0);
     signal trigger          : std_logic;
     signal cluster_cnt_strb : std_logic_vector(8 downto 0);
-    signal invalid_size     : std_logic;
 
 begin
 
@@ -58,25 +56,15 @@ begin
         valid_clusters(i) <= '0' when sbit_clusters_i(i).address(10 downto 9) = "11" else '1';
     end generate;
 
-    p_vfat2_size_check : process(clk_i)
-    begin
-        if (rising_edge(clk_i)) then
-            invalid_size <= '0';
-            for i in 0 to 7 loop
-                if (sbit_clusters_i(i).size /= "111") then
-                    invalid_size <= '1';
-                end if;
-            end loop;
-        end if;
-    end process;
-
-    p_trigger:
-    process (clk_i)
-    begin
-        if (rising_edge(clk_i)) then
-            trigger <= or_reduce(valid_clusters) and not masked_i;
-        end if;
-    end process;
+--    p_trigger:
+--    process (clk_i)
+--    begin
+--        if (rising_edge(clk_i)) then
+--            trigger <= or_reduce(valid_clusters) and not masked_i;
+--        end if;
+--    end process;
+    
+    trigger <= or_reduce(valid_clusters) and not masked_i;
     
     p_cluster_size_strb:
     process (clk_i)
@@ -153,7 +141,7 @@ begin
         port map(
             ref_clk_i => clk_i,
             reset_i   => reset_i or reset_cnt_i,
-            en_i      => not link_status_i(i).sbit_overflow,
+            en_i      => link_status_i(i).sbit_overflow,
             count_o   => sbit_overflow_cnt_o(((i + 1) * 16) - 1 downto i * 16) 
         );
             
@@ -167,18 +155,6 @@ begin
             en_i      => link_status_i(i).missed_comma,
             count_o   => missed_comma_cnt_o(((i + 1) * 16) - 1 downto i * 16)
         );
-            
-        
-        i_invalid_size_cnt : entity work.counter
-        generic map(
-            g_COUNTER_WIDTH => 16
-        )
-        port map(
-            ref_clk_i => clk_i,
-            reset_i   => reset_i or reset_cnt_i,
-            en_i      => invalid_size,
-            count_o   => invalid_size_cnt_o(((i + 1) * 16) - 1 downto i * 16)
-        );     
              
         i_link_ovf_cnt: entity work.counter
         generic map(

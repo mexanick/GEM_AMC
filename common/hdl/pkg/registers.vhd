@@ -216,7 +216,7 @@ package registers is
     -- reporting data to DAQ)
     --============================================================================
 
-    constant REG_TRIGGER_NUM_REGS : integer := 73;
+    constant REG_TRIGGER_NUM_REGS : integer := 65;
     constant REG_TRIGGER_ADDRESS_MSB : integer := 12;
     constant REG_TRIGGER_ADDRESS_LSB : integer := 0;
     constant REG_TRIGGER_CTRL_MODULE_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"000";
@@ -239,6 +239,47 @@ package registers is
     constant REG_TRIGGER_STATUS_OR_TRIGGER_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"011";
     constant REG_TRIGGER_STATUS_OR_TRIGGER_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_STATUS_OR_TRIGGER_CNT_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_RESET_ADDR    : std_logic_vector(12 downto 0) := '0' & x"080";
+    constant REG_TRIGGER_SBIT_MONITOR_RESET_MSB    : integer := 31;
+    constant REG_TRIGGER_SBIT_MONITOR_RESET_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_OH_SELECT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"081";
+    constant REG_TRIGGER_SBIT_MONITOR_OH_SELECT_MSB    : integer := 3;
+    constant REG_TRIGGER_SBIT_MONITOR_OH_SELECT_LSB     : integer := 0;
+    constant REG_TRIGGER_SBIT_MONITOR_OH_SELECT_DEFAULT : std_logic_vector(3 downto 0) := x"0";
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER0_ADDR    : std_logic_vector(12 downto 0) := '0' & x"082";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER0_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER0_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER1_ADDR    : std_logic_vector(12 downto 0) := '0' & x"083";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER1_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER1_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER2_ADDR    : std_logic_vector(12 downto 0) := '0' & x"084";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER2_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER2_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER3_ADDR    : std_logic_vector(12 downto 0) := '0' & x"085";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER3_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER3_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER4_ADDR    : std_logic_vector(12 downto 0) := '0' & x"086";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER4_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER4_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER5_ADDR    : std_logic_vector(12 downto 0) := '0' & x"087";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER5_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER5_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER6_ADDR    : std_logic_vector(12 downto 0) := '0' & x"088";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER6_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER6_LSB     : integer := 0;
+
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER7_ADDR    : std_logic_vector(12 downto 0) := '0' & x"089";
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER7_MSB    : integer := 15;
+    constant REG_TRIGGER_SBIT_MONITOR_CLUSTER7_LSB     : integer := 0;
 
     constant REG_TRIGGER_OH0_TRIGGER_RATE_ADDR    : std_logic_vector(12 downto 0) := '0' & x"100";
     constant REG_TRIGGER_OH0_TRIGGER_RATE_MSB    : integer := 31;
@@ -336,14 +377,6 @@ package registers is
     constant REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
-    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a2";
-    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
-    constant REG_TRIGGER_OH0_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
-
     constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a3";
     constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH0_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
@@ -367,38 +400,6 @@ package registers is
     constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1a5";
     constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH0_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_0_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f0";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_0_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_0_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_1_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f1";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_1_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_1_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_2_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f2";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_2_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_2_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_3_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f3";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_3_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_3_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_4_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f4";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_4_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_4_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_5_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f5";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_5_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_5_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_6_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f6";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_6_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_6_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_7_ADDR    : std_logic_vector(12 downto 0) := '0' & x"1f7";
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_7_MSB    : integer := 15;
-    constant REG_TRIGGER_OH0_DEBUG_LAST_CLUSTER_7_LSB     : integer := 0;
 
     constant REG_TRIGGER_OH1_TRIGGER_RATE_ADDR    : std_logic_vector(12 downto 0) := '0' & x"200";
     constant REG_TRIGGER_OH1_TRIGGER_RATE_MSB    : integer := 31;
@@ -496,14 +497,6 @@ package registers is
     constant REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_MISSED_COMMA_CNT_LSB     : integer := 16;
 
-    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
-    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_LINK0_INVALID_SIZE_CNT_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a2";
-    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_MSB    : integer := 31;
-    constant REG_TRIGGER_OH1_LINK1_INVALID_SIZE_CNT_LSB     : integer := 16;
-
     constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a3";
     constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_MSB    : integer := 15;
     constant REG_TRIGGER_OH1_LINK0_OVERFLOW_CNT_LSB     : integer := 0;
@@ -527,38 +520,6 @@ package registers is
     constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2a5";
     constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_MSB    : integer := 31;
     constant REG_TRIGGER_OH1_LINK1_SYNC_WORD_CNT_LSB     : integer := 16;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_0_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f0";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_0_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_0_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_1_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f1";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_1_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_1_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_2_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f2";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_2_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_2_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_3_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f3";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_3_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_3_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_4_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f4";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_4_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_4_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_5_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f5";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_5_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_5_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_6_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f6";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_6_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_6_LSB     : integer := 0;
-
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_7_ADDR    : std_logic_vector(12 downto 0) := '0' & x"2f7";
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_7_MSB    : integer := 15;
-    constant REG_TRIGGER_OH1_DEBUG_LAST_CLUSTER_7_LSB     : integer := 0;
 
 
     --============================================================================

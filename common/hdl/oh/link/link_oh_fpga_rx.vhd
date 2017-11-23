@@ -90,12 +90,11 @@ begin
                 reg_data_valid <= '0';
                 reg_data <= (others => '0');
             else
+                reg_data_valid <= '0';
                 if (state = DATA) then
                     reg_data(((3 - data_frame_cnt) * 8) + 7 downto (3 - data_frame_cnt) * 8) <= elink_data_i(7 downto 0);
                     if (data_frame_cnt = 3) then
                         reg_data_valid <= '1';
-                    else
-                        reg_data_valid <= '0';
                     end if;
                 end if;
             end if;

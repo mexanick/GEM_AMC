@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171117";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171120";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 2;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 2;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 6;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -63,6 +63,10 @@ package gem_pkg is
     -- 3.2.0  OH FPGA slow control protocol implemented
     -- 3.2.1  Fix in OH FPGA link TX FSM
     -- 3.2.2  Increased delay of FPGA RX link valid signal w.r.t. data
+    -- 3.2.3  Fixed a problem with rx_valid in the OH FPGA RX FSM
+    -- 3.2.4  Implemented sbit monitor which latches on first valid sbit after reset on a selected link
+    -- 3.2.5  ILA core in trigger RX link for debugging
+    -- 3.2.6  ILA core removed
 
     --======================--
     --==      General     ==--
