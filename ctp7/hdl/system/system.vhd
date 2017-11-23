@@ -42,10 +42,10 @@ entity system is
     clk_200_diff_in_clk_p : in std_logic;
     clk_200_diff_in_clk_n : in std_logic;
 
-    axi_c2c_v7_to_zynq_data        : out std_logic_vector (14 downto 0);
+    axi_c2c_v7_to_zynq_data        : out std_logic_vector (16 downto 0);
     axi_c2c_v7_to_zynq_clk         : out std_logic;
     axi_c2c_zynq_to_v7_clk         : in  std_logic;
-    axi_c2c_zynq_to_v7_data        : in  std_logic_vector (14 downto 0);
+    axi_c2c_zynq_to_v7_data        : in  std_logic_vector (16 downto 0);
     axi_c2c_v7_to_zynq_link_status : out std_logic;
     axi_c2c_zynq_to_v7_reset       : in  std_logic;
 
@@ -97,8 +97,11 @@ entity system is
     amc13_gth_tx_p                 : out std_logic;
     
     daq_to_daqlink_i               : in t_daq_to_daqlink;
-    daqlink_to_daq_o               : out t_daqlink_to_daq
+    daqlink_to_daq_o               : out t_daqlink_to_daq;
         
+    ----------------- GEM loader ------------------------
+    to_gem_loader_i         : in t_to_gem_loader;
+    from_gem_loader_o       : out t_from_gem_loader        
     );
 end system;
 
@@ -130,10 +133,10 @@ architecture system_arch of system is
       BRAM_CTRL_GTH_REG_FILE_we   : out std_logic_vector (3 downto 0);
 
       axi_c2c_zynq_to_v7_clk         : in  std_logic;
-      axi_c2c_zynq_to_v7_data        : in  std_logic_vector (14 downto 0);
+      axi_c2c_zynq_to_v7_data        : in  std_logic_vector (16 downto 0);
       axi_c2c_v7_to_zynq_link_status : out std_logic;
       axi_c2c_v7_to_zynq_clk         : out std_logic;
-      axi_c2c_v7_to_zynq_data        : out std_logic_vector (14 downto 0);
+      axi_c2c_v7_to_zynq_data        : out std_logic_vector (16 downto 0);
       axi_c2c_zynq_to_v7_reset       : in  std_logic;
 
       clk_200_diff_in_clk_n : in std_logic;
@@ -145,11 +148,11 @@ architecture system_arch of system is
       axi_clk_o         : out STD_LOGIC;
       axi_reset_o       : out STD_LOGIC_VECTOR ( 0 to 0 );
       
-      ipb_axi_araddr    : out STD_LOGIC_VECTOR ( 27 downto 0 );
+      ipb_axi_araddr    : out STD_LOGIC_VECTOR ( 31 downto 0 );
       ipb_axi_arprot    : out STD_LOGIC_VECTOR ( 2 downto 0 );
       ipb_axi_arready   : in STD_LOGIC_VECTOR ( 0 to 0 );
       ipb_axi_arvalid   : out STD_LOGIC_VECTOR ( 0 to 0 );
-      ipb_axi_awaddr    : out STD_LOGIC_VECTOR ( 27 downto 0 );
+      ipb_axi_awaddr    : out STD_LOGIC_VECTOR ( 31 downto 0 );
       ipb_axi_awprot    : out STD_LOGIC_VECTOR ( 2 downto 0 );
       ipb_axi_awready   : in STD_LOGIC_VECTOR ( 0 to 0 );
       ipb_axi_awvalid   : out STD_LOGIC_VECTOR ( 0 to 0 );
@@ -163,7 +166,17 @@ architecture system_arch of system is
       ipb_axi_wdata     : out STD_LOGIC_VECTOR ( 31 downto 0 );
       ipb_axi_wready    : in STD_LOGIC_VECTOR ( 0 to 0 );
       ipb_axi_wstrb     : out STD_LOGIC_VECTOR ( 3 downto 0 );
-      ipb_axi_wvalid    : out STD_LOGIC_VECTOR ( 0 to 0 )
+      ipb_axi_wvalid    : out STD_LOGIC_VECTOR ( 0 to 0 );
+      
+      gem_loader_en     : in  std_logic;
+      gem_loader_clk    : in  std_logic;
+      gem_loader_ready  : out std_logic;
+      gem_loader_valid  : out std_logic;
+      gem_loader_data   : out std_logic_vector(7 downto 0);
+      gem_loader_first  : out std_logic;
+      gem_loader_last   : out std_logic;
+      gem_loader_error  : out std_logic
+      
   );
   end component v7_bd;
 
@@ -358,10 +371,10 @@ begin
       BRAM_CTRL_GTH_REG_FILE_we(3 downto 0)    => BRAM_CTRL_GTH_REG_FILE_we(3 downto 0),
 
       axi_c2c_v7_to_zynq_clk               => axi_c2c_v7_to_zynq_clk,
-      axi_c2c_v7_to_zynq_data(14 downto 0) => axi_c2c_v7_to_zynq_data(14 downto 0),
+      axi_c2c_v7_to_zynq_data(16 downto 0) => axi_c2c_v7_to_zynq_data(16 downto 0),
       axi_c2c_v7_to_zynq_link_status       => axi_c2c_v7_to_zynq_link_status,
       axi_c2c_zynq_to_v7_clk               => axi_c2c_zynq_to_v7_clk,
-      axi_c2c_zynq_to_v7_data(14 downto 0) => axi_c2c_zynq_to_v7_data(14 downto 0),
+      axi_c2c_zynq_to_v7_data(16 downto 0) => axi_c2c_zynq_to_v7_data(16 downto 0),
       axi_c2c_zynq_to_v7_reset             => axi_c2c_zynq_to_v7_reset,
 
       clk_200_diff_in_clk_n => clk_200_diff_in_clk_n,
@@ -373,11 +386,11 @@ begin
       axi_clk_o         => axi_clk,
       axi_reset_o       => axi_reset,
       
-      ipb_axi_araddr    => ipb_axi_araddr(27 downto 0),
+      ipb_axi_araddr    => ipb_axi_araddr,
       ipb_axi_arprot    => ipb_axi_arprot,
       ipb_axi_arready   => ipb_axi_arready,
       ipb_axi_arvalid   => ipb_axi_arvalid,
-      ipb_axi_awaddr    => ipb_axi_awaddr(27 downto 0),
+      ipb_axi_awaddr    => ipb_axi_awaddr,
       ipb_axi_awprot    => ipb_axi_awprot,
       ipb_axi_awready   => ipb_axi_awready,
       ipb_axi_awvalid   => ipb_axi_awvalid,
@@ -391,7 +404,17 @@ begin
       ipb_axi_wdata     => ipb_axi_wdata,
       ipb_axi_wready    => ipb_axi_wready,
       ipb_axi_wstrb     => ipb_axi_wstrb,
-      ipb_axi_wvalid    => ipb_axi_wvalid
+      ipb_axi_wvalid    => ipb_axi_wvalid,
+      
+      gem_loader_en     => to_gem_loader_i.en,
+      gem_loader_clk    => to_gem_loader_i.clk,
+      gem_loader_ready  => from_gem_loader_o.ready,
+      gem_loader_valid  => from_gem_loader_o.valid,
+      gem_loader_data   => from_gem_loader_o.data,
+      gem_loader_first  => from_gem_loader_o.first,
+      gem_loader_last   => from_gem_loader_o.last,
+      gem_loader_error  => from_gem_loader_o.error
+      
     );
 
   i_gth_register_file : entity work.gth_register_file

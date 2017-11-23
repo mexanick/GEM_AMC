@@ -35,7 +35,7 @@ entity gbt_link_mux is
         gbt_ic_tx_data_arr_i        : in  t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
         gbt_ic_rx_data_arr_o        : out t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
         
-        promless_tx_data_arr_i      : in  t_std16_array(g_NUM_OF_OHs - 1 downto 0);
+        promless_tx_data_i          : in  std_logic_vector(15 downto 0);
         
         oh_fpga_tx_data_arr_i       : in  t_std10_array(g_NUM_OF_OHs - 1 downto 0);
         oh_fpga_rx_data_arr_o       : out t_std14_array(g_NUM_OF_OHs - 1 downto 0);
@@ -120,8 +120,23 @@ begin
         real_gbt_tx_data(i * 3 + 0)(57 downto 56) <= oh_fpga_tx_data_arr_i(i)(1 downto 0);
         real_gbt_tx_data(i * 3 + 0)(63 downto 58) <= (others => '0');
 
-        real_gbt_tx_data(i * 3 + 0)(55 downto 48) <= promless_tx_data_arr_i(i)(15 downto 8);
-        real_gbt_tx_data(i * 3 + 0)(39 downto 32) <= promless_tx_data_arr_i(i)(7 downto 0);
+        real_gbt_tx_data(i * 3 + 0)(55) <= promless_tx_data_i(0);
+        real_gbt_tx_data(i * 3 + 0)(54) <= promless_tx_data_i(8);
+        real_gbt_tx_data(i * 3 + 0)(53) <= promless_tx_data_i(1);
+        real_gbt_tx_data(i * 3 + 0)(52) <= promless_tx_data_i(9);
+        real_gbt_tx_data(i * 3 + 0)(51) <= promless_tx_data_i(2);
+        real_gbt_tx_data(i * 3 + 0)(50) <= promless_tx_data_i(10);
+        real_gbt_tx_data(i * 3 + 0)(49) <= promless_tx_data_i(3);
+        real_gbt_tx_data(i * 3 + 0)(48) <= promless_tx_data_i(11);
+            
+        real_gbt_tx_data(i * 3 + 0)(39) <= promless_tx_data_i(4);
+        real_gbt_tx_data(i * 3 + 0)(38) <= promless_tx_data_i(12);
+        real_gbt_tx_data(i * 3 + 0)(37) <= promless_tx_data_i(5);
+        real_gbt_tx_data(i * 3 + 0)(36) <= promless_tx_data_i(13);
+        real_gbt_tx_data(i * 3 + 0)(35) <= promless_tx_data_i(6);
+        real_gbt_tx_data(i * 3 + 0)(34) <= promless_tx_data_i(14);
+        real_gbt_tx_data(i * 3 + 0)(33) <= promless_tx_data_i(7);
+        real_gbt_tx_data(i * 3 + 0)(32) <= promless_tx_data_i(15);
         
         real_gbt_tx_data(i * 3 + 1)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(23) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 1 on the OH
         real_gbt_tx_data(i * 3 + 2)(7 downto 0)   <= vfat3_tx_data_arr_i(i)(22) when use_oh_vfat3_connectors_i = '1' else (others => '0'); -- test VFAT3 slot 2 on the OH

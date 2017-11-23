@@ -10,10 +10,10 @@ package gem_pkg is
     --==  Firmware version  ==--
     --========================-- 
 
-    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171120";
+    constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20171123";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
-    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 2;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 6;
+    constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 3;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 0;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
@@ -67,6 +67,7 @@ package gem_pkg is
     -- 3.2.4  Implemented sbit monitor which latches on first valid sbit after reset on a selected link
     -- 3.2.5  ILA core in trigger RX link for debugging
     -- 3.2.6  ILA core removed
+    -- 3.3.0  Merged with promless project. NOTE: this version needs updated Zynq firmware with AXI-full and AXI interrupt support!
 
     --======================--
     --==      General     ==--
@@ -343,7 +344,25 @@ package gem_pkg is
         axi_strobe_error_cnt    : std_logic_vector(15 downto 0);
         transaction_cnt         : std_logic_vector(15 downto 0);
     end record;
-    	
+
+    --========================--
+    --== OH firmware loader ==--
+    --========================--
+    
+    type t_to_gem_loader is record
+        clk     : std_logic;
+        en      : std_logic;
+    end record;
+
+    type t_from_gem_loader is record
+        ready   : std_logic;
+        valid   : std_logic;
+        data    : std_logic_vector(7 downto 0);
+        first   : std_logic;
+        last    : std_logic;
+        error   : std_logic;        
+    end record;
+        	
 end gem_pkg;
    
 package body gem_pkg is

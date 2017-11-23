@@ -71,7 +71,11 @@ entity gem_amc is
         daqlink_to_daq_i        : in  t_daqlink_to_daq;
         
         -- Board serial number
-        board_id_i              : in std_logic_vector(15 downto 0)
+        board_id_i              : in std_logic_vector(15 downto 0);
+      
+        -- GEM loader
+        to_gem_loader_o         : out t_to_gem_loader;
+        from_gem_loader_i       : in  t_from_gem_loader
         
     );
 end gem_amc;
@@ -158,7 +162,7 @@ architecture gem_amc_arch of gem_amc is
     signal sca_rx_data_arr              : t_std2_array(g_NUM_OF_OHs - 1 downto 0);
     signal gbt_ic_tx_data_arr           : t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
     signal gbt_ic_rx_data_arr           : t_std2_array(g_NUM_OF_OHs * 3 - 1 downto 0);
-    signal promless_tx_data_arr         : t_std16_array(g_NUM_OF_OHs - 1 downto 0);
+    signal promless_tx_data             : std_logic_vector(15 downto 0);
     signal oh_fpga_tx_data_arr          : t_std10_array(g_NUM_OF_OHs - 1 downto 0);
     signal oh_fpga_rx_data_arr          : t_std14_array(g_NUM_OF_OHs - 1 downto 0);
     signal vfat3_tx_data_arr            : t_vfat3_elinks_arr(g_NUM_OF_OHs - 1 downto 0);
@@ -588,7 +592,7 @@ begin
             sca_rx_data_arr_o           => sca_rx_data_arr,
             gbt_ic_tx_data_arr_i        => gbt_ic_tx_data_arr,
             gbt_ic_rx_data_arr_o        => gbt_ic_rx_data_arr,
-            promless_tx_data_arr_i      => promless_tx_data_arr,
+            promless_tx_data_i          => promless_tx_data,
             oh_fpga_tx_data_arr_i       => oh_fpga_tx_data_arr,
             oh_fpga_rx_data_arr_o       => oh_fpga_rx_data_arr,
             vfat3_tx_data_arr_i         => vfat3_tx_data_arr,
@@ -600,6 +604,21 @@ begin
             tst_gbt_ready_arr_o         => test_gbt_ready_arr
         );    
 
+    --===========================--
+    --    OH FPGA programming    --
+    --===========================--
+
+    i_oh_fpga_loader : entity work.oh_fpga_loader
+        port map(
+            reset_i           => reset_i,
+            gbt_clk_i         => ttc_clocks_i.clk_40,
+            loader_clk_i      => ttc_clocks_i.clk_80,
+            to_gem_loader_o   => to_gem_loader_o,
+            from_gem_loader_i => from_gem_loader_i,
+            elink_data_o      => promless_tx_data,
+            hard_reset_i      => ttc_cmd.hard_reset
+        );
+        
     --=============--
     --    Debug    --
     --=============--    

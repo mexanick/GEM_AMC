@@ -50,10 +50,10 @@ entity gem_ctp7 is
 
         LEDs                           : out std_logic_vector(1 downto 0);
 
-        axi_c2c_v7_to_zynq_data        : out std_logic_vector(14 downto 0);
+        axi_c2c_v7_to_zynq_data        : out std_logic_vector(16 downto 0);
         axi_c2c_v7_to_zynq_clk         : out std_logic;
         axi_c2c_zynq_to_v7_clk         : in  std_logic;
-        axi_c2c_zynq_to_v7_data        : in  std_logic_vector(14 downto 0);
+        axi_c2c_zynq_to_v7_data        : in  std_logic_vector(16 downto 0);
         axi_c2c_v7_to_zynq_link_status : out std_logic;
         axi_c2c_zynq_to_v7_reset       : in  std_logic;
 
@@ -138,6 +138,10 @@ architecture gem_ctp7_arch of gem_ctp7 is
     signal daq_to_daqlink       : t_daq_to_daqlink;
     signal daqlink_to_daq       : t_daqlink_to_daq;
 
+    -------------------- GEM loader ---------------------------------
+    signal to_gem_loader        : t_to_gem_loader;
+    signal from_gem_loader      : t_from_gem_loader;
+
 --============================================================================
 --                                                          Architecture begin
 --============================================================================
@@ -206,7 +210,10 @@ begin
             amc13_gth_tx_p                 => amc13_gth_tx_p,
             
             daq_to_daqlink_i               => daq_to_daqlink,
-            daqlink_to_daq_o               => daqlink_to_daq
+            daqlink_to_daq_o               => daqlink_to_daq,
+
+            from_gem_loader_o              => from_gem_loader,
+            to_gem_loader_i                => to_gem_loader
         );
 
     -------------------------- IPBus ---------------------------------
@@ -287,7 +294,10 @@ begin
             daq_to_daqlink_o        => daq_to_daqlink,
             daqlink_to_daq_i        => daqlink_to_daq,
             
-            board_id_i              => x"beef"
+            board_id_i              => x"beef",
+
+            to_gem_loader_o         => to_gem_loader,
+            from_gem_loader_i       => from_gem_loader
         );
 
     -- GTH mapping to GEM links
