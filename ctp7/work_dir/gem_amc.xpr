@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="20" Path="/home/evka/code/gem_amc/ctp7/work_dir/gem_amc.xpr">
+<Project Version="7" Minor="20" Path="/home/evka/code/gem_fresh/GEM_AMC/ctp7/work_dir/gem_amc.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="e1dcef5053524aa7b3f3a5b0dc2878d1"/>
@@ -29,8 +29,8 @@
     <Option Name="XPMLibraries" Val="XPM_CDC"/>
     <Option Name="XPMLibraries" Val="XPM_MEMORY"/>
     <Option Name="CreateRefXciForCoreContainers" Val="FALSE"/>
-    <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
-    <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
+    <Option Name="IPUserFilesDir" Val="$PPRDIR/../../../../gem_amc/ctp7/work_dir/gem_amc.ip_user_files"/>
+    <Option Name="IPStaticSourceDir" Val="$PPRDIR/../../../../gem_amc/ctp7/work_dir/gem_amc.ip_user_files/ipstatic"/>
     <Option Name="EnableBDX" Val="FALSE"/>
     <Option Name="DSANumComputeUnits" Val="16"/>
     <Option Name="WTXSimLaunchSim" Val="3"/>
@@ -40,13 +40,13 @@
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="141"/>
-    <Option Name="WTModelSimExportSim" Val="141"/>
-    <Option Name="WTQuestaExportSim" Val="141"/>
-    <Option Name="WTIesExportSim" Val="141"/>
-    <Option Name="WTVcsExportSim" Val="141"/>
-    <Option Name="WTRivieraExportSim" Val="141"/>
-    <Option Name="WTActivehdlExportSim" Val="141"/>
+    <Option Name="WTXSimExportSim" Val="143"/>
+    <Option Name="WTModelSimExportSim" Val="143"/>
+    <Option Name="WTQuestaExportSim" Val="143"/>
+    <Option Name="WTIesExportSim" Val="143"/>
+    <Option Name="WTVcsExportSim" Val="143"/>
+    <Option Name="WTRivieraExportSim" Val="143"/>
+    <Option Name="WTActivehdlExportSim" Val="143"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -1470,9 +1470,7 @@
     </Run>
     <Run Id="fifo_gemloader_gbt_synth_1" Type="Ft3:Synth" SrcSet="fifo_gemloader_gbt" Part="xc7vx690tffg1927-2" ConstrsSet="fifo_gemloader_gbt" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/fifo_gemloader_gbt_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1481,9 +1479,7 @@
     </Run>
     <Run Id="ila_gem_loader_synth_1" Type="Ft3:Synth" SrcSet="ila_gem_loader" Part="xc7vx690tffg1927-2" ConstrsSet="ila_gem_loader" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/ila_gem_loader_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1492,9 +1488,7 @@
     </Run>
     <Run Id="vio_gem_loader_synth_1" Type="Ft3:Synth" SrcSet="vio_gem_loader" Part="xc7vx690tffg1927-2" ConstrsSet="vio_gem_loader" Description="Vivado Synthesis Defaults" Dir="$PRUNDIR/vio_gem_loader_synth_1" IncludeInArchive="true">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017">
-          <Desc>Vivado Synthesis Defaults</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2017"/>
         <Step Id="synth_design"/>
       </Strategy>
       <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
@@ -1536,9 +1530,7 @@
     </Run>
     <Run Id="fifo_gemloader_gbt_impl_1" Type="Ft2:EntireDesign" Part="xc7vx690tffg1927-2" ConstrsSet="fifo_gemloader_gbt" Description="Default settings for Implementation." SynthRun="fifo_gemloader_gbt_synth_1" IncludeInArchive="false">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -1554,9 +1546,7 @@
     </Run>
     <Run Id="ila_gem_loader_impl_1" Type="Ft2:EntireDesign" Part="xc7vx690tffg1927-2" ConstrsSet="ila_gem_loader" Description="Default settings for Implementation." SynthRun="ila_gem_loader_synth_1" IncludeInArchive="false">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
@@ -1572,9 +1562,7 @@
     </Run>
     <Run Id="vio_gem_loader_impl_1" Type="Ft2:EntireDesign" Part="xc7vx690tffg1927-2" ConstrsSet="vio_gem_loader" Description="Default settings for Implementation." SynthRun="vio_gem_loader_synth_1" IncludeInArchive="false">
       <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017">
-          <Desc>Default settings for Implementation.</Desc>
-        </StratHandle>
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2017"/>
         <Step Id="init_design"/>
         <Step Id="opt_design"/>
         <Step Id="power_opt_design"/>
