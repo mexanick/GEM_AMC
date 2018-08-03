@@ -3578,7 +3578,7 @@ package registers is
     -- communication)
     --============================================================================
 
-    constant REG_SLOW_CONTROL_NUM_REGS : integer := 81;
+    constant REG_SLOW_CONTROL_NUM_REGS : integer := 82;
     constant REG_SLOW_CONTROL_ADDRESS_MSB : integer := 16;
     constant REG_SLOW_CONTROL_ADDRESS_LSB : integer := 0;
     constant REG_SLOW_CONTROL_SCA_CTRL_MODULE_RESET_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0000";
@@ -3592,6 +3592,11 @@ package registers is
     constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0002";
     constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_BIT    : integer := 0;
     constant REG_SLOW_CONTROL_SCA_CTRL_TTC_HARD_RESET_EN_DEFAULT : std_logic := '1';
+
+    constant REG_SLOW_CONTROL_SCA_CTRL_SCA_RESET_ENABLE_MASK_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0003";
+    constant REG_SLOW_CONTROL_SCA_CTRL_SCA_RESET_ENABLE_MASK_MSB    : integer := 31;
+    constant REG_SLOW_CONTROL_SCA_CTRL_SCA_RESET_ENABLE_MASK_LSB     : integer := 0;
+    constant REG_SLOW_CONTROL_SCA_CTRL_SCA_RESET_ENABLE_MASK_DEFAULT : std_logic_vector(31 downto 0) := x"ffffffff";
 
     constant REG_SLOW_CONTROL_SCA_STATUS_READY_ADDR    : std_logic_vector(16 downto 0) := '0' & x"0100";
     constant REG_SLOW_CONTROL_SCA_STATUS_READY_MSB    : integer := 31;

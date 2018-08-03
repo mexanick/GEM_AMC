@@ -92,7 +92,9 @@ package gem_pkg is
     -- 3.4.5  Fix VFAT7 when using v3b (changed elink in v3b OH)
     -- 3.5.0  Merged with promless project. NOTE: this version needs updated Zynq firmware with AXI-full and AXI interrupt support!
     -- 3.5.1  Added flipflops for ipb_mosi inputs in the ipbus_slave.vhd to ease the timing on the ipbus path
-    -- 3.5.2  Fixed OH GBT-FPGA communication bitslip settings defaults (the defaults were reset to 0 in 3.5.1 somehow, probably due to some merge activities)    
+    -- 3.5.2  Fixed OH GBT-FPGA communication bitslip settings defaults (the defaults were reset to 0 in 3.5.1 somehow, probably due to some merge activities)
+    -- 3.5.3  Added an SCA reset enable mask register which defines which SCAs will get reset uppon a receipt of a module reset command
+    --        Also updated the default GPIO direction and output value to drive the VFAT3 resets in OHv3c. The reset is lifted by default after SCA reset, but it is pulsed high when a hard reset command is received    
 
     --======================--
     --==      General     ==--
