@@ -297,13 +297,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../common/hdl/misc/counter.vhd">
+      <File Path="$PPRDIR/../../common/hdl/utils/counter.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../common/hdl/misc/rate_counter.vhd">
+      <File Path="$PPRDIR/../../common/hdl/utils/rate_counter.vhd">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

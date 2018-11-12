@@ -13,7 +13,7 @@ package gem_pkg is
     constant C_FIRMWARE_DATE    : std_logic_vector(31 downto 0) := x"20180803";
     constant C_FIRMWARE_MAJOR   : integer range 0 to 255        := 3;
     constant C_FIRMWARE_MINOR   : integer range 0 to 255        := 5;
-    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 2;
+    constant C_FIRMWARE_BUILD   : integer range 0 to 255        := 3;
     
     ------ Change log ------
     -- 1.8.6 no gbt sync procedure with oh
