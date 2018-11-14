@@ -45,11 +45,14 @@ architecture Behavioral of config_blaster is
 
     constant C_NUM_GBTX_REGS_8      : integer := 366; -- number of 8bit registers in the GBTX chip
     constant C_NUM_GBTX_REGS_32     : integer := 92;  -- number of 32bit values we'll store for GBTX configuration
+    constant C_GBTX_RAM_SIZE_32     : integer := C_NUM_GBTX_REGS_32 * g_NUM_OF_OHs * 3; -- each OH has 3 GBTXs in GE1/1
     
     constant C_NUM_VFAT_REGS_16     : integer := 147; -- number of 16bit registers in VFAT3 chip, including the currently undocumented reg 0x92
     constant C_NUM_VFAT_REGS_32     : integer := 74;  -- number of 32bit values we'll store for VFAT3 configuration
+    constant C_VFAT_RAM_SIZE_32     : integer := C_NUM_VFAT_REGS_32 * g_NUM_OF_OHs * 24; -- each OH has 24 VFAT3s in GE1/1
 
     constant C_NUM_OH_REGS_32       : integer := 100; -- number of 32bit OH registers that we'll store (note that these are random access regs, so we'll store the address and the value for each register)
+    constant C_OH_RAM_SIZE_32       : integer := C_NUM_OH_REGS_32 * g_NUM_OF_OHs * 2; -- for each reg we'll store the address and the value (both 32bits, even though we only need 16bits for the address)
 
     -- the top two bits of the IPbus address selects the RAM to use: one for GBTX, VFAT, and OH, and plus one for control of this module (which is not really a ram, but ok)
     constant C_CTRL_RAMSEL          : integer := 0;
@@ -98,7 +101,7 @@ begin
 
     i_gbtx_config_ram : xpm_memory_tdpram
         generic map(
-            MEMORY_SIZE        => 32 * C_NUM_GBTX_REGS_32 * g_NUM_OF_OHs * 3, -- each OH has 3 GBTXs in GE1/1
+            MEMORY_SIZE        => C_GBTX_RAM_SIZE_32 * 32,
             MEMORY_PRIMITIVE   => "block",
             CLOCKING_MODE      => "independent_clock",
             ECC_MODE           => "no_ecc",
@@ -153,7 +156,7 @@ begin
 
     i_vfat_config_ram : xpm_memory_tdpram
         generic map(
-            MEMORY_SIZE        => 32 * C_NUM_VFAT_REGS_32 * g_NUM_OF_OHs * 24, -- each OH has 24 VFAT3s in GE1/1
+            MEMORY_SIZE        => C_VFAT_RAM_SIZE_32 * 32,
             MEMORY_PRIMITIVE   => "block",
             CLOCKING_MODE      => "independent_clock",
             ECC_MODE           => "no_ecc",
@@ -208,7 +211,7 @@ begin
 
     i_oh_config_ram : xpm_memory_tdpram
         generic map(
-            MEMORY_SIZE        => 32 * C_NUM_OH_REGS_32 * g_NUM_OF_OHs * 2, -- for each reg we'll store the address and the value (both 32bits, even though we only need 16bits for the address)
+            MEMORY_SIZE        => C_OH_RAM_SIZE_32 * 32,
             MEMORY_PRIMITIVE   => "block",
             CLOCKING_MODE      => "independent_clock",
             ECC_MODE           => "no_ecc",
@@ -346,13 +349,13 @@ begin
                     when x"0000" =>
                         rama_dout(C_CTRL_RAMSEL) <= x"000" & "000" & ctrl_blaster_enabled;
                     when x"0100" =>
-                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned((C_NUM_GBTX_REGS_32 * g_NUM_OF_OHs * 3), 32));
+                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned(C_GBTX_RAM_SIZE_32, 32));
                     when x"0101" =>
-                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned((C_NUM_VFAT_REGS_32 * g_NUM_OF_OHs * 24), 32));
+                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned(C_VFAT_RAM_SIZE_32, 32));
                     when x"0102" =>
-                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned((C_NUM_OH_REGS_32 * g_NUM_OF_OHs * 2), 32));
+                        rama_dout(C_CTRL_RAMSEL) <= std_logic_vector(to_unsigned(C_OH_RAM_SIZE_32, 32));
                     when others =>
-                        rama_dout(C_CTRL_RAMSEL) <= (others => '0');
+                        rama_dout(C_CTRL_RAMSEL) <= x"12345678"; -- placeholder
                 end case;
                 
                 -- write handling
@@ -361,6 +364,7 @@ begin
                         when x"0000" =>
                             ctrl_blaster_enabled <= rama_din(0);
                         when others =>
+                            ctrl_blaster_enabled <= ctrl_blaster_enabled;
                     end case;
                 else
                     ctrl_blaster_enabled <= ctrl_blaster_enabled;

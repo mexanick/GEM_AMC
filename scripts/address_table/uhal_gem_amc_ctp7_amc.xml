@@ -1460,9 +1460,21 @@
         <node id="OH_RAM_SIZE" address="0x2" permission="r" />
       </node>
       <node id="RAM" address="0x10000" >
-        <node id="GBT" address="0x0" permission="rw" mode="block"/>
-        <node id="VFAT" address="0x10000" permission="rw" mode="block"/>
-        <node id="OH" address="0x20000" permission="rw" mode="block"/>
+        <node id="GBT" address="0x0" permission="rw" mode="block"size="3312"/>
+        <node id="VFAT" address="0x10000" permission="rw" mode="block"size="21312"/>
+        <node id="OH_FPGA" address="0x20000" permission="rw" mode="block"size="2400"/>
+        <node id="GBT_OH0" address="0x0" permission="rw" mode="block"size="276"/>
+        <node id="GBT_OH1" address="0x144" permission="rw" mode="block"size="276"/>
+        <node id="GBT_OH2" address="0x288" permission="rw" mode="block"size="276"/>
+        <node id="GBT_OH3" address="0x3cc" permission="rw" mode="block"size="276"/>
+        <node id="VFAT_OH0" address="0x10000" permission="rw" mode="block"size="1776"/>
+        <node id="VFAT_OH1" address="0x106f0" permission="rw" mode="block"size="1776"/>
+        <node id="VFAT_OH2" address="0x10de0" permission="rw" mode="block"size="1776"/>
+        <node id="VFAT_OH3" address="0x114d0" permission="rw" mode="block"size="1776"/>
+        <node id="OH_FPGA_OH0" address="0x20000" permission="rw" mode="block"size="200"/>
+        <node id="OH_FPGA_OH1" address="0x200c8" permission="rw" mode="block"size="200"/>
+        <node id="OH_FPGA_OH2" address="0x20190" permission="rw" mode="block"size="200"/>
+        <node id="OH_FPGA_OH3" address="0x20258" permission="rw" mode="block"size="200"/>
       </node>
     </node>
     <node id="GLIB_SYSTEM" address="0x910000" >

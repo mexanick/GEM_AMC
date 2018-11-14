@@ -268,7 +268,7 @@
 
       <node id="OH${OH_IDX}" address="0x100"
             description="Trigger link for OH ${OH_IDX}"
-            generate="true" generate_size="2" generate_address_step="0x100" generate_idx_var="OH_IDX">
+            generate="true" generate_size="4" generate_address_step="0x100" generate_idx_var="OH_IDX">
         <node id="TRIGGER_RATE" address="0x0" permission="r"
               description="Trigger rate (Hz) -- this trigger fires whenever there's at least one valid sbit cluster"
               fw_signal="trigger_rate(${OH_IDX})"
@@ -463,7 +463,7 @@
         </node>
         <node id="LINK_${GBT_IDX}"  address="0x10"
               description="Link specific registers for GBT ${GBT_IDX}"
-              generate="true" generate_size="6" generate_address_step="0x10" generate_idx_var="GBT_IDX">
+              generate="true" generate_size="12" generate_address_step="0x10" generate_idx_var="GBT_IDX">
 
           <node id="SYNC_DONE" mask="0x00000001" permission="r" address="0x0"
                 description="Indicates whether or not the sync has been acquired between TX and RX"
@@ -698,7 +698,7 @@
 
       <node id="OH${OH_IDX}"  address="0x10"
             description="Link specific registers for OH${OH_IDX}"
-            generate="true" generate_size="2" generate_address_step="0x10" generate_idx_var="OH_IDX">
+            generate="true" generate_size="4" generate_address_step="0x10" generate_idx_var="OH_IDX">
 
         <node id="CONTROL"  address="0x0">
           <node id="EOE_TIMEOUT" address="0x3"  mask="0x00ffffff" permission="rw"
@@ -885,7 +885,7 @@
 
       <node id="OH${OH_IDX}" address="0x100"
             description="Links for OH ${OH_IDX}"
-            generate="true" generate_size="2" generate_address_step="0x100" generate_idx_var="OH_IDX">
+            generate="true" generate_size="4" generate_address_step="0x100" generate_idx_var="OH_IDX">
 
         <node id="GBT0_READY" address="0x0" mask="0x00000001" permission="r"
               description="If this is set to 1 it means that CTP7 is receiving valid GBT frames from this GBT link"
@@ -1006,7 +1006,7 @@
                 fw_signal="sca_critical_error_arr"/>
           <node id="NOT_READY_CNT_OH${OH_IDX}" address="0x2" mask="0x0000ffff" permission="r" 
                 description="Counts the number of times that the SCA controller READY signal went to 0 since last SCA reset"
-                generate="true" generate_size="2" generate_address_step="0x00000001" generate_idx_var="OH_IDX"
+                generate="true" generate_size="4" generate_address_step="0x00000001" generate_idx_var="OH_IDX"
                 fw_signal="sca_not_ready_cnt_arr(${OH_IDX})"/>
 
           <!--node id="RX_ERR_CNT" address="0x1" mask="0x0000ffff" permission="r"
@@ -1059,7 +1059,7 @@
 
           <node id="SCA_REPLY_OH${OH_IDX}" address="0x4"
                 description="SCA reply for Optohybrid ${OH_IDX}"
-                generate="true" generate_size="2" generate_address_step="0x00000002" generate_idx_var="OH_IDX">
+                generate="true" generate_size="4" generate_address_step="0x00000002" generate_idx_var="OH_IDX">
 
             <node id="SCA_RPY_CHANNEL" address="0x0" mask="0x000000ff" permission="r"
                   description="SCA reply to the manual command: channel"
@@ -1083,7 +1083,7 @@
 
           <node id="OH${OH_IDX}" address="0x1"
                 description="ADC monitoring of Optohybrid ${OH_IDX}"
-                generate="true" generate_size="2" generate_address_step="0x0000000f" generate_idx_var="OH_IDX">
+                generate="true" generate_size="4" generate_address_step="0x0000000f" generate_idx_var="OH_IDX">
 
             <node id="AVCCN" address="0x0" mask="0x00000fff" permission="r"
                   description="AVCCN voltage"
@@ -1195,7 +1195,7 @@
 
           <node id="TDI_OH${OH_IDX}" address="0x5" permission="r"
                 description="When reading this register the TDI bits are shifted from the SCA of OH${OH_IDX} (32 bits with each read)."
-                generate="true" generate_size="2" generate_address_step="0x00000001" generate_idx_var="OH_IDX"
+                generate="true" generate_size="4" generate_address_step="0x00000001" generate_idx_var="OH_IDX"
                 fw_signal="jtag_tdi_arr(${OH_IDX})" fw_read_pulse_signal="jtag_shift_tdi_en_arr(${OH_IDX})" fw_read_ready_signal="jtag_shift_done_arr(${OH_IDX})"/>
         </node>
 
@@ -1281,7 +1281,7 @@
 
       <node id="OH${OH_IDX}"  address="0x0"
             description="Optohybrid ${OH_IDX}"
-            generate="true" generate_size="2" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
+            generate="true" generate_size="4" generate_address_step="0x00010000" generate_idx_var="OH_IDX">
 
             <!--Insert here the OH FPGA module -->
             <xi:include href="optohybrid_registers.xml"/>
@@ -1551,11 +1551,20 @@
                            RAM size is also provided in the STATUS registers of this module.
                            If the software attempts to write outside the bounds of the RAM, it may be overwriting other data."/>
 
-        <node id="OH" address="0x20000" mode="block" size="2400" permission="rw"
+        <node id="OH_FPGA" address="0x20000" mode="block" size="2400" permission="rw"
               description="Configuration RAM for OH FPGAs. 100 32bit registers are allocated for each OH at the moment. For each register, a 32bit OH register address (local to OH address space) has to be written to this RAM, followed by a 32bit register value.
                            The actual RAM in the firmware is sized according to the number of OH links present in the firmware, so software should check how many OHs are supported by the firmware and only fill out the corresponding number of configuration entries.
                            RAM size is also provided in the STATUS registers of this module.
                            If the software attempts to write outside the bounds of the RAM, it may be overwriting other data."/>
+        <node id="GBT_OH${OH_IDX}"  address="0x00000" mode="block" size="276" permission="rw"
+              description="GBTX configuration RAM pointer to OH${OH_IDX}. This part of the RAM contains configuration of all 3 GBTXs for this OH."
+	      generate="true" generate_size="4" generate_address_step="0x144" generate_idx_var="OH_IDX"/>
+        <node id="VFAT_OH${OH_IDX}"  address="0x10000" mode="block" size="1776" permission="rw"
+              description="VFAT configuration RAM pointer to OH#${OH_IDX}. This part of the RAM contains configuration of all 24 VFATs for this OH."
+	      generate="true" generate_size="4" generate_address_step="0x6f0" generate_idx_var="OH_IDX"/>
+        <node id="OH_FPGA_OH${OH_IDX}"  address="0x20000" mode="block" size="200" permission="rw"
+              description="OH FPGA configuration RAM pointer to OH#${OH_IDX}."
+	      generate="true" generate_size="4" generate_address_step="0xc8" generate_idx_var="OH_IDX"/>
       </node>
 
     </node> <!-- end Config Blaster block -->
