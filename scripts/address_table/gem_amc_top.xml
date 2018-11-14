@@ -1521,6 +1521,45 @@
       </node> <!-- end OH${OH_IDX} block -->
     </node> <!-- end OptoHybrid block -->
 
+    <!--Config Blaster module -->
+    <node id="CONFIG_BLASTER"  address="0x00c00000"
+          description="Configuration Blaster. This module stores configuration data for all GBTXs, VFAT3s, and OH FPGAs, and then streams this configuration data to each device after a hard-reset."
+          fw_is_module="true"
+          fw_is_module_external="true">
+
+      <node id="CTRL" address="0x0">
+        <node id="BLASTER_ENABLE" address="0x0" mask="0x00000001" permission="rw"
+              description="Set this to 1 to enable the configuration blasting after the hard reset. By default this is disabled, because config RAM is empty on startup, so only enable this after the config RAM has been written with valid config data.">
+        </node>
+      </node>        
+
+      <node id="STATUS" address="0x100">
+        <node id="GBT_RAM_SIZE" address="0x0" permission="r" description="Size of the GBT config RAM (in 32bit words, or number of available addresses)"/>
+        <node id="VFAT_RAM_SIZE" address="0x1" permission="r" description="Size of the VFAT config RAM (in 32bit words, or number of available addresses)"/>
+        <node id="OH_RAM_SIZE" address="0x2" permission="r" description="Size of the OH config RAM (in 32bit words, or number of available addresses)"/>
+      </node>        
+
+      <node id="RAM" address="0x10000">
+        <node id="GBT" address="0x00000" mode="block" size="3312" permission="rw"
+              description="Configuration RAM for GBTX chips. Each GBTX has 366 x 8bit registers, and each address in this RAM holds 4 register values in LSB format (so in total there are 92 RAM addresses for each chip, where the last one is only partially filled).
+                           The actual RAM in the firmware is sized according to the number of OH links present in the firmware, so software should check how many OHs are supported by the firmware and only fill out the corresponding number of configuration entries.
+                           RAM size is also provided in the STATUS registers of this module.
+                           If the software attempts to write outside the bounds of the RAM, it may be overwriting other data."/>
+        <node id="VFAT" address="0x10000" mode="block" size="21312" permission="rw"
+              description="Configuration RAM for VFAT chips. Each VFAT has 147 x 16bit registers, and each address in this RAM holds 2 register values in LSB format (so in total there are 74 RAM addresses for each chip, where the last one is only partially filled).
+                           The actual RAM in the firmware is sized according to the number of OH links present in the firmware, so software should check how many OHs are supported by the firmware and only fill out the corresponding number of configuration entries.
+                           RAM size is also provided in the STATUS registers of this module.
+                           If the software attempts to write outside the bounds of the RAM, it may be overwriting other data."/>
+
+        <node id="OH" address="0x20000" mode="block" size="2400" permission="rw"
+              description="Configuration RAM for OH FPGAs. 100 32bit registers are allocated for each OH at the moment. For each register, a 32bit OH register address (local to OH address space) has to be written to this RAM, followed by a 32bit register value.
+                           The actual RAM in the firmware is sized according to the number of OH links present in the firmware, so software should check how many OHs are supported by the firmware and only fill out the corresponding number of configuration entries.
+                           RAM size is also provided in the STATUS registers of this module.
+                           If the software attempts to write outside the bounds of the RAM, it may be overwriting other data."/>
+      </node>
+
+    </node> <!-- end Config Blaster block -->
+
     <node id="GLIB_SYSTEM" address="0x910000"
           description="Legacy system registers (taken from GLIB system core).
                        These should be removed once the software is made compatible with the new system registers."

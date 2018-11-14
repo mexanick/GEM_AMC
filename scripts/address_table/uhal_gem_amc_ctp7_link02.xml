@@ -26955,5 +26955,20 @@
         </node>
       </node>
     </node>
+    <node id="CONFIG_BLASTER" address="0xc00000" >
+      <node id="CTRL" address="0x0" >
+        <node id="BLASTER_ENABLE" address="0x0" permission="rw" mask="0x1"/>
+      </node>
+      <node id="STATUS" address="0x100" >
+        <node id="GBT_RAM_SIZE" address="0x0" permission="r" />
+        <node id="VFAT_RAM_SIZE" address="0x1" permission="r" />
+        <node id="OH_RAM_SIZE" address="0x2" permission="r" />
+      </node>
+      <node id="RAM" address="0x10000" >
+        <node id="GBT" address="0x0" permission="rw" mode="block"/>
+        <node id="VFAT" address="0x10000" permission="rw" mode="block"/>
+        <node id="OH" address="0x20000" permission="rw" mode="block"/>
+      </node>
+    </node>
   </node>
 </node>
