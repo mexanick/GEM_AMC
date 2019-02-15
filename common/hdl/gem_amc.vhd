@@ -31,7 +31,8 @@ entity gem_amc is
         g_NUM_TRIG_TX_LINKS  : integer;
         
         g_NUM_IPB_SLAVES     : integer;
-        g_DAQ_CLK_FREQ       : integer
+        g_DAQ_CLK_FREQ       : integer;
+        g_SYSTEM             : string := "GE11"
     );
     port(
         reset_i                 : in   std_logic;
@@ -595,9 +596,8 @@ begin
             mgt_rx_data_arr_i           => gt_gbt_rx_data_arr_i,
             link_status_arr_o           => gbt_link_status_arr
         );
-    
-    
-    i_gbt_link_mux : entity work.gbt_link_mux
+
+    i_gbt_link_mux : entity work.gbt_link_mux(gbt_link_mux_ge21)
         generic map(
             g_NUM_OF_OHs  => g_NUM_OF_OHs
         )
